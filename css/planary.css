@@ -1,11 +1,20 @@
+canvas {
+  /*position: relative;*/
+}
+
 div.planary-root {
   position: relative;
+  margin-top: 50px;
 }
 
 div.vertex {
   position: absolute;
-  height: 15px;
-  width: 15px;
+  height: 25px;
+  width: 25px;
   background: blue;
   border-radius: 100px;
+}
+
+.ui-draggable {
+
 }

@@ -49,17 +49,17 @@
 	
 	document.addEventListener("DOMContentLoaded", function(){
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
-	  canvasEl.width = Game.DIM_X;
-	  canvasEl.height = Game.DIM_Y;
+	  // canvasEl.width = Game.DIM_X;
+	  // canvasEl.height = Game.DIM_Y;
 	  //
-	  const ctx = canvasEl.getContext("2d");
+	  // const ctx = canvasEl.getContext("2d");
 	  const rootEl = $('.planary-root');
 	  const game = new Game(0);
 	  console.log('created ctx & game in planary.js');
-	  console.log(ctx);
+	  // console.log(ctx);
 	  console.log(game);
 	  // debugger;
-	  new GameView(game, ctx, rootEl);
+	  new GameView(game, rootEl);
 	});
 
 
@@ -86,8 +86,8 @@
 	  let game = Game.LEVELS[level];
 	
 	  for (let i = 0; i < game.vertices; i++) {
-	    let x = Math.cos(i * 2 * Math.PI / game.vertices) * 200 + 300;
-	    let y = Math.sin(i * 2 * Math.PI / game.vertices) * 200 + 300;
+	    let x = Math.cos(i * 2 * Math.PI / game.vertices) * 300 + 400;
+	    let y = Math.sin(i * 2 * Math.PI / game.vertices) * 300 + 400;
 	
 	    this.vertices.push(new Vertex({ x: x, y: y }) );
 	  }
@@ -195,8 +195,8 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	const GameView = function (game, ctx, root) {
-	  this.ctx = ctx;
+	const GameView = function (game, root) {
+	  // this.ctx = ctx;
 	  this.game = game;
 	  this.root = root;
 	
@@ -205,15 +205,15 @@
 	};
 	
 	GameView.prototype.render = function() {
-	  this.game.edges.forEach( edge => {
-	    edge.draw(this.ctx);
-	  });
+	  // this.game.edges.forEach( edge => {
+	  //   edge.draw(this.ctx);
+	  // });
 	
 	  this.game.vertices.forEach( (vertex, i) => {
 	    // vertex.draw(this.ctx);
 	    const $vertex = $("<div>").addClass("vertex")
 	                    .draggable()
-	                    .css({ 'top': vertex.y-8, 'left': vertex.x-8 })
+	                    .css({ 'top': vertex.y-250, 'left': vertex.x })
 	                    .attr("data-pos", [vertex.x, vertex.y]);
 	
 	    // $vertex.draggable();

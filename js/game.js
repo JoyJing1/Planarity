@@ -17,8 +17,8 @@ Game.prototype.buildGraph = function (level) {
   let game = Game.LEVELS[level];
 
   for (let i = 0; i < game.vertices; i++) {
-    let x = Math.cos(i * 2 * Math.PI / game.vertices) * 200 + 300;
-    let y = Math.sin(i * 2 * Math.PI / game.vertices) * 200 + 300;
+    let x = Math.cos(i * 2 * Math.PI / game.vertices) * 300 + 400;
+    let y = Math.sin(i * 2 * Math.PI / game.vertices) * 300 + 400;
 
     this.vertices.push(new Vertex({ x: x, y: y }) );
   }
