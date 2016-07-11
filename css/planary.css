@@ -1,0 +1,11 @@
+div.planary-root {
+  position: relative;
+}
+
+div.vertex {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  background: blue;
+  border-radius: 100px;
+}
