@@ -1,0 +1,9 @@
+const Graphs7 = {
+  graphs: ["7 bcdefg,agfc,abfed,ace,adcf,aecbg,afb",
+            "7 bcdefg,agdc,abd,acbgfe,adf,aedg,afdb",
+            "7 bcdefg,agfdc,abd,acbfe,adf,aedbg,afb",
+            "7 bcdef,afgc,abgd,acge,adgf,aegb,bfedc",
+            "7 bcde,aefgc,abgd,acge,adgfb,beg,bfedc"]
+};
+
+module.exports = Graphs7;
