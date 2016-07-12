@@ -9,6 +9,8 @@ const Vertex = function(options) {
   this.y = options.y;
   this.color = DEFAULTS.COLOR;
   this.radius = DEFAULTS.RADIUS;
+  this.edges = [];
+  this.selected = false;
 };
 
 Vertex.prototype.pos = function() {

@@ -1,20 +1,18 @@
+h1 {
+  /*display: inline;*/
+  text-align: center;
+  margin: 0 auto;
+}
+
 body {
   position: relative;
 }
 
 canvas {
   position: absolute;
+  margin: 0 auto;
+  align-self: center;
 }
-
-div.planary-root {
-  position: absolute;
-  width: 800px;
-  height: 800px;
-  /*margin-top: 50px;*/
-
-}
-
-
 
 div.vertex {
   position: absolute;
@@ -45,13 +43,3 @@ div.edge {
 #v3, #v5 {
   background: orange;
 }
-
-/*line {
-  stroke: "black";
-  stroke-width: 5px;
-
-  background-color: green;
-  width: 10px;
-  height: 10px;
-  content: "";
-}*/

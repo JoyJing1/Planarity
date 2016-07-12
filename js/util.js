@@ -19,6 +19,12 @@ const Util = {
     const radians = Math.atan( diffY / diffX );
     return radians;
     // return radians / 2 / Math.PI * 360;
+  },
+
+  distFromMouse (vertex, event) {
+    return Math.sqrt(
+      Math.pow(vertex.x - event.pageX, 2) + Math.pow(vertex.y - event.pageY, 2)
+    );
   }
 
   // getOffset( el ) {
