@@ -4,6 +4,7 @@ const DEFAULTS = {
 };
 
 const Vertex = function(options) {
+  this.index = options.index;
   this.x = options.x;
   this.y = options.y;
   this.color = DEFAULTS.COLOR;

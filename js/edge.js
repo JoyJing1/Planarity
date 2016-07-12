@@ -9,6 +9,8 @@ Edge.prototype.draw = function (ctx) {
   ctx.beginPath();
   ctx.moveTo(this.vertex1.x, this.vertex1.y);
   ctx.lineTo(this.vertex2.x, this.vertex2.y);
+  // ctx.moveTo(this.vertex1.y, this.vertex1.x);
+  // ctx.lineTo(this.vertex2.y, this.vertex2.x);
   ctx.stroke();
 };
 
@@ -18,7 +20,7 @@ Edge.prototype.intersectsWith = function (edge) {
   let min = Math.min(this.x, edge.x);
   let max = Math.max(this.x, edge.x);
 
-  return (min <= x && x <= max );
+  return (min <= x && x <= max);
 };
 
 module.exports = Edge;

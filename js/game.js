@@ -9,8 +9,8 @@ const Game = function (level = 0) {
   this.buildGraph(level);
 };
 
-Game.DIM_X = 600;
-Game.DIM_Y = 600;
+Game.DIM_X = 800;
+Game.DIM_Y = 800;
 
 
 Game.prototype.buildGraph = function (level) {
@@ -20,11 +20,10 @@ Game.prototype.buildGraph = function (level) {
     let x = Math.cos(i * 2 * Math.PI / game.vertices) * 300 + 400;
     let y = Math.sin(i * 2 * Math.PI / game.vertices) * 300 + 400;
 
-    this.vertices.push(new Vertex({ x: x, y: y }) );
+    this.vertices.push(new Vertex({ x: x, y: y, index: i }) );
   }
 
   game.edges.forEach ( vertices => {
-    // debugger;
     let edge = new Edge({ vertex1: this.vertices[vertices[0]], vertex2: this.vertices[vertices[1]] });
     this.edges.push(edge);
   });
