@@ -13,18 +13,6 @@ document.addEventListener("DOMContentLoaded", function(){
   console.log('created ctx & game in planary.js');
   console.log(ctx);
   console.log(game);
-  // debugger;
+
   new GameView(game, ctx, rootEl);
 });
-
-// jsPlumb.bind("ready", function() {
-// // your jsPlumb related init code goes here
-//   console.log("inside jsPlum.bind callback");
-//
-// });
-
-// jsPlumb.ready(function() {
-// // your jsPlumb related init code goes here
-//   console.log("inside jsPlum.ready callback");
-//
-// });

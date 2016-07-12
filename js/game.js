@@ -12,7 +12,6 @@ const Game = function (level = 0) {
 Game.DIM_X = 800;
 Game.DIM_Y = 800;
 
-
 Game.prototype.buildGraph = function (level) {
   let game = Game.LEVELS[level];
 

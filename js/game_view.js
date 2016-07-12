@@ -2,39 +2,72 @@ const Util = require("./util");
 const Game = require("./game");
 
 const GameView = function (game, ctx, root) {
-  this.ctx = ctx;
   this.game = game;
+  this.ctx = ctx;
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
 
-  this.render();
-  this.bindEvents();
+  this.renderGraph();
+  this.renderButton();
+  this.bindGraphEvents();
+  this.bindButtonEvents();
+
   setInterval( () => {
     this.follow(this.game, this.currentMousePos);
-    this.render();
+    this.renderGraph();
   }, 50);
 };
 
-GameView.prototype.render = function() {
+GameView.prototype.renderButton = function() {
+  $button = $("<button class='planar-check'>Is Planar?</button>");
+
+  this.root.append($button);
+};
+
+GameView.prototype.bindButtonEvents = function() {
+  $(".planar-check").on("click", event => {
+    let planarity = true;
+    const game = this.game;
+
+    game.edges.forEach( (edge1, i1) => {
+      game.edges.forEach( (edge2, i2) => {
+        if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+          planarity = false;
+        };
+      });
+    });
+
+    console.log(`final: ${planarity}`);
+    return planarity;
+  });
+
+};
+
+
+GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+
+  this.game.vertices.forEach( (vertex, i) => {
+    vertex.draw(this.ctx);
+  });
 
   this.game.edges.forEach( (edge, i) => {
     edge.draw(this.ctx);
   });
 
-  this.game.vertices.forEach( (vertex, i) => {
-    vertex.draw(this.ctx);
-  });
 };
 
-GameView.prototype.bindEvents = function() {
+GameView.prototype.bindGraphEvents = function() {
   $("canvas").on("mousedown", event => {
+    this.offset = (0, 0);
+    let vertexSelected = false;
 
     this.game.vertices.forEach( vertex => {
       const dist = Util.distFromMouse(vertex, event);
 
-      if (dist < 100) {
+      if (dist < 70 && !vertexSelected) {
         vertex.selected = true;
+        vertexSelected = true;
       }
     });
 
@@ -65,6 +98,5 @@ GameView.prototype.follow = function(game, currentMousePos) {
   });
 
 };
-
 
 module.exports = GameView;

@@ -59,21 +59,9 @@
 	  console.log('created ctx & game in planary.js');
 	  console.log(ctx);
 	  console.log(game);
-	  // debugger;
+	
 	  new GameView(game, ctx, rootEl);
 	});
-	
-	// jsPlumb.bind("ready", function() {
-	// // your jsPlumb related init code goes here
-	//   console.log("inside jsPlum.bind callback");
-	//
-	// });
-	
-	// jsPlumb.ready(function() {
-	// // your jsPlumb related init code goes here
-	//   console.log("inside jsPlum.ready callback");
-	//
-	// });
 
 
 /***/ },
@@ -93,7 +81,6 @@
 	
 	Game.DIM_X = 800;
 	Game.DIM_Y = 800;
-	
 	
 	Game.prototype.buildGraph = function (level) {
 	  let game = Game.LEVELS[level];
@@ -132,14 +119,14 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Util = __webpack_require__(3);
+	const Util = window.Util = __webpack_require__(3);
 	
-	const Edge = function (options) {
+	const Edge = function(options) {
 	  this.vertex1 = options.vertex1;
 	  this.vertex2 = options.vertex2;
 	};
 	
-	Edge.prototype.draw = function (ctx) {
+	Edge.prototype.draw = function(ctx) {
 	  ctx.beginPath();
 	  ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	  ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -148,13 +135,43 @@
 	  ctx.stroke();
 	};
 	
-	Edge.prototype.intersectsWith = function (edge) {
-	  const x = (edge.xIntercept - this.xIntercept) / (this.slope - edge.slope);
+	Edge.prototype.slope = function() {
+	  return Util.slope(this.vertex1, this.vertex2);
+	};
 	
-	  let min = Math.min(this.x, edge.x);
-	  let max = Math.max(this.x, edge.x);
+	Edge.prototype.xIntercept = function() {
+	  // debugger;
+	  return Util.xIntercept(this.vertex1, this.slope());
+	};
 	
-	  return (min <= x && x <= max);
+	// Edge.prototype.equals = function(edge) {
+	//   return this.vertex1 === edge.vertex1 && this.vertex2 === edge.vertex2;
+	// };
+	
+	Edge.prototype.shareVertex = function(edge) {
+	  return (
+	    this.vertex1 === edge.vertex1
+	    || this.vertex1 === edge.vertex2
+	    || this.vertex2 === edge.vertex1
+	    || this.vertex2 === edge.vertex2
+	  );
+	};
+	
+	Edge.prototype.intersectsWith = function(edge) {
+	  const x = (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
+	
+	  let firstMin = Math.min(this.vertex1.x, this.vertex2.x);
+	  let firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+	
+	  let secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
+	  let secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+	
+	  let onFirst = (firstMin < x && x < firstMax);
+	  let onSecond = (secondMin < x && x < secondMax);
+	
+	  // debugger;
+	
+	  return (onFirst && onSecond && !this.shareVertex(edge));
 	};
 	
 	module.exports = Edge;
@@ -165,21 +182,22 @@
 /***/ function(module, exports) {
 
 	const Util = {
-	  slope (pos1, pos2) {
-	    return (pos2[1] - pos1[1]) / (pos2[0] - pos1[0]);
+	  slope(vertex1, vertex2) {
+	    return (vertex2.y - vertex1.y) / (vertex2.x - vertex1.x);
 	  },
 	
-	  xIntercept (pos, slope) {
-	    return pos[1] - (slope * pos[0]);
+	  xIntercept(vertex, slope) {
+	    return vertex.y - (slope * vertex.x);
 	  },
 	
-	  dist (vertex1, vertex2) {
+	  dist(vertex1, vertex2) {
 	    return Math.sqrt(
-	      Math.pow(vertex1.x - vertex2.x, 2) + Math.pow(vertex1.y - vertex2.y, 2)
+	      Math.pow(vertex1.x - vertex2.x, 2)
+	        + Math.pow(vertex1.y - vertex2.y, 2)
 	    );
 	  },
 	
-	  angle (vertex1, vertex2) {
+	  angle(vertex1, vertex2) {
 	    const diffY = vertex2.y - vertex1.y;
 	    const diffX = vertex2.x - vertex1.x;
 	    const radians = Math.atan( diffY / diffX );
@@ -187,81 +205,13 @@
 	    // return radians / 2 / Math.PI * 360;
 	  },
 	
-	  distFromMouse (vertex, event) {
+	  distFromMouse(vertex, event) {
+	    const vertexRadius = 12.5;
+	
 	    return Math.sqrt(
-	      Math.pow(vertex.x - event.pageX, 2) + Math.pow(vertex.y - event.pageY, 2)
+	      Math.pow(vertex.x + vertexRadius - event.pageX, 2) + Math.pow(vertex.y + vertexRadius - event.pageY, 2)
 	    );
 	  }
-	
-	  // getOffset( el ) {
-	  //     var rect = el.getBoundingClientRect();
-	  //     return {
-	  //         left: rect.left + window.pageXOffset,
-	  //         top: rect.top + window.pageYOffset,
-	  //         width: rect.width || el.offsetWidth,
-	  //         height: rect.height || el.offsetHeight
-	  //     };
-	  // },
-	  //
-	  // connect(div1, div2, color, thickness) { // draw a line connecting elements
-	  //   var off1 = this.getOffset(div1);
-	  //   var off2 = this.getOffset(div2);
-	  //   // bottom right
-	  //   var x1 = off1.left + off1.width;
-	  //   var y1 = off1.top + off1.height;
-	  //   // top right
-	  //   var x2 = off2.left + off2.width;
-	  //   var y2 = off2.top;
-	  //   // distance
-	  //   var length = Math.sqrt(((x2-x1) * (x2-x1)) + ((y2-y1) * (y2-y1)));
-	  //   // center
-	  //   var cx = ((x1 + x2) / 2) - (length / 2);
-	  //   var cy = ((y1 + y2) / 2) - (thickness / 2);
-	  //   // angle
-	  //   var angle = Math.atan2((y1-y2),(x1-x2))*(180/Math.PI);
-	  //   // make hr
-	  //   var htmlLine = "<div style='padding:0px; margin:0px; height:" + thickness + "px; background-color:" + color + "; line-height:1px; position:absolute; left:" + cx + "px; top:" + cy + "px; width:" + length + "px; -moz-transform:rotate(" + angle + "deg); -webkit-transform:rotate(" + angle + "deg); -o-transform:rotate(" + angle + "deg); -ms-transform:rotate(" + angle + "deg); transform:rotate(" + angle + "deg);' />";
-	  //   //
-	  //   // alert(htmlLine);
-	  //   document.body.innerHTML += htmlLine;
-	  // },
-	  //
-	  // lineDistance(x, y, x0, y0){
-	  //     return Math.sqrt((x -= x0) * x + (y -= y0) * y);
-	  // },
-	  //
-	  // drawLine(a, b, line) {
-	  //   var pointA = $(a).offset();
-	  //   var pointB = $(b).offset();
-	  //   var pointAcenterX = $(a).width() / 2;
-	  //   var pointAcenterY = $(a).height() / 2;
-	  //   var pointBcenterX = $(b).width() / 2;
-	  //   var pointBcenterY = $(b).height() / 2;
-	  //   var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
-	  //   var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top);
-	  //
-	  //   // INFO
-	  //   $('.info .point-a').text('Point-A: Left: ' + pointA.left + ' Top: ' + pointA.top);
-	  //   $('.info .point-b').text('Point-B: Left: ' + pointB.left + ' Top: ' + pointB.top);
-	  //   $('.info .angle').text('Angle: ' + angle);
-	  //   $('.info .distance').text('Distance: ' + distance);
-	  //
-	  //   // Set Angle
-	  //   $(line).css('transform', 'rotate(' + angle + 'deg)');
-	  //
-	  //   // Set Width
-	  //   $(line).css('width', distance + 'px');
-	  //
-	  //   // Set Position
-	  //   $(line).css('position', 'absolute');
-	  //   if(pointB.left < pointA.left) {
-	  //     $(line).offset({top: pointA.top + pointAcenterY, left: pointB.left + pointBcenterX});
-	  //   } else {
-	  //     $(line).offset({top: pointA.top + pointAcenterY, left: pointA.left + pointAcenterX});
-	  //   }
-	  // }
-	
-	
 	
 	};
 	
@@ -309,39 +259,72 @@
 	const Game = __webpack_require__(1);
 	
 	const GameView = function (game, ctx, root) {
-	  this.ctx = ctx;
 	  this.game = game;
+	  this.ctx = ctx;
 	  this.root = root;
 	  this.currentMousePos = { x: -1, y: -1 };
 	
-	  this.render();
-	  this.bindEvents();
+	  this.renderGraph();
+	  this.renderButton();
+	  this.bindGraphEvents();
+	  this.bindButtonEvents();
+	
 	  setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
-	    this.render();
+	    this.renderGraph();
 	  }, 50);
 	};
 	
-	GameView.prototype.render = function() {
+	GameView.prototype.renderButton = function() {
+	  $button = $("<button class='planar-check'>Is Planar?</button>");
+	
+	  this.root.append($button);
+	};
+	
+	GameView.prototype.bindButtonEvents = function() {
+	  $(".planar-check").on("click", event => {
+	    let planarity = true;
+	    const game = this.game;
+	
+	    game.edges.forEach( (edge1, i1) => {
+	      game.edges.forEach( (edge2, i2) => {
+	        if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+	          planarity = false;
+	        };
+	      });
+	    });
+	
+	    console.log(`final: ${planarity}`);
+	    return planarity;
+	  });
+	
+	};
+	
+	
+	GameView.prototype.renderGraph = function() {
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+	
+	  this.game.vertices.forEach( (vertex, i) => {
+	    vertex.draw(this.ctx);
+	  });
 	
 	  this.game.edges.forEach( (edge, i) => {
 	    edge.draw(this.ctx);
 	  });
 	
-	  this.game.vertices.forEach( (vertex, i) => {
-	    vertex.draw(this.ctx);
-	  });
 	};
 	
-	GameView.prototype.bindEvents = function() {
+	GameView.prototype.bindGraphEvents = function() {
 	  $("canvas").on("mousedown", event => {
+	    this.offset = (0, 0);
+	    let vertexSelected = false;
 	
 	    this.game.vertices.forEach( vertex => {
 	      const dist = Util.distFromMouse(vertex, event);
 	
-	      if (dist < 100) {
+	      if (dist < 70 && !vertexSelected) {
 	        vertex.selected = true;
+	        vertexSelected = true;
 	      }
 	    });
 	
@@ -372,7 +355,6 @@
 	  });
 	
 	};
-	
 	
 	module.exports = GameView;
 
