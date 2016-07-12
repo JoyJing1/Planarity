@@ -54,13 +54,11 @@
 	
 	  const ctx = canvasEl.getContext("2d");
 	  const rootEl = $('.planary-root');
-	  const game = new Game(0);
 	
 	  console.log('created ctx & game in planary.js');
 	  console.log(ctx);
-	  console.log(game);
 	
-	  new GameView(game, ctx, rootEl);
+	  new GameView(ctx, rootEl, 1);
 	});
 
 
@@ -72,7 +70,9 @@
 	const Vertex = __webpack_require__(4);
 	const Util = __webpack_require__(3);
 	
-	const Game = function (level = 0) {
+	// const graphs6 = require("../graphs/graphs6.txt");
+	
+	const Game = function (level = 1) {
 	  this.vertices = [];
 	  this.edges = [];
 	
@@ -82,8 +82,10 @@
 	Game.DIM_X = 800;
 	Game.DIM_Y = 800;
 	
-	Game.prototype.buildGraph = function (level) {
+	Game.prototype.buildGraph = function(level) {
 	  let game = Game.LEVELS[level];
+	
+	  this.getTree(level);
 	
 	  for (let i = 0; i < game.vertices; i++) {
 	    let x = Math.cos(i * 2 * Math.PI / game.vertices) * 300 + 400;
@@ -102,15 +104,38 @@
 	
 	};
 	
+	Game.prototype.getTree = function(level) {
+	  const numVertices = Game.LEVELS[level];
+	  // const filename = `../trees/graphs${numVertices}.txt`;
+	  const filename = `graphs${numVertices}`;
 	
 	
 	
+	  debugger;
 	
-	Game.LEVELS = [
-	  { vertices: 6,
-	    edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
-	  }
-	];
+	  Util.readTextFile(filename);
+	// readTextFile("file:///C:/your/path/to/file.txt");
+	
+	};
+	
+	Game.LEVELS = { 1: 6,
+	                2: 7,
+	                3: 8,
+	                4: 9,
+	                5: 10,
+	                6: 11,
+	                7: 12,
+	                8: 13,
+	                9: 14,
+	                10: 18
+	              };
+	
+	
+	// Game.LEVELS = [
+	//   { vertices: 6,
+	//     edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
+	//   }
+	// ];
 	
 	module.exports = Game;
 
@@ -211,7 +236,24 @@
 	    return Math.sqrt(
 	      Math.pow(vertex.x + vertexRadius - event.pageX, 2) + Math.pow(vertex.y + vertexRadius - event.pageY, 2)
 	    );
+	  },
+	
+	  readTextFile(file) {
+	    var rawFile = new XMLHttpRequest();
+	    rawFile.open("GET", file, false);
+	    rawFile.onreadystatechange = function () {
+	      if(rawFile.readyState === 4) {
+	        if(rawFile.status === 200 || rawFile.status === 0) {
+	          const allText = rawFile.responseText;
+	
+	          // Check allText - pulling file contents?
+	          debugger;
+	        }
+	      }
+	    };
+	    rawFile.send(null);
 	  }
+	
 	
 	};
 	
@@ -258,14 +300,16 @@
 	const Util = __webpack_require__(3);
 	const Game = __webpack_require__(1);
 	
-	const GameView = function (game, ctx, root) {
-	  this.game = game;
+	const GameView = function (ctx, root, level=1) {
 	  this.ctx = ctx;
 	  this.root = root;
 	  this.currentMousePos = { x: -1, y: -1 };
+	  this.level = level;
+	  this.game = new Game(this.level);
 	
 	  this.renderGraph();
 	  this.renderButton();
+	
 	  this.bindGraphEvents();
 	  this.bindButtonEvents();
 	
@@ -283,19 +327,29 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	  $(".planar-check").on("click", event => {
-	    let planarity = true;
+	    let planar = true;
 	    const game = this.game;
 	
 	    game.edges.forEach( (edge1, i1) => {
 	      game.edges.forEach( (edge2, i2) => {
 	        if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-	          planarity = false;
+	          planar = false;
 	        };
 	      });
 	    });
 	
-	    console.log(`final: ${planarity}`);
-	    return planarity;
+	    console.log(`final: ${planar}`);
+	
+	    if (planar) {
+	      this.level += 1;
+	      console.log("Yay, you made a planar graph!!");;
+	      // Level up to next level
+	      // this.game = new Game(this.level);
+	    } else {
+	      console.log("The graph's not planar quite yet");
+	    }
+	    // return planar;
+	
 	  });
 	
 	};

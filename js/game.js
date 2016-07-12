@@ -2,7 +2,9 @@ const Edge = require("./edge");
 const Vertex = require("./vertex");
 const Util = require("./util");
 
-const Game = function (level = 0) {
+// const graphs6 = require("../graphs/graphs6.txt");
+
+const Game = function (level = 1) {
   this.vertices = [];
   this.edges = [];
 
@@ -12,8 +14,10 @@ const Game = function (level = 0) {
 Game.DIM_X = 800;
 Game.DIM_Y = 800;
 
-Game.prototype.buildGraph = function (level) {
+Game.prototype.buildGraph = function(level) {
   let game = Game.LEVELS[level];
+
+  this.getTree(level);
 
   for (let i = 0; i < game.vertices; i++) {
     let x = Math.cos(i * 2 * Math.PI / game.vertices) * 300 + 400;
@@ -32,14 +36,37 @@ Game.prototype.buildGraph = function (level) {
 
 };
 
+Game.prototype.getTree = function(level) {
+  const numVertices = Game.LEVELS[level];
+  // const filename = `../trees/graphs${numVertices}.txt`;
+  const filename = `graphs${numVertices}`;
 
 
 
+  debugger;
 
-Game.LEVELS = [
-  { vertices: 6,
-    edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
-  }
-];
+  Util.readTextFile(filename);
+// readTextFile("file:///C:/your/path/to/file.txt");
+
+};
+
+Game.LEVELS = { 1: 6,
+                2: 7,
+                3: 8,
+                4: 9,
+                5: 10,
+                6: 11,
+                7: 12,
+                8: 13,
+                9: 14,
+                10: 18
+              };
+
+
+// Game.LEVELS = [
+//   { vertices: 6,
+//     edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
+//   }
+// ];
 
 module.exports = Game;

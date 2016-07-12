@@ -8,11 +8,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
   const ctx = canvasEl.getContext("2d");
   const rootEl = $('.planary-root');
-  const game = new Game(0);
 
   console.log('created ctx & game in planary.js');
   console.log(ctx);
-  console.log(game);
 
-  new GameView(game, ctx, rootEl);
+  new GameView(ctx, rootEl, 1);
 });

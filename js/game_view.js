@@ -1,14 +1,16 @@
 const Util = require("./util");
 const Game = require("./game");
 
-const GameView = function (game, ctx, root) {
-  this.game = game;
+const GameView = function (ctx, root, level=1) {
   this.ctx = ctx;
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
+  this.level = level;
+  this.game = new Game(this.level);
 
   this.renderGraph();
   this.renderButton();
+
   this.bindGraphEvents();
   this.bindButtonEvents();
 
@@ -26,19 +28,29 @@ GameView.prototype.renderButton = function() {
 
 GameView.prototype.bindButtonEvents = function() {
   $(".planar-check").on("click", event => {
-    let planarity = true;
+    let planar = true;
     const game = this.game;
 
     game.edges.forEach( (edge1, i1) => {
       game.edges.forEach( (edge2, i2) => {
         if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-          planarity = false;
+          planar = false;
         };
       });
     });
 
-    console.log(`final: ${planarity}`);
-    return planarity;
+    console.log(`final: ${planar}`);
+
+    if (planar) {
+      this.level += 1;
+      console.log("Yay, you made a planar graph!!");;
+      // Level up to next level
+      // this.game = new Game(this.level);
+    } else {
+      console.log("The graph's not planar quite yet");
+    }
+    // return planar;
+
   });
 
 };
