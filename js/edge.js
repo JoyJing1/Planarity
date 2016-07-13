@@ -1,16 +1,17 @@
 const Util = window.Util = require("./util");
+const Constants = require('../constants');
 
 const Edge = function(options) {
   this.vertex1 = options.vertex1;
   this.vertex2 = options.vertex2;
+  this.color = Constants.BLACK;
 };
 
 Edge.prototype.draw = function(ctx) {
+  ctx.strokeStyle = this.color;
   ctx.beginPath();
   ctx.moveTo(this.vertex1.x, this.vertex1.y);
   ctx.lineTo(this.vertex2.x, this.vertex2.y);
-  // ctx.moveTo(this.vertex1.y, this.vertex1.x);
-  // ctx.lineTo(this.vertex2.y, this.vertex2.x);
   ctx.stroke();
 };
 
@@ -19,13 +20,9 @@ Edge.prototype.slope = function() {
 };
 
 Edge.prototype.xIntercept = function() {
-  // debugger;
   return Util.xIntercept(this.vertex1, this.slope());
 };
 
-// Edge.prototype.equals = function(edge) {
-//   return this.vertex1 === edge.vertex1 && this.vertex2 === edge.vertex2;
-// };
 
 Edge.prototype.shareVertex = function(edge) {
   return (

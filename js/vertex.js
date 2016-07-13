@@ -1,14 +1,11 @@
-const DEFAULTS = {
-	COLOR: "#2794EB",
-	RADIUS: 15
-};
+const Constants = require('../constants');
 
 const Vertex = function(options) {
   this.index = options.index;
   this.x = options.x;
   this.y = options.y;
-  this.color = DEFAULTS.COLOR;
-  this.radius = DEFAULTS.RADIUS;
+  this.color = Constants.COLOR;
+  this.radius = Constants.RADIUS;
   this.edges = [];
   this.selected = false;
 };

@@ -1,5 +1,6 @@
 const Util = require("./util");
 const Game = require("./game");
+const Constants = require('../constants');
 
 const GameView = function (ctx, root, level=1) {
   this.ctx = ctx;
@@ -7,22 +8,28 @@ const GameView = function (ctx, root, level=1) {
   this.currentMousePos = { x: -1, y: -1 };
   this.level = level;
 
+  this.renderButton();
+  this.bindButtonEvents();
   this.playLevel(this.level);
+
+  // this.refreshIntervalId = setInterval( () => {
+  //   this.follow(this.game, this.currentMousePos);
+  //   this.renderGraph();
+  // }, 50);
+};
+
+GameView.prototype.playLevel = function() {
+  this.game = new Game(this.level);
+  console.log(this.game);
+  console.log(this);
+
+  this.renderGraph();
+  this.bindGraphEvents();
 
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
     this.renderGraph();
   }, 50);
-};
-
-GameView.prototype.playLevel = function() {
-  this.game = new Game(this.level);
-
-  this.renderGraph();
-  this.renderButton();
-
-  this.bindGraphEvents();
-  this.bindButtonEvents();
 };
 
 GameView.prototype.renderButton = function() {
@@ -85,6 +92,11 @@ GameView.prototype.bindGraphEvents = function() {
 
       if (dist < 70 && !vertexSelected) {
         vertex.selected = true;
+        vertex.color = Constants.COLOR_SELECTED;
+
+        vertex.edges.forEach( edge => {
+          edge.color = Constants.LINE_SELECTED;
+        });
         vertexSelected = true;
       }
     });
@@ -94,6 +106,11 @@ GameView.prototype.bindGraphEvents = function() {
   $("canvas").on("mouseup", event => {
     this.game.vertices.forEach( vertex => {
       vertex.selected = false;
+      vertex.color = Constants.COLOR;
+    });
+
+    this.game.edges.forEach( edge => {
+      edge.color = Constants.BLACK;
     });
   });
 

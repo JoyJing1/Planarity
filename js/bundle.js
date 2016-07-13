@@ -113,18 +113,19 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Util = window.Util = __webpack_require__(3);
+	const Constants = __webpack_require__(7);
 	
 	const Edge = function(options) {
 	  this.vertex1 = options.vertex1;
 	  this.vertex2 = options.vertex2;
+	  this.color = Constants.BLACK;
 	};
 	
 	Edge.prototype.draw = function(ctx) {
+	  ctx.strokeStyle = this.color;
 	  ctx.beginPath();
 	  ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	  ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	  // ctx.moveTo(this.vertex1.y, this.vertex1.x);
-	  // ctx.lineTo(this.vertex2.y, this.vertex2.x);
 	  ctx.stroke();
 	};
 	
@@ -133,13 +134,9 @@
 	};
 	
 	Edge.prototype.xIntercept = function() {
-	  // debugger;
 	  return Util.xIntercept(this.vertex1, this.slope());
 	};
 	
-	// Edge.prototype.equals = function(edge) {
-	//   return this.vertex1 === edge.vertex1 && this.vertex2 === edge.vertex2;
-	// };
 	
 	Edge.prototype.shareVertex = function(edge) {
 	  return (
@@ -234,19 +231,16 @@
 
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	const DEFAULTS = {
-		COLOR: "#2794EB",
-		RADIUS: 15
-	};
+	const Constants = __webpack_require__(7);
 	
 	const Vertex = function(options) {
 	  this.index = options.index;
 	  this.x = options.x;
 	  this.y = options.y;
-	  this.color = DEFAULTS.COLOR;
-	  this.radius = DEFAULTS.RADIUS;
+	  this.color = Constants.COLOR;
+	  this.radius = Constants.RADIUS;
 	  this.edges = [];
 	  this.selected = false;
 	};
@@ -370,6 +364,7 @@
 
 	const Util = __webpack_require__(3);
 	const Game = __webpack_require__(1);
+	const Constants = __webpack_require__(7);
 	
 	const GameView = function (ctx, root, level=1) {
 	  this.ctx = ctx;
@@ -377,22 +372,28 @@
 	  this.currentMousePos = { x: -1, y: -1 };
 	  this.level = level;
 	
+	  this.renderButton();
+	  this.bindButtonEvents();
 	  this.playLevel(this.level);
+	
+	  // this.refreshIntervalId = setInterval( () => {
+	  //   this.follow(this.game, this.currentMousePos);
+	  //   this.renderGraph();
+	  // }, 50);
+	};
+	
+	GameView.prototype.playLevel = function() {
+	  this.game = new Game(this.level);
+	  console.log(this.game);
+	  console.log(this);
+	
+	  this.renderGraph();
+	  this.bindGraphEvents();
 	
 	  this.refreshIntervalId = setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
 	    this.renderGraph();
 	  }, 50);
-	};
-	
-	GameView.prototype.playLevel = function() {
-	  this.game = new Game(this.level);
-	
-	  this.renderGraph();
-	  this.renderButton();
-	
-	  this.bindGraphEvents();
-	  this.bindButtonEvents();
 	};
 	
 	GameView.prototype.renderButton = function() {
@@ -455,6 +456,11 @@
 	
 	      if (dist < 70 && !vertexSelected) {
 	        vertex.selected = true;
+	        vertex.color = Constants.COLOR_SELECTED;
+	
+	        vertex.edges.forEach( edge => {
+	          edge.color = Constants.LINE_SELECTED;
+	        });
 	        vertexSelected = true;
 	      }
 	    });
@@ -464,6 +470,11 @@
 	  $("canvas").on("mouseup", event => {
 	    this.game.vertices.forEach( vertex => {
 	      vertex.selected = false;
+	      vertex.color = Constants.COLOR;
+	    });
+	
+	    this.game.edges.forEach( edge => {
+	      edge.color = Constants.BLACK;
 	    });
 	  });
 	
@@ -488,6 +499,19 @@
 	};
 	
 	module.exports = GameView;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		COLOR: "#2794EB", //#51C4E9#2794EB
+	  COLOR_SELECTED: "#47D6B6",
+	  BLACK: "#000000",
+	  LINE_SELECTED: "#6150C1",
+		RADIUS: 15
+	};
 
 
 /***/ }

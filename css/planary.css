@@ -8,6 +8,10 @@ body {
   position: relative;
 }
 
+.canvas-div {
+  margin: 0 auto;
+}
+
 canvas {
   position: absolute;
   margin: 0 auto;
@@ -42,4 +46,11 @@ div.edge {
 
 #v3, #v5 {
   background: orange;
+}
+
+/* Clearfix */
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
 }
