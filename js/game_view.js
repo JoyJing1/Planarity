@@ -54,8 +54,9 @@ GameView.prototype.bindButtonEvents = function() {
     console.log(`final: ${planar}`);
 
     if (planar) {
-      this.level += 1;
       console.log("Yay, you made a planar graph!!");
+
+      this.level += 1;
       clearInterval(this.refreshIntervalId);
       this.playLevel();
       // Level up to next level
@@ -73,6 +74,7 @@ GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
   this.game.edges.forEach( (edge, i) => {
+    edge.currentlyIntersecting(this.game.edges);
     edge.draw(this.ctx);
   });
 

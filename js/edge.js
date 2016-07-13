@@ -8,7 +8,11 @@ const Edge = function(options) {
 };
 
 Edge.prototype.draw = function(ctx) {
-  ctx.strokeStyle = this.color;
+  if (this.intersecting) {
+    ctx.strokeStyle = Constants.LINE_INTERSECTING;
+  } else {
+    ctx.strokeStyle = Constants.BLACK;
+  }
   ctx.beginPath();
   ctx.moveTo(this.vertex1.x, this.vertex1.y);
   ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -22,7 +26,6 @@ Edge.prototype.slope = function() {
 Edge.prototype.xIntercept = function() {
   return Util.xIntercept(this.vertex1, this.slope());
 };
-
 
 Edge.prototype.shareVertex = function(edge) {
   return (
@@ -49,9 +52,16 @@ Edge.prototype.intersectsWith = function(edge) {
   const onFirst = (firstMin < x && x < firstMax);
   const onSecond = (secondMin < x && x < secondMax);
 
-  // debugger;
-
   return (onFirst && onSecond && !this.shareVertex(edge));
 };
+
+Edge.prototype.currentlyIntersecting = function(allEdges) {
+  this.intersecting = false;
+  allEdges.forEach( edge => {
+    if (this.intersectsWith(edge)) {
+      this.intersecting = true;
+    }
+  });
+}
 
 module.exports = Edge;

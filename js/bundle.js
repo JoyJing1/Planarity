@@ -122,7 +122,11 @@
 	};
 	
 	Edge.prototype.draw = function(ctx) {
-	  ctx.strokeStyle = this.color;
+	  if (this.intersecting) {
+	    ctx.strokeStyle = Constants.LINE_INTERSECTING;
+	  } else {
+	    ctx.strokeStyle = Constants.BLACK;
+	  }
 	  ctx.beginPath();
 	  ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	  ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -136,7 +140,6 @@
 	Edge.prototype.xIntercept = function() {
 	  return Util.xIntercept(this.vertex1, this.slope());
 	};
-	
 	
 	Edge.prototype.shareVertex = function(edge) {
 	  return (
@@ -163,10 +166,17 @@
 	  const onFirst = (firstMin < x && x < firstMax);
 	  const onSecond = (secondMin < x && x < secondMax);
 	
-	  // debugger;
-	
 	  return (onFirst && onSecond && !this.shareVertex(edge));
 	};
+	
+	Edge.prototype.currentlyIntersecting = function(allEdges) {
+	  this.intersecting = false;
+	  allEdges.forEach( edge => {
+	    if (this.intersectsWith(edge)) {
+	      this.intersecting = true;
+	    }
+	  });
+	}
 	
 	module.exports = Edge;
 
@@ -418,8 +428,9 @@
 	    console.log(`final: ${planar}`);
 	
 	    if (planar) {
-	      this.level += 1;
 	      console.log("Yay, you made a planar graph!!");
+	
+	      this.level += 1;
 	      clearInterval(this.refreshIntervalId);
 	      this.playLevel();
 	      // Level up to next level
@@ -437,6 +448,7 @@
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 	
 	  this.game.edges.forEach( (edge, i) => {
+	    edge.currentlyIntersecting(this.game.edges);
 	    edge.draw(this.ctx);
 	  });
 	
@@ -510,6 +522,7 @@
 	  COLOR_SELECTED: "#47D6B6",
 	  BLACK: "#000000",
 	  LINE_SELECTED: "#6150C1",
+	  LINE_INTERSECTING: "#FF9090",
 		RADIUS: 15
 	};
 
