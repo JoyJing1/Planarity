@@ -96,9 +96,9 @@ GameView.prototype.bindGraphEvents = function() {
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
 
-        vertex.edges.forEach( edge => {
-          edge.color = Constants.LINE_SELECTED;
-        });
+        // vertex.edges.forEach( edge => {
+        //   edge.color = Constants.LINE_SELECTED;
+        // });
         vertexSelected = true;
       }
     });
@@ -111,9 +111,9 @@ GameView.prototype.bindGraphEvents = function() {
       vertex.color = Constants.COLOR;
     });
 
-    this.game.edges.forEach( edge => {
-      edge.color = Constants.BLACK;
-    });
+    // this.game.edges.forEach( edge => {
+    //   edge.color = Constants.BLACK;
+    // });
   });
 
   $(document).mousemove( event => {

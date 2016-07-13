@@ -38,7 +38,7 @@ Edge.prototype.shareVertex = function(edge) {
 
 Edge.prototype.intersectsAtX = function(edge) {
   return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
-}
+};
 
 Edge.prototype.intersectsWith = function(edge) {
   const x = this.intersectsAtX(edge);

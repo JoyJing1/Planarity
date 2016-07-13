@@ -152,7 +152,7 @@
 	
 	Edge.prototype.intersectsAtX = function(edge) {
 	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
-	}
+	};
 	
 	Edge.prototype.intersectsWith = function(edge) {
 	  const x = this.intersectsAtX(edge);
@@ -470,9 +470,9 @@
 	        vertex.selected = true;
 	        vertex.color = Constants.COLOR_SELECTED;
 	
-	        vertex.edges.forEach( edge => {
-	          edge.color = Constants.LINE_SELECTED;
-	        });
+	        // vertex.edges.forEach( edge => {
+	        //   edge.color = Constants.LINE_SELECTED;
+	        // });
 	        vertexSelected = true;
 	      }
 	    });
@@ -485,9 +485,9 @@
 	      vertex.color = Constants.COLOR;
 	    });
 	
-	    this.game.edges.forEach( edge => {
-	      edge.color = Constants.BLACK;
-	    });
+	    // this.game.edges.forEach( edge => {
+	    //   edge.color = Constants.BLACK;
+	    // });
 	  });
 	
 	  $(document).mousemove( event => {
@@ -518,7 +518,7 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		COLOR: "#2794EB", //#51C4E9#2794EB
+		COLOR: "#2794EB",
 	  COLOR_SELECTED: "#47D6B6",
 	  BLACK: "#000000",
 	  LINE_SELECTED: "#6150C1",

@@ -1,5 +1,5 @@
 module.exports = {
-	COLOR: "#2794EB", //#51C4E9#2794EB
+	COLOR: "#2794EB",
   COLOR_SELECTED: "#47D6B6",
   BLACK: "#000000",
   LINE_SELECTED: "#6150C1",
