@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Game = __webpack_require__(1);
-	const GameView = __webpack_require__(5);
+	const GameView = __webpack_require__(6);
 	
 	document.addEventListener("DOMContentLoaded", function(){
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
@@ -58,7 +58,7 @@
 	  console.log('created ctx & game in planary.js');
 	  console.log(ctx);
 	
-	  new GameView(ctx, rootEl, 0);
+	  new GameView(ctx, rootEl, 1);
 	});
 
 
@@ -69,6 +69,7 @@
 	const Edge = __webpack_require__(2);
 	const Vertex = __webpack_require__(4);
 	const Util = __webpack_require__(3);
+	const Graph = __webpack_require__(5);
 	
 	const Game = function (level = 1) {
 	  this.vertices = [];
@@ -83,17 +84,18 @@
 	
 	Game.prototype.buildGraph = function(level) {
 	
-	  let game = Game.LEVELS[level];
+	  let edges = Graph.generateEdges(level);
+	  let n = level+3;
+	  let numVertices = n * (n-1)/2;
 	
-	  console.log(game);
-	  for (let j = 0; j < game.vertices; j++) {
-	    let x = Math.cos(j * 2 * Math.PI / game.vertices) * 300 + 400;
-	    let y = Math.sin(j * 2 * Math.PI / game.vertices) * 300 + 400;
+	  for (let j = 0; j < numVertices; j++) {
+	    let x = Math.cos(j * 2 * Math.PI / numVertices) * 300 + 400;
+	    let y = Math.sin(j * 2 * Math.PI / numVertices) * 300 + 400;
 	
 	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
 	  }
 	
-	  game.edges.forEach ( vertices => {
+	  edges.forEach ( vertices => {
 	    let edge = new Edge({ vertex1: this.vertices[vertices[0]], vertex2: this.vertices[vertices[1]] });
 	    this.edges.push(edge);
 	
@@ -102,39 +104,6 @@
 	  });
 	
 	};
-	
-	Game.prototype.generateGraph = function(level) {
-	  const n = level+3;
-	  let vertices = [];
-	
-	  for(let i = 0; i < n; i++) {
-	    vertices.push(i);
-	  }
-	
-	  let pairIndex = {};
-	  let k = 0;
-	  for(let i = 0; i <= n; i++) {
-	    for(let j = i+1; j<n; j++) {
-	      pairIndex[[i, j]] = k;
-	      k++;
-	    }
-	  }
-	
-	
-	
-	
-	};
-	
-	
-	
-	
-	
-	
-	Game.LEVELS = [
-	  { vertices: 6,
-	    edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
-	  }
-	];
 	
 	module.exports = Game;
 
@@ -298,6 +267,107 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	const Edge = __webpack_require__(2);
+	const Vertex = __webpack_require__(4);
+	const Util = __webpack_require__(3);
+	
+	const Graph = {
+	
+	  pairIndex(n) {
+	    let pairIndex = {};
+	
+	    let vertexIdx = 0;
+	    for (let i = 0; i <= n; i++) {
+	      for (let j = i+1; j<n; j++) {
+	        pairIndex[`${i},${j}`] = vertexIdx;
+	        vertexIdx++;
+	      }
+	    }
+	
+	    return pairIndex;
+	  },
+	
+	  generateLines(n) {
+	    let lines = [];
+	    let slopes = [];
+	
+	    while (lines.length < n) {
+	      let v1 = new Vertex( { x: Math.random(), y: Math.random() });
+	      let v2 = new Vertex( { x: Math.random(), y: Math.random() });
+	
+	      let slope = Util.slope(v1, v2);
+	      if (!slopes.includes(slope)) {
+	        let line = new Edge({ vertex1: v1, vertex2: v2});
+	        // lines.push({v1: v1, v2: v2, slope: slope});
+	        lines.push(line);
+	      }
+	    }
+	    // Check that this is generating liens correctly
+	    return lines;
+	  },
+	
+	  generateEdges(level) {
+	    const n = level+3;
+	
+	    // Build pairIndex hash
+	    let pairIndex = this.pairIndex(n);
+	
+	    // Generate n non-parallel lines
+	    const lines = this.generateLines(n);
+	
+	    // For each line, order the other lines
+	    // by the location of their intersections
+	    // with the current line
+	
+	    let edges = [];
+	    lines.forEach( (line1, i1) => {
+	      let intersections = [];
+	      // let lineHash = {};
+	
+	      lines.forEach( (line2, i2) => {
+	        if (i1 !== i2) {
+	          let intersection = line1.intersectsAtX(line2);
+	          // Not sure if this will key to "intersection" or value of intersection
+	          intersections.push( { x: intersection, lineIdx: i2 } );
+	          // lineHash[intersection] = line2;
+	        }
+	
+	      });
+	
+	      intersections.sort( (intersect1, intersect2) => {
+	        return intersect1.x - intersect2.x;
+	      });
+	
+	      for (let i = 0; i < intersections.length-1; i++) {
+	        let l1 = intersections[i];
+	        let l2 = intersections[i+1];
+	
+	        let indices1 = [i1, l1.lineIdx];
+	        let indices2 = [i1, l2.lineIdx];
+	
+	        indices1.sort( (a, b) => a-b  );
+	        indices2.sort( (a, b) => a-b  );
+	
+	        let v1 = pairIndex[indices1];
+	        let v2 = pairIndex[indices2];
+	
+	        edges.push([v1, v2]);
+	      }
+	
+	    });
+	
+	    return edges;
+	  }
+	
+	};
+	
+	module.exports = Graph;
+
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	const Util = __webpack_require__(3);

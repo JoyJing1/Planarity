@@ -10,7 +10,7 @@ const Graph = {
     let vertexIdx = 0;
     for (let i = 0; i <= n; i++) {
       for (let j = i+1; j<n; j++) {
-        pairIndex[[i, j]] = vertexIdx;
+        pairIndex[`${i},${j}`] = vertexIdx;
         vertexIdx++;
       }
     }
@@ -37,7 +37,7 @@ const Graph = {
     return lines;
   },
 
-  generateGraph(level) {
+  generateEdges(level) {
     const n = level+3;
 
     // Build pairIndex hash
@@ -59,7 +59,7 @@ const Graph = {
         if (i1 !== i2) {
           let intersection = line1.intersectsAtX(line2);
           // Not sure if this will key to "intersection" or value of intersection
-          intersections.push( { x: intersection, line: line2 } );
+          intersections.push( { x: intersection, lineIdx: i2 } );
           // lineHash[intersection] = line2;
         }
 
@@ -69,11 +69,19 @@ const Graph = {
         return intersect1.x - intersect2.x;
       });
 
-      for (let i = 0; i <= intersections.length; i++) {
+      for (let i = 0; i < intersections.length-1; i++) {
         let l1 = intersections[i];
         let l2 = intersections[i+1];
-        let v1 = pairIndex([i1, l1]);
-        let v2 = pairIndex([i1, l2]);
+
+        let indices1 = [i1, l1.lineIdx];
+        let indices2 = [i1, l2.lineIdx];
+
+        indices1.sort( (a, b) => a-b  );
+        indices2.sort( (a, b) => a-b  );
+
+        let v1 = pairIndex[indices1];
+        let v2 = pairIndex[indices2];
+
         edges.push([v1, v2]);
       }
 

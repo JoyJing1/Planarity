@@ -12,5 +12,5 @@ document.addEventListener("DOMContentLoaded", function(){
   console.log('created ctx & game in planary.js');
   console.log(ctx);
 
-  new GameView(ctx, rootEl, 0);
+  new GameView(ctx, rootEl, 1);
 });
