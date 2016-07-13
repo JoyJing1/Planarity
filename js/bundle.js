@@ -66,8 +66,8 @@
 	  const ctx = canvasEl.getContext("2d");
 	  const rootEl = $('.planary-root');
 	
-	  console.log('created ctx & game in planary.js');
-	  console.log(ctx);
+	  // console.log('created ctx & game in planary.js');
+	  // console.log(ctx);
 	
 	  new GameView(ctx, rootEl, 0);
 	});
@@ -102,9 +102,9 @@
 	};
 	
 	Game.prototype.setVertexSize = function() {
-	  console.log(Game.DIM_X);
-	  console.log(this.level);
-	  console.log(this.vertices.length);
+	  // console.log(Game.DIM_X);
+	  // console.log(this.level);
+	  // console.log(this.vertices.length);
 	
 	  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 	};
@@ -140,7 +140,7 @@
 	};
 	
 	Game.prototype.dropVertices = function() {
-	  console.log("Game.dropVertices() in game.js");
+	  // console.log("Game.dropVertices() in game.js");
 	  this.vertices.forEach( vertex => {
 	    vertex.selected = false;
 	    vertex.color = Constants.COLOR;
@@ -400,6 +400,7 @@
 	const Util = __webpack_require__(3);
 	const Game = __webpack_require__(1);
 	const Constants = __webpack_require__(7);
+	const Vertex = __webpack_require__(4);
 	
 	const GameView = function (ctx, root, level=1) {
 	  this.ctx = ctx;
@@ -507,12 +508,10 @@
 	    // console.log("Yay, you made a planar graph!!");
 	    // this.game.dropVertices();
 	    const $modal = $(".modal");
-	    $modal.css({display: "block"})
+	    $modal.css({display: "block"});
 	  } else {
 	    // console.log("The graph's not planar quite yet");
 	  }
-	
-	  // });
 	
 	};
 	
@@ -548,23 +547,26 @@
 	};
 	
 	GameView.prototype.bindGraphEvents = function() {
-	  console.log("GameView.bindGraphEvents() in game_view.js");
+	  // console.log("GameView.bindGraphEvents() in game_view.js");
 	
 	  $("canvas").on("mousedown", event => {
 	    // this.offset = (0, 0);
 	    let vertexSelected = false;
-	    console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
+	    // console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
 	    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
+	    console.log(`Vertex Radius: ${Vertex.RADIUS}`);
+	    let withinVertex = Math.sqrt(Math.pow(Vertex.RADIUS, 2)*2) + Vertex.RADIUS;
+	    console.log(`withinVertex = ${withinVertex}`);
 	
 	    this.game.vertices.forEach( vertex => {
 	      const dist = Util.distFromMouse(vertex, this.currentMousePos);
 	      // console.log(`(${vertex.x}, ${vertex.y})`);
-	      // console.log(dist);
+	      console.log(dist);
 	
-	      if (dist < 70 && !vertexSelected) {
+	      if (dist < withinVertex && !vertexSelected) {
 	        vertex.selected = true;
 	        vertex.color = Constants.COLOR_SELECTED;
-	        console.log(`Vertex selected: ${vertex}`);
+	        // console.log(`Vertex selected: ${vertex}`);
 	
 	        // vertex.edges.forEach( edge => {
 	        //   edge.color = Constants.LINE_SELECTED;
@@ -576,7 +578,7 @@
 	  });
 	
 	  $("canvas").on("mouseup", event => {
-	    console.log("mouseup on canvas callback");
+	    // console.log("mouseup on canvas callback");
 	    this.game.dropVertices();
 	    this.checkPlanarity();
 	    // this.game.vertices.forEach( vertex => {

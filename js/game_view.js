@@ -1,6 +1,7 @@
 const Util = require("./util");
 const Game = require("./game");
 const Constants = require('../constants');
+const Vertex = require('./vertex');
 
 const GameView = function (ctx, root, level=1) {
   this.ctx = ctx;
@@ -108,12 +109,10 @@ GameView.prototype.checkPlanarity = function() {
     // console.log("Yay, you made a planar graph!!");
     // this.game.dropVertices();
     const $modal = $(".modal");
-    $modal.css({display: "block"})
+    $modal.css({display: "block"});
   } else {
     // console.log("The graph's not planar quite yet");
   }
-
-  // });
 
 };
 
@@ -149,23 +148,26 @@ GameView.prototype.renderGraph = function() {
 };
 
 GameView.prototype.bindGraphEvents = function() {
-  console.log("GameView.bindGraphEvents() in game_view.js");
+  // console.log("GameView.bindGraphEvents() in game_view.js");
 
   $("canvas").on("mousedown", event => {
     // this.offset = (0, 0);
     let vertexSelected = false;
-    console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
+    // console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
     // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
+    console.log(`Vertex Radius: ${Vertex.RADIUS}`);
+    let withinVertex = Math.sqrt(Math.pow(Vertex.RADIUS, 2)*2) + Vertex.RADIUS;
+    console.log(`withinVertex = ${withinVertex}`);
 
     this.game.vertices.forEach( vertex => {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
       // console.log(`(${vertex.x}, ${vertex.y})`);
-      // console.log(dist);
+      console.log(dist);
 
-      if (dist < 70 && !vertexSelected) {
+      if (dist < withinVertex && !vertexSelected) {
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
-        console.log(`Vertex selected: ${vertex}`);
+        // console.log(`Vertex selected: ${vertex}`);
 
         // vertex.edges.forEach( edge => {
         //   edge.color = Constants.LINE_SELECTED;
@@ -177,7 +179,7 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $("canvas").on("mouseup", event => {
-    console.log("mouseup on canvas callback");
+    // console.log("mouseup on canvas callback");
     this.game.dropVertices();
     this.checkPlanarity();
     // this.game.vertices.forEach( vertex => {

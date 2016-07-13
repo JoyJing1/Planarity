@@ -23,9 +23,9 @@ Game.prototype.setPlaySize = function() {
 };
 
 Game.prototype.setVertexSize = function() {
-  console.log(Game.DIM_X);
-  console.log(this.level);
-  console.log(this.vertices.length);
+  // console.log(Game.DIM_X);
+  // console.log(this.level);
+  // console.log(this.vertices.length);
 
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
@@ -61,7 +61,7 @@ Game.prototype.buildGraph = function(level) {
 };
 
 Game.prototype.dropVertices = function() {
-  console.log("Game.dropVertices() in game.js");
+  // console.log("Game.dropVertices() in game.js");
   this.vertices.forEach( vertex => {
     vertex.selected = false;
     vertex.color = Constants.COLOR;
