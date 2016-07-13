@@ -26,12 +26,26 @@ GameView.prototype.playLevel = function() {
 
   this.renderGraph();
   this.bindGraphEvents();
-  console.log("after this.bindGraphEvents in GameView()");
+  // console.log("after this.bindGraphEvents in GameView()");
+  this.renderModal();
+
 
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
     this.renderGraph();
   }, 50);
+};
+
+GameView.prototype.renderModal = function() {
+  const $modal = $("<div>").addClass("modal")
+                            .css({display: "none"});
+
+  const $modalContent = $("<div>").addClass("modal-content");
+  const $text = $("<h2>").text("Congratulations, you made the graph planar!");
+
+  $modalContent.append($text);
+  $modal.append($modalContent);
+  this.root.append($modal);
 };
 
 GameView.prototype.renderButtons = function() {
@@ -64,9 +78,14 @@ GameView.prototype.bindButtonEvents = function() {
 
     if (planar) {
       console.log("Yay, you made a planar graph!!");
+      const $modal = $(".modal");
+      $modal.css({display: "block"})
+      // $.delay(1000);
 
       this.level += 1;
       clearInterval(this.refreshIntervalId);
+      // $modal.css("none")
+
       this.playLevel();
       // Level up to next level
       // this.game = new Game(this.level);

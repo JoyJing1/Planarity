@@ -239,24 +239,7 @@
 	    return Math.sqrt(
 	      Math.pow(vertex.x + vertexRadius - currentMousePos.x, 2) + Math.pow(vertex.y + vertexRadius - currentMousePos.y, 2)
 	    );
-	  },
-	
-	  // readTextFile(file) {
-	  //   var rawFile = new XMLHttpRequest();
-	  //   rawFile.open("GET", file, false);
-	  //   rawFile.onreadystatechange = function () {
-	  //     if(rawFile.readyState === 4) {
-	  //       if(rawFile.status === 200 || rawFile.status === 0) {
-	  //         const allText = rawFile.responseText;
-	  //
-	  //         // Check allText - pulling file contents?
-	  //         // debugger;
-	  //       }
-	  //     }
-	  //   };
-	  //   rawFile.send(null);
-	  // }
-	
+	  }
 	
 	};
 	
@@ -424,12 +407,26 @@
 	
 	  this.renderGraph();
 	  this.bindGraphEvents();
-	  console.log("after this.bindGraphEvents in GameView()");
+	  // console.log("after this.bindGraphEvents in GameView()");
+	  this.renderModal();
+	
 	
 	  this.refreshIntervalId = setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
 	    this.renderGraph();
 	  }, 50);
+	};
+	
+	GameView.prototype.renderModal = function() {
+	  const $modal = $("<div>").addClass("modal")
+	                            .css({display: "none"});
+	
+	  const $modalContent = $("<div>").addClass("modal-content");
+	  const $text = $("<h2>").text("Congratulations, you made the graph planar!");
+	
+	  $modalContent.append($text);
+	  $modal.append($modalContent);
+	  this.root.append($modal);
 	};
 	
 	GameView.prototype.renderButtons = function() {
@@ -462,9 +459,14 @@
 	
 	    if (planar) {
 	      console.log("Yay, you made a planar graph!!");
+	      const $modal = $(".modal");
+	      $modal.css({display: "block"})
+	      // $.delay(1000);
 	
 	      this.level += 1;
 	      clearInterval(this.refreshIntervalId);
+	      // $modal.css("none")
+	
 	      this.playLevel();
 	      // Level up to next level
 	      // this.game = new Game(this.level);
