@@ -65,9 +65,11 @@ img.previous-level {
 
 canvas {
   position: absolute;
+  top: 0;
+  left: 0;
   margin: 0 auto;
-  align-self: center;
-  cursor: url(../images/spider_icon.jpg), auto;
+  /*align-self: center;*/
+  /*cursor: url(../images/spider_icon.jpg), auto;*/
 }
 
 div.vertex {

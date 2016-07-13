@@ -38,7 +38,7 @@ const Graph = {
   },
 
   generateEdges(level) {
-    const n = level+3;
+    const n = level+4;
 
     // Build pairIndex hash from { [pair]: indexOfVertex }
     let pairIndex = this.pairIndex(n);

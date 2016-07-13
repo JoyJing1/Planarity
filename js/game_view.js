@@ -74,7 +74,17 @@ GameView.prototype.bindButtonEvents = function() {
 
   });
 
+  $(".previous-level").on("click", event => {
+    if (this.level > 0) {
+      this.level -= 1;
+      this.playLevel(this.level);
+    }
+  });
 
+  $(".next-level").on("click", event => {
+    this.level += 1;
+    this.playLevel(this.level);
+  });
 
 
 };
@@ -130,6 +140,7 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $(document).mousemove( event => {
+    // Dynamically adjust to fit canvas size
     const yAdjust = -65;
     const xAdjust = -8;
 

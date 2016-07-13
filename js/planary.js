@@ -6,17 +6,22 @@ document.addEventListener("DOMContentLoaded", function(){
 
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
-  // Game.DIM_X = window.innerWidth;
-  // Game.DIM_Y = window.innerHeight;
+  Game.DIM_X = window.innerWidth;
+  Game.DIM_Y = window.innerHeight;
+
+  // debugger;
+
 
   canvasEl.width = Game.DIM_X;
   canvasEl.height = Game.DIM_Y;
 
+
+  // debugger;
   const ctx = canvasEl.getContext("2d");
   const rootEl = $('.planary-root');
 
   console.log('created ctx & game in planary.js');
   console.log(ctx);
 
-  new GameView(ctx, rootEl, 1);
+  new GameView(ctx, rootEl, 0);
 });
