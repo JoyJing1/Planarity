@@ -37,16 +37,48 @@ GameView.prototype.playLevel = function() {
 };
 
 GameView.prototype.renderModal = function() {
-  const $modal = $("<div>").addClass("modal")
-                            .css({display: "none"});
+  console.log("GameView.renderModal()");
+  // let $modal = {};
 
-  const $modalContent = $("<div>").addClass("modal-content");
-  const $text = $("<h2>").text("Congratulations, you made the graph planar!");
+  const prevModals = document.getElementsByClassName("modal");
 
-  $modalContent.append($text);
-  $modal.append($modalContent);
-  this.root.append($modal);
-};
+    if (prevModals.length > 0) {
+      const $modal = $(prevModals[0]);
+      // Change content based on current level/time
+      // debugger;
+      // prevModals.forEach (prevModal => {
+      //   // Need to change to jQuery?
+      //   debugger;
+      //   this.root.remove(prevModal);
+      // });
+    } else {
+      const $modal = $("<div>").addClass("modal")
+                    .addClass("win-modal")
+                    .css( {display: "none"} );
+
+      const $modalContent = $("<div>").addClass("modal-content");
+      const $text = $("<h2>").text("Congratulations, you made the graph planar!");
+
+      $modalContent.append($text);
+      $modal.append($modalContent);
+
+      const $nextButton = $("<a>").text("Next Level")
+                          .addClass("button")
+                          .addClass("next-level-modal");
+
+      $modalContent.append($nextButton);
+
+      $nextButton.on("click", event => {
+        this.level += 1;
+        clearInterval(this.refreshIntervalId);
+        $modal.css({display: "none"});
+        this.playLevel();
+      });
+
+      this.root.append($modal);
+    }
+
+  };
 
 GameView.prototype.renderButtons = function() {
 
@@ -82,11 +114,11 @@ GameView.prototype.bindButtonEvents = function() {
       $modal.css({display: "block"})
       // $.delay(1000);
 
-      this.level += 1;
-      clearInterval(this.refreshIntervalId);
-      // $modal.css("none")
-
-      this.playLevel();
+      // this.level += 1;
+      // clearInterval(this.refreshIntervalId);
+      // // $modal.css("none")
+      //
+      // this.playLevel();
       // Level up to next level
       // this.game = new Game(this.level);
     } else {

@@ -5,6 +5,7 @@ html, body {
   font-family: sans-serif;
 }
 
+/*    BUTTONS   ****************************/
 .button, button, input[type="submit"], .clickable {
   cursor: pointer;
 }
@@ -15,15 +16,25 @@ html, body {
 }
 
 .previous-level {
+  /*position: absolute;*/
   bottom: 0;
   left: 20px;
 }
 
 .next-level {
+  /*position: absolute;*/
   bottom: 0;
   right: 20px;
 }
 
+.next-level-modal {
+  position: relative;
+  display: block;
+  /*bottom: 10px;*/
+  padding: 5px;
+  margin: 20px auto;
+  /*text-align: center;*/
+}
 
 /* Clearfix */
 .clearfix:after {
@@ -53,6 +64,7 @@ html, body {
   padding: 20px;
   border: 1px solid #888;
   width: 60%; /* Could be more or less, depending on screen size */
+  position: relative;
 }
 
 .modal-content h2 {
