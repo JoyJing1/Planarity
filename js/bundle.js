@@ -460,11 +460,6 @@
 	  this.renderButtons();
 	  this.bindButtonEvents();
 	  this.playLevel(this.level);
-	
-	  // this.refreshIntervalId = setInterval( () => {
-	  //   this.follow(this.game, this.currentMousePos);
-	  //   this.renderGraph();
-	  // }, 50);
 	};
 	
 	GameView.prototype.playLevel = function() {
