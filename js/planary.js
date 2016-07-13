@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
-  Game.DIM_X = window.innerWidth;
-  Game.DIM_Y = window.innerHeight;
+  Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
+  Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
 
   // debugger;
 
