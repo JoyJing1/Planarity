@@ -409,9 +409,11 @@
 	  this.game = new Game(this.level);
 	  console.log(this.game);
 	  console.log(this);
+	  console.log("GameView.playLevel");
 	
 	  this.renderGraph();
 	  this.bindGraphEvents();
+	  console.log("after this.bindGraphEvents in GameView()");
 	
 	  this.refreshIntervalId = setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
@@ -420,6 +422,7 @@
 	};
 	
 	GameView.prototype.renderButtons = function() {
+	
 	  const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
 	  const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
 	  const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
@@ -458,6 +461,9 @@
 	
 	  });
 	
+	
+	
+	
 	};
 	
 	
@@ -476,12 +482,15 @@
 	};
 	
 	GameView.prototype.bindGraphEvents = function() {
+	  console.log("GameView.bindGraphEvents() in game_view.js");
+	
 	  $("canvas").on("mousedown", event => {
 	    this.offset = (0, 0);
 	    let vertexSelected = false;
 	
 	    this.game.vertices.forEach( vertex => {
 	      const dist = Util.distFromMouse(vertex, event);
+	      // console.log(dist);
 	
 	      if (dist < 70 && !vertexSelected) {
 	        vertex.selected = true;

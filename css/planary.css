@@ -8,6 +8,22 @@ html, body {
   cursor: pointer;
 }
 
+.button {
+  position: absolute;
+  z-index: 1;
+}
+
+.previous-level {
+  bottom: 100px;
+  left: 20px;
+}
+
+.next-level {
+  bottom: 100px;
+  right: 20px;
+}
+
+
 /* Clearfix */
 .clearfix:after {
   content: "";
