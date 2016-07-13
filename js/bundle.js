@@ -101,6 +101,7 @@
 	  $board.css( {left: Game.leftOffset} );
 	};
 	
+	
 	Game.prototype.setVertexSize = function() {
 	  // console.log(Game.DIM_X);
 	  // console.log(this.level);
@@ -160,27 +161,67 @@
 	const Edge = function(options) {
 	  this.vertex1 = options.vertex1;
 	  this.vertex2 = options.vertex2;
-	  this.color = Constants.BLACK;
+	  // this.color = Constants.BLACK;
 	};
 	
-	Edge.prototype.draw = function(ctx) {
-	  if (this.intersecting) {
-	    ctx.strokeStyle = Constants.LINE_INTERSECTING;
-	  } else {
-	    ctx.strokeStyle = Constants.BLACK;
-	  }
-	  ctx.beginPath();
-	  ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	  ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	  ctx.stroke();
+	Edge.prototype.draw = function(ctx, edges) {
+	  // console.log("Edge.draw(ctx, edges)");
+	  // console.log(edges);
+	  // this.intersecting = false;
+	  // ctx.strokeStyle = Constants.BLACK;
+	  // ctx.beginPath();
+	  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	  // ctx.stroke();
+	  //
+	  // edges.forEach( edge => {
+	  console.log(edges);
+	  // debugger;
+	    if (this.currentlyIntersecting(edges)) {
+	      console.log("Edge is currently intersecting");
+	      // this.intersecting = true;
+	      ctx.strokeStyle = Constants.LINE_INTERSECTING;
+	      // edge.intersecting = true;
+	      ctx.beginPath();
+	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	      ctx.stroke();
+	    } else {
+	      console.log("Edge is not currently intersecting");
+	      ctx.strokeStyle = Constants.BLACK;
+	      ctx.beginPath();
+	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	      ctx.stroke();
+	    }
+	  // });
 	};
+	
+	  // });
+	
+	
+	  // let intersecting = this.currentlyIntersecting(edges);
+	  // if (this.intersecting) {
+	  //   ctx.strokeStyle = Constants.LINE_INTERSECTING;
+	  // } else {
+	  //   ctx.strokeStyle = Constants.BLACK;
+	  // }
+	  // ctx.beginPath();
+	  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	  // ctx.stroke();
+	// };
 	
 	Edge.prototype.slope = function() {
 	  return Util.slope(this.vertex1, this.vertex2);
 	};
 	
 	Edge.prototype.xIntercept = function() {
-	  return Util.xIntercept(this.vertex1, this.slope());
+	  if (this.isVertical()) {
+	    return this.vertex1.x;
+	  } else {
+	    return Util.xIntercept(this.vertex1, this.slope());
+	  }
 	};
 	
 	Edge.prototype.shareVertex = function(edge) {
@@ -192,33 +233,80 @@
 	  );
 	};
 	
+	Edge.prototype.isVertical = function() {
+	  return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
+	};
+	
+	Edge.prototype.isHorizontal = function() {
+	  return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
+	};
+	
 	Edge.prototype.intersectsAtX = function(edge) {
+	  // console.log("Edge.intersectsAtX(edge)");
+	  // console.log(edge);
+	  // debugger;
 	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
 	};
 	
 	Edge.prototype.intersectsWith = function(edge) {
-	  const x = this.intersectsAtX(edge);
+	  // console.log("Edge.intersectsWith(edge)");
+	  // console.log(edge);
+	  // If this edge is vertical, check whether its x is within the bounds for the other edge
 	
-	  const firstMin = Math.min(this.vertex1.x, this.vertex2.x);
-	  const firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+	  // CHECK IF ONE IS HORIZONTAL
+	  if (this.isHorizontal()) {
+	    let y = this.vertex1.y;
+	    let minY = Math.min(edge.vertex1.y, edge.vertex2.y) + 1;
+	    let maxY = Math.max(edge.vertex1.y, edge.vertex2.y) - 1;
+	    return (minY < y && y < maxY);
 	
-	  const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
-	  const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+	  } else if (edge.isHorizontal()) {
+	    let y = edge.vertex1.y;
+	    let minY = Math.min(this.vertex1.y, this.vertex2.y) + 1;
+	    let maxY = Math.max(this.vertex1.y, this.vertex2.y) - 1;
+	    return (minY < y && y < maxY);
 	
-	  const onFirst = (firstMin < x && x < firstMax);
-	  const onSecond = (secondMin < x && x < secondMax);
+	  } else if (this.isVertical()) {
+	    let x = this.vertex1.x;
+	    const minX = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
+	    const maxX = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
+	    return (minX < x && x < maxX);
 	
-	  return (onFirst && onSecond && !this.shareVertex(edge));
+	  } else if (edge.isVertical()){
+	    let x = edge.vertex1.x;
+	    const minX = Math.min(this.vertex1.x, this.vertex2.x) + 1;
+	    const maxX = Math.max(this.vertex1.x, this.vertex2.x) - 1;
+	    return (minX < x && x < maxX);
+	
+	  } else {
+	    let x = this.intersectsAtX(edge);
+	
+	    const firstMin = Math.min(this.vertex1.x, this.vertex2.x);
+	    const firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+	
+	    const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
+	    const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+	
+	    const onFirst = (firstMin < x && x < firstMax);
+	    const onSecond = (secondMin < x && x < secondMax);
+	
+	    return (onFirst && onSecond && !this.shareVertex(edge));
+	  }
 	};
 	
 	Edge.prototype.currentlyIntersecting = function(allEdges) {
-	  this.intersecting = false;
+	  // console.log("Edge.currentlyIntersecting(allEdges)");
+	  // console.log(allEdges);
+	  let intersecting = false;
 	  allEdges.forEach( edge => {
+	    // debugger;
 	    if (this.intersectsWith(edge)) {
-	      this.intersecting = true;
+	      intersecting = true;
+	      // edge.intersecting = true;
 	    }
 	  });
-	}
+	  return intersecting;
+	};
 	
 	module.exports = Edge;
 
@@ -432,7 +520,7 @@
 	
 	  this.refreshIntervalId = setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
-	    this.renderGraph();
+	    // this.renderGraph(); // COMMENT BACK IN
 	    // this.checkPlanarity();
 	
 	  }, 1);
@@ -534,11 +622,14 @@
 	
 	GameView.prototype.renderGraph = function() {
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
-	
+	  // console.log("----------------------------");
 	  this.game.edges.forEach( (edge, i) => {
-	    edge.currentlyIntersecting(this.game.edges);
-	    edge.draw(this.ctx);
+	    console.log(`Checking edge ${i}`);
+	    // debugger;
+	    // edge.currentlyIntersecting(this.game.edges);
+	    edge.draw(this.ctx, this.game.edges);
 	  });
+	  // debugger;
 	
 	  this.game.vertices.forEach( (vertex, i) => {
 	    vertex.draw(this.ctx);

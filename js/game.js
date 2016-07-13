@@ -22,6 +22,7 @@ Game.prototype.setPlaySize = function() {
   $board.css( {left: Game.leftOffset} );
 };
 
+
 Game.prototype.setVertexSize = function() {
   // console.log(Game.DIM_X);
   // console.log(this.level);

@@ -33,7 +33,7 @@ GameView.prototype.playLevel = function() {
 
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
-    this.renderGraph();
+    // this.renderGraph(); // COMMENT BACK IN
     // this.checkPlanarity();
 
   }, 1);
@@ -135,11 +135,14 @@ GameView.prototype.bindButtonEvents = function() {
 
 GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
-
+  // console.log("----------------------------");
   this.game.edges.forEach( (edge, i) => {
-    edge.currentlyIntersecting(this.game.edges);
-    edge.draw(this.ctx);
+    console.log(`Checking edge ${i}`);
+    // debugger;
+    // edge.currentlyIntersecting(this.game.edges);
+    edge.draw(this.ctx, this.game.edges);
   });
+  // debugger;
 
   this.game.vertices.forEach( (vertex, i) => {
     vertex.draw(this.ctx);
