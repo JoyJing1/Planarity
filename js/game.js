@@ -4,13 +4,14 @@ const Util = require("./util");
 const Graph = require("./graph");
 const Constants = require('../constants');
 
-const Game = function (level = 0) {
+const Game = function (options) {
   this.vertices = [];
   this.edges = [];
-  this.level = level;
+  this.level = options.level || 0;
+  this.stage = options.stage || 0;
 
   this.setPlaySize();
-  this.buildGraph(level);
+  this.buildGraph();
   this.setVertexSize();
 };
 
@@ -31,11 +32,18 @@ Game.prototype.setVertexSize = function() {
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
 
-Game.prototype.buildGraph = function(level) {
+Game.prototype.buildGraph = function() {
 
-  let edges = Graph.generateEdges(level);
-  let n = level+4;
-  let numVertices = n * (n-1)/2;
+  let edgeCoords = Graph.generateEdges(this.level);
+  let n = this.level + 4;
+  let numVertices = (n * (n-1)/2);
+  console.log(numVertices);
+
+  if (this.level > 0) {
+    numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
+    console.log(numVertices);
+  }
+
 
   for (let j = 0; j < numVertices; j++) {
 
@@ -51,12 +59,15 @@ Game.prototype.buildGraph = function(level) {
     this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
   }
 
-  edges.forEach ( vertices => {
-    let edge = new Edge({ vertex1: this.vertices[vertices[0]], vertex2: this.vertices[vertices[1]] });
-    this.edges.push(edge);
+  edgeCoords.forEach ( edgeCoord => {
+    // Check that in range of vertices
+    if (edgeCoord[0] < numVertices && edgeCoord[1] < numVertices) {
+      let edge = new Edge({ vertex1: this.vertices[edgeCoord[0]], vertex2: this.vertices[edgeCoord[1]] });
+      this.edges.push(edge);
 
-    this.vertices[vertices[0]].edges.push(edge);
-    this.vertices[vertices[1]].edges.push(edge);
+      this.vertices[edgeCoord[0]].edges.push(edge);
+      this.vertices[edgeCoord[1]].edges.push(edge);
+    }
   });
 
 };
@@ -68,5 +79,27 @@ Game.prototype.dropVertices = function() {
     vertex.color = Constants.COLOR;
   });
 };
+
+
+Game.prototype.levelUp = function() {
+  this.stage += 1;
+  console.log(`increment up this.stage --> ${this.stage}`);
+  if (this.stage >= this.level + 3) {
+    console.log(`increment up this.level --> ${this.level}`);
+    this.level += 1;
+    this.stage = 0;
+  }
+};
+
+Game.prototype.levelDown = function() {
+  this.stage -= 1;
+  console.log(`increment up this.stage --> ${this.stage}`);
+  if (this.stage < 0) {
+    console.log(`increment up this.level --> ${this.level}`);
+    this.level -= 1;
+    this.stage = this.level + 3;
+  }
+};
+
 
 module.exports = Game;

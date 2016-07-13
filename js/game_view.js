@@ -3,11 +3,12 @@ const Game = require("./game");
 const Constants = require('../constants');
 const Vertex = require('./vertex');
 
-const GameView = function (ctx, root, level=1) {
+const GameView = function (ctx, root, options) {
   this.ctx = ctx;
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
-  this.level = level;
+  this.level = options.level || 0;
+  this.stage = options.stage || 0;
 
   this.renderButtons();
   this.bindButtonEvents();
@@ -15,7 +16,7 @@ const GameView = function (ctx, root, level=1) {
 };
 
 GameView.prototype.playLevel = function() {
-  this.game = new Game(this.level);
+  this.game = new Game({level: this.level, stage: this.stage});
   // console.log(this.game);
   // console.log(this);
   // console.log("GameView.playLevel");
@@ -25,7 +26,6 @@ GameView.prototype.playLevel = function() {
   this.bindGraphEvents();
   // console.log("after this.bindGraphEvents in GameView()");
 
-
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
     this.renderGraph(); // COMMENT BACK IN
@@ -33,6 +33,27 @@ GameView.prototype.playLevel = function() {
 
   }, 1);
 };
+
+GameView.prototype.levelUp = function() {
+  this.stage += 1;
+  console.log(`increment up this.stage --> ${this.stage}`);
+  if (this.level === 0 || this.stage >= this.level + 3) {
+    console.log(`increment up this.level --> ${this.level}`);
+    this.level += 1;
+    this.stage = 0;
+  }
+};
+
+GameView.prototype.levelDown = function() {
+  this.stage -= 1;
+  console.log(`increment up this.stage --> ${this.stage}`);
+  if (this.stage < 0) {
+    console.log(`increment up this.level --> ${this.level}`);
+    this.level -= 1;
+    this.stage = this.level + 3;
+  }
+};
+
 
 GameView.prototype.renderModal = function() {
   console.log("GameView.renderModal()");
@@ -61,7 +82,14 @@ GameView.prototype.renderModal = function() {
       $modalContent.append($nextButton);
 
       $nextButton.on("click", event => {
-        this.level += 1;
+        this.levelUp();
+        // this.stage += 1;
+        // console.log(`increment up this.stage --> ${this.stage}`);
+        // if (this.stage >= this.level + 3) {
+        //   console.log(`increment up this.level --> ${this.level}`);
+        //   this.level += 1;
+        // }
+
         clearInterval(this.refreshIntervalId);
         $modal.css({display: "none"});
         this.playLevel();
@@ -115,13 +143,17 @@ GameView.prototype.bindButtonEvents = function() {
 
   $(".previous-level").on("click", event => {
     if (this.level > 0) {
-      this.level -= 1;
+      // this.level -= 1;
+      this.levelDown();
+      console.log(`leveled down: level = ${this.level}, stage = ${this.stage}`)
       this.playLevel(this.level);
     }
   });
 
   $(".next-level").on("click", event => {
-    this.level += 1;
+    // this.level += 1;
+    this.levelUp();
+    console.log(`leveled up: level = ${this.level}, stage = ${this.stage}`)
     this.playLevel(this.level);
   });
 
@@ -173,15 +205,11 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $("canvas").on("mouseup", event => {
-    // console.log("mouseup on canvas callback");
     this.game.dropVertices();
     this.checkPlanarity();
   });
 
   $(document).mousemove( event => {
-    // console.log(this.currentMousePos);
-    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
-    // Dynamically adjust to fit canvas size
     const yAdjust = -40;
     const xAdjust = 0;
 
