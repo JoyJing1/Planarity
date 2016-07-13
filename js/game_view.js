@@ -8,7 +8,7 @@ const GameView = function (ctx, root, level=1) {
   this.currentMousePos = { x: -1, y: -1 };
   this.level = level;
 
-  this.renderButton();
+  this.renderButtons();
   this.bindButtonEvents();
   this.playLevel(this.level);
 
@@ -32,10 +32,14 @@ GameView.prototype.playLevel = function() {
   }, 50);
 };
 
-GameView.prototype.renderButton = function() {
-  const $button = $("<button class='planar-check'>Is Planar?</button>");
+GameView.prototype.renderButtons = function() {
+  const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
+  const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
+  const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 
-  this.root.append($button);
+  this.root.append($button1);
+  this.root.append($button2);
+  this.root.append($button3);
 };
 
 GameView.prototype.bindButtonEvents = function() {

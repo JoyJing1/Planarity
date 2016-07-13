@@ -30,21 +30,21 @@ const Util = {
     );
   },
 
-  readTextFile(file) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function () {
-      if(rawFile.readyState === 4) {
-        if(rawFile.status === 200 || rawFile.status === 0) {
-          const allText = rawFile.responseText;
-
-          // Check allText - pulling file contents?
-          debugger;
-        }
-      }
-    };
-    rawFile.send(null);
-  }
+  // readTextFile(file) {
+  //   var rawFile = new XMLHttpRequest();
+  //   rawFile.open("GET", file, false);
+  //   rawFile.onreadystatechange = function () {
+  //     if(rawFile.readyState === 4) {
+  //       if(rawFile.status === 200 || rawFile.status === 0) {
+  //         const allText = rawFile.responseText;
+  //
+  //         // Check allText - pulling file contents?
+  //         // debugger;
+  //       }
+  //     }
+  //   };
+  //   rawFile.send(null);
+  // }
 
 
 };

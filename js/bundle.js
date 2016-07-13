@@ -48,7 +48,13 @@
 	const GameView = __webpack_require__(6);
 	
 	document.addEventListener("DOMContentLoaded", function(){
+	  console.log("DOMContentLoaded");
+	
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
+	
+	  // Game.DIM_X = window.innerWidth;
+	  // Game.DIM_Y = window.innerHeight;
+	
 	  canvasEl.width = Game.DIM_X;
 	  canvasEl.height = Game.DIM_Y;
 	
@@ -79,6 +85,9 @@
 	  this.buildGraph(level);
 	};
 	
+	// Game.DIM_X = window.innerWidth;
+	// Game.DIM_Y = window.innerHeight;
+	
 	Game.DIM_X = 800;
 	Game.DIM_Y = 800;
 	
@@ -89,8 +98,12 @@
 	  let numVertices = n * (n-1)/2;
 	
 	  for (let j = 0; j < numVertices; j++) {
+	    // debugger;
 	    let x = Math.cos(j * 2 * Math.PI / numVertices) * 300 + 400;
 	    let y = Math.sin(j * 2 * Math.PI / numVertices) * 300 + 400;
+	
+	    // let x = Math.cos(j * 2 * Math.PI / numVertices) * (Game.DIM_X*0.35) + (Game.DIM_X/2);
+	    // let y = Math.sin(j * 2 * Math.PI / numVertices) * (Game.DIM_Y*0.35) + (Game.DIM_Y/2);
 	
 	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
 	  }
@@ -112,7 +125,7 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	const Util = window.Util = __webpack_require__(3);
+	const Util = __webpack_require__(3);
 	const Constants = __webpack_require__(7);
 	
 	const Edge = function(options) {
@@ -217,21 +230,21 @@
 	    );
 	  },
 	
-	  readTextFile(file) {
-	    var rawFile = new XMLHttpRequest();
-	    rawFile.open("GET", file, false);
-	    rawFile.onreadystatechange = function () {
-	      if(rawFile.readyState === 4) {
-	        if(rawFile.status === 200 || rawFile.status === 0) {
-	          const allText = rawFile.responseText;
-	
-	          // Check allText - pulling file contents?
-	          debugger;
-	        }
-	      }
-	    };
-	    rawFile.send(null);
-	  }
+	  // readTextFile(file) {
+	  //   var rawFile = new XMLHttpRequest();
+	  //   rawFile.open("GET", file, false);
+	  //   rawFile.onreadystatechange = function () {
+	  //     if(rawFile.readyState === 4) {
+	  //       if(rawFile.status === 200 || rawFile.status === 0) {
+	  //         const allText = rawFile.responseText;
+	  //
+	  //         // Check allText - pulling file contents?
+	  //         // debugger;
+	  //       }
+	  //     }
+	  //   };
+	  //   rawFile.send(null);
+	  // }
 	
 	
 	};
@@ -382,7 +395,7 @@
 	  this.currentMousePos = { x: -1, y: -1 };
 	  this.level = level;
 	
-	  this.renderButton();
+	  this.renderButtons();
 	  this.bindButtonEvents();
 	  this.playLevel(this.level);
 	
@@ -406,10 +419,14 @@
 	  }, 50);
 	};
 	
-	GameView.prototype.renderButton = function() {
-	  const $button = $("<button class='planar-check'>Is Planar?</button>");
+	GameView.prototype.renderButtons = function() {
+	  const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
+	  const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
+	  const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 	
-	  this.root.append($button);
+	  this.root.append($button1);
+	  this.root.append($button2);
+	  this.root.append($button3);
 	};
 	
 	GameView.prototype.bindButtonEvents = function() {

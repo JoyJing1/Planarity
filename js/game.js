@@ -11,6 +11,9 @@ const Game = function (level = 1) {
   this.buildGraph(level);
 };
 
+// Game.DIM_X = window.innerWidth;
+// Game.DIM_Y = window.innerHeight;
+
 Game.DIM_X = 800;
 Game.DIM_Y = 800;
 
@@ -21,8 +24,12 @@ Game.prototype.buildGraph = function(level) {
   let numVertices = n * (n-1)/2;
 
   for (let j = 0; j < numVertices; j++) {
+    // debugger;
     let x = Math.cos(j * 2 * Math.PI / numVertices) * 300 + 400;
     let y = Math.sin(j * 2 * Math.PI / numVertices) * 300 + 400;
+
+    // let x = Math.cos(j * 2 * Math.PI / numVertices) * (Game.DIM_X*0.35) + (Game.DIM_X/2);
+    // let y = Math.sin(j * 2 * Math.PI / numVertices) * (Game.DIM_Y*0.35) + (Game.DIM_Y/2);
 
     this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
   }

@@ -1,3 +1,26 @@
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+}
+
+.button, button, input[type="submit"], .clickable {
+  cursor: pointer;
+}
+
+/* Clearfix */
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+
+
+/*.custom {
+   cursor: url(../images/spider_icon.png), auto;
+}*/
+
 h1 {
   /*display: inline;*/
   text-align: center;
@@ -8,6 +31,18 @@ body {
   position: relative;
 }
 
+img.previous-level, img.next-level {
+  width: 50px;
+}
+
+img.previous-level {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
 .canvas-div {
   margin: 0 auto;
 }
@@ -16,6 +51,7 @@ canvas {
   position: absolute;
   margin: 0 auto;
   align-self: center;
+  cursor: url(../images/spider_icon.jpg), auto;
 }
 
 div.vertex {
@@ -46,11 +82,4 @@ div.edge {
 
 #v3, #v5 {
   background: orange;
-}
-
-/* Clearfix */
-.clearfix:after {
-  content: "";
-  display: block;
-  clear: both;
 }

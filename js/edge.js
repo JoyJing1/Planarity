@@ -1,4 +1,4 @@
-const Util = window.Util = require("./util");
+const Util = require("./util");
 const Constants = require('../constants');
 
 const Edge = function(options) {
