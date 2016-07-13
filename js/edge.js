@@ -36,17 +36,21 @@ Edge.prototype.shareVertex = function(edge) {
   );
 };
 
+Edge.prototype.intersectsAtX = function(edge) {
+  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
+}
+
 Edge.prototype.intersectsWith = function(edge) {
-  const x = (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
+  const x = this.intersectsAtX(edge);
 
-  let firstMin = Math.min(this.vertex1.x, this.vertex2.x);
-  let firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+  const firstMin = Math.min(this.vertex1.x, this.vertex2.x);
+  const firstMax = Math.max(this.vertex1.x, this.vertex2.x);
 
-  let secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
-  let secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+  const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
+  const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
 
-  let onFirst = (firstMin < x && x < firstMax);
-  let onSecond = (secondMin < x && x < secondMax);
+  const onFirst = (firstMin < x && x < firstMax);
+  const onSecond = (secondMin < x && x < secondMax);
 
   // debugger;
 

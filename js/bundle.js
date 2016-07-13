@@ -45,7 +45,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	const Game = __webpack_require__(1);
-	const GameView = __webpack_require__(15);
+	const GameView = __webpack_require__(5);
 	
 	document.addEventListener("DOMContentLoaded", function(){
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
@@ -103,6 +103,33 @@
 	
 	};
 	
+	Game.prototype.generateGraph = function(level) {
+	  const n = level+3;
+	  let vertices = [];
+	
+	  for(let i = 0; i < n; i++) {
+	    vertices.push(i);
+	  }
+	
+	  let pairIndex = {};
+	  let k = 0;
+	  for(let i = 0; i <= n; i++) {
+	    for(let j = i+1; j<n; j++) {
+	      pairIndex[[i, j]] = k;
+	      k++;
+	    }
+	  }
+	
+	
+	
+	
+	};
+	
+	
+	
+	
+	
+	
 	Game.LEVELS = [
 	  { vertices: 6,
 	    edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]
@@ -154,17 +181,21 @@
 	  );
 	};
 	
+	Edge.prototype.intersectsAtX = function(edge) {
+	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
+	}
+	
 	Edge.prototype.intersectsWith = function(edge) {
-	  const x = (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
+	  const x = this.intersectsAtX(edge);
 	
-	  let firstMin = Math.min(this.vertex1.x, this.vertex2.x);
-	  let firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+	  const firstMin = Math.min(this.vertex1.x, this.vertex2.x);
+	  const firstMax = Math.max(this.vertex1.x, this.vertex2.x);
 	
-	  let secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
-	  let secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+	  const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
+	  const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
 	
-	  let onFirst = (firstMin < x && x < firstMax);
-	  let onSecond = (secondMin < x && x < secondMax);
+	  const onFirst = (firstMin < x && x < firstMax);
+	  const onSecond = (secondMin < x && x < secondMax);
 	
 	  // debugger;
 	
@@ -266,17 +297,7 @@
 
 
 /***/ },
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	const Util = __webpack_require__(3);
@@ -340,12 +361,12 @@
 	GameView.prototype.renderGraph = function() {
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 	
-	  this.game.vertices.forEach( (vertex, i) => {
-	    vertex.draw(this.ctx);
-	  });
-	
 	  this.game.edges.forEach( (edge, i) => {
 	    edge.draw(this.ctx);
+	  });
+	
+	  this.game.vertices.forEach( (vertex, i) => {
+	    vertex.draw(this.ctx);
 	  });
 	
 	};

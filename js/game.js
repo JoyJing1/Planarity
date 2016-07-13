@@ -35,6 +35,33 @@ Game.prototype.buildGraph = function(level) {
 
 };
 
+Game.prototype.generateGraph = function(level) {
+  const n = level+3;
+  let vertices = [];
+
+  for(let i = 0; i < n; i++) {
+    vertices.push(i);
+  }
+
+  let pairIndex = {};
+  let k = 0;
+  for(let i = 0; i <= n; i++) {
+    for(let j = i+1; j<n; j++) {
+      pairIndex[[i, j]] = k;
+      k++;
+    }
+  }
+
+
+
+
+};
+
+
+
+
+
+
 Game.LEVELS = [
   { vertices: 6,
     edges: [ [0,2], [0,4], [1,4], [1,5], [2,3], [2,4], [2,5], [3,5] ]

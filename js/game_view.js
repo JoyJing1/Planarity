@@ -59,12 +59,12 @@ GameView.prototype.bindButtonEvents = function() {
 GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
-  this.game.vertices.forEach( (vertex, i) => {
-    vertex.draw(this.ctx);
-  });
-
   this.game.edges.forEach( (edge, i) => {
     edge.draw(this.ctx);
+  });
+
+  this.game.vertices.forEach( (vertex, i) => {
+    vertex.draw(this.ctx);
   });
 
 };
