@@ -30,13 +30,11 @@ html, body {
 a.next-level-modal {
   position: relative;
   display: block;
-  /* bottom: 10px; */
   padding: 10px 3px;
   margin: 20px auto 5px auto;
-  /* text-align: center; */
   width: 100px;
   text-align: center;
-  background: lightblue;
+  background: #A6ACEC; /*Color of modal button*/
   border-radius: 5px;
 }
 
@@ -79,12 +77,7 @@ a.next-level-modal {
   margin: 0 auto;
 }
 
-/*.custom {
-   cursor: url(../images/spider_icon.png), auto;
-}*/
-
 h1 {
-  /*display: inline;*/
   text-align: center;
   margin: 0 auto;
 }

@@ -25,15 +25,17 @@ GameView.prototype.playLevel = function() {
   console.log("GameView.playLevel");
 
   this.renderGraph();
+  this.renderModal();
   this.bindGraphEvents();
   // console.log("after this.bindGraphEvents in GameView()");
-  this.renderModal();
 
 
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
     this.renderGraph();
-  }, 50);
+    // this.checkPlanarity();
+
+  }, 1);
 };
 
 GameView.prototype.renderModal = function() {
@@ -44,13 +46,7 @@ GameView.prototype.renderModal = function() {
 
     if (prevModals.length > 0) {
       const $modal = $(prevModals[0]);
-      // Change content based on current level/time
-      // debugger;
-      // prevModals.forEach (prevModal => {
-      //   // Need to change to jQuery?
-      //   debugger;
-      //   this.root.remove(prevModal);
-      // });
+
     } else {
       const $modal = $("<div>").addClass("modal")
                     .addClass("win-modal")
@@ -82,50 +78,46 @@ GameView.prototype.renderModal = function() {
 
 GameView.prototype.renderButtons = function() {
 
-  const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
+  // const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 
   const $canvasDiv = $(".canvas-div");
 
-  $canvasDiv.append($button1);
+  // $canvasDiv.append($button1);
   $canvasDiv.append($button2);
   $canvasDiv.append($button3);
 };
 
-GameView.prototype.bindButtonEvents = function() {
-  $(".planar-check").on("click", event => {
-    let planar = true;
-    const game = this.game;
+GameView.prototype.checkPlanarity = function() {
+  // $(".planar-check").on("click", event => {
+  let planar = true;
+  const game = this.game;
 
-    game.edges.forEach( (edge1, i1) => {
-      game.edges.forEach( (edge2, i2) => {
-        if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-          planar = false;
-        }
-      });
+  game.edges.forEach( (edge1, i1) => {
+    game.edges.forEach( (edge2, i2) => {
+      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+        planar = false;
+      }
     });
-
-    console.log(`final: ${planar}`);
-
-    if (planar) {
-      console.log("Yay, you made a planar graph!!");
-      const $modal = $(".modal");
-      $modal.css({display: "block"})
-      // $.delay(1000);
-
-      // this.level += 1;
-      // clearInterval(this.refreshIntervalId);
-      // // $modal.css("none")
-      //
-      // this.playLevel();
-      // Level up to next level
-      // this.game = new Game(this.level);
-    } else {
-      console.log("The graph's not planar quite yet");
-    }
-
   });
+
+  console.log(`final: ${planar}`);
+
+  if (planar) {
+    // console.log("Yay, you made a planar graph!!");
+    // this.game.dropVertices();
+    const $modal = $(".modal");
+    $modal.css({display: "block"})
+  } else {
+    // console.log("The graph's not planar quite yet");
+  }
+
+  // });
+
+};
+
+GameView.prototype.bindButtonEvents = function() {
 
   $(".previous-level").on("click", event => {
     if (this.level > 0) {
@@ -138,7 +130,6 @@ GameView.prototype.bindButtonEvents = function() {
     this.level += 1;
     this.playLevel(this.level);
   });
-
 
 };
 
@@ -168,7 +159,7 @@ GameView.prototype.bindGraphEvents = function() {
 
     this.game.vertices.forEach( vertex => {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
-      console.log(`(${vertex.x}, ${vertex.y})`);
+      // console.log(`(${vertex.x}, ${vertex.y})`);
       // console.log(dist);
 
       if (dist < 70 && !vertexSelected) {
@@ -186,10 +177,13 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $("canvas").on("mouseup", event => {
-    this.game.vertices.forEach( vertex => {
-      vertex.selected = false;
-      vertex.color = Constants.COLOR;
-    });
+    console.log("mouseup on canvas callback");
+    this.game.dropVertices();
+    this.checkPlanarity();
+    // this.game.vertices.forEach( vertex => {
+    //   vertex.selected = false;
+    //   vertex.color = Constants.COLOR;
+    // });
 
     // this.game.edges.forEach( edge => {
     //   edge.color = Constants.BLACK;

@@ -2,6 +2,7 @@ const Edge = require("./edge");
 const Vertex = require("./vertex");
 const Util = require("./util");
 const Graph = require("./graph");
+const Constants = require('../constants');
 
 const Game = function (level = 0) {
   this.vertices = [];
@@ -10,6 +11,7 @@ const Game = function (level = 0) {
 
   this.setPlaySize();
   this.buildGraph(level);
+  this.setVertexSize();
 };
 
 Game.prototype.setPlaySize = function() {
@@ -18,6 +20,14 @@ Game.prototype.setPlaySize = function() {
 
   Game.leftOffset = (window.innerWidth - Game.DIM_X) / 2;
   $board.css( {left: Game.leftOffset} );
+};
+
+Game.prototype.setVertexSize = function() {
+  console.log(Game.DIM_X);
+  console.log(this.level);
+  console.log(this.vertices.length);
+
+  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
 
 Game.prototype.buildGraph = function(level) {
@@ -48,6 +58,14 @@ Game.prototype.buildGraph = function(level) {
     this.vertices[vertices[1]].edges.push(edge);
   });
 
+};
+
+Game.prototype.dropVertices = function() {
+  console.log("Game.dropVertices() in game.js");
+  this.vertices.forEach( vertex => {
+    vertex.selected = false;
+    vertex.color = Constants.COLOR;
+  });
 };
 
 module.exports = Game;
