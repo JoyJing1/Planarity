@@ -6,6 +6,16 @@ const GameView = function (ctx, root, level=1) {
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
   this.level = level;
+
+  this.playLevel(this.level);
+
+  this.refreshIntervalId = setInterval( () => {
+    this.follow(this.game, this.currentMousePos);
+    this.renderGraph();
+  }, 50);
+};
+
+GameView.prototype.playLevel = function() {
   this.game = new Game(this.level);
 
   this.renderGraph();
@@ -13,15 +23,10 @@ const GameView = function (ctx, root, level=1) {
 
   this.bindGraphEvents();
   this.bindButtonEvents();
-
-  setInterval( () => {
-    this.follow(this.game, this.currentMousePos);
-    this.renderGraph();
-  }, 50);
 };
 
 GameView.prototype.renderButton = function() {
-  $button = $("<button class='planar-check'>Is Planar?</button>");
+  const $button = $("<button class='planar-check'>Is Planar?</button>");
 
   this.root.append($button);
 };
@@ -35,7 +40,7 @@ GameView.prototype.bindButtonEvents = function() {
       game.edges.forEach( (edge2, i2) => {
         if (i1 !== i2 && edge1.intersectsWith(edge2)) {
           planar = false;
-        };
+        }
       });
     });
 
@@ -43,13 +48,14 @@ GameView.prototype.bindButtonEvents = function() {
 
     if (planar) {
       this.level += 1;
-      console.log("Yay, you made a planar graph!!");;
+      console.log("Yay, you made a planar graph!!");
+      clearInterval(this.refreshIntervalId);
+      this.playLevel();
       // Level up to next level
       // this.game = new Game(this.level);
     } else {
       console.log("The graph's not planar quite yet");
     }
-    // return planar;
 
   });
 
