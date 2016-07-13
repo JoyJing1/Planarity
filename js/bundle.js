@@ -161,56 +161,27 @@
 	const Edge = function(options) {
 	  this.vertex1 = options.vertex1;
 	  this.vertex2 = options.vertex2;
-	  // this.color = Constants.BLACK;
 	};
 	
 	Edge.prototype.draw = function(ctx, edges) {
-	  // console.log("Edge.draw(ctx, edges)");
 	  // console.log(edges);
-	  // this.intersecting = false;
-	  // ctx.strokeStyle = Constants.BLACK;
-	  // ctx.beginPath();
-	  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	  // ctx.stroke();
-	  //
-	  // edges.forEach( edge => {
-	  console.log(edges);
-	  // debugger;
 	    if (this.currentlyIntersecting(edges)) {
-	      console.log("Edge is currently intersecting");
-	      // this.intersecting = true;
+	      // console.log("Edge is currently intersecting");
 	      ctx.strokeStyle = Constants.LINE_INTERSECTING;
-	      // edge.intersecting = true;
 	      ctx.beginPath();
 	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
 	      ctx.stroke();
+	
 	    } else {
-	      console.log("Edge is not currently intersecting");
+	      // console.log("Edge is not currently intersecting");
 	      ctx.strokeStyle = Constants.BLACK;
 	      ctx.beginPath();
 	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
 	      ctx.stroke();
 	    }
-	  // });
 	};
-	
-	  // });
-	
-	
-	  // let intersecting = this.currentlyIntersecting(edges);
-	  // if (this.intersecting) {
-	  //   ctx.strokeStyle = Constants.LINE_INTERSECTING;
-	  // } else {
-	  //   ctx.strokeStyle = Constants.BLACK;
-	  // }
-	  // ctx.beginPath();
-	  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	  // ctx.stroke();
-	// };
 	
 	Edge.prototype.slope = function() {
 	  return Util.slope(this.vertex1, this.vertex2);
@@ -242,18 +213,11 @@
 	};
 	
 	Edge.prototype.intersectsAtX = function(edge) {
-	  // console.log("Edge.intersectsAtX(edge)");
-	  // console.log(edge);
-	  // debugger;
 	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
 	};
 	
 	Edge.prototype.intersectsWith = function(edge) {
-	  // console.log("Edge.intersectsWith(edge)");
-	  // console.log(edge);
-	  // If this edge is vertical, check whether its x is within the bounds for the other edge
 	
-	  // CHECK IF ONE IS HORIZONTAL
 	  if (this.isHorizontal()) {
 	    let y = this.vertex1.y;
 	    let minY = Math.min(edge.vertex1.y, edge.vertex2.y) + 1;
@@ -295,14 +259,11 @@
 	};
 	
 	Edge.prototype.currentlyIntersecting = function(allEdges) {
-	  // console.log("Edge.currentlyIntersecting(allEdges)");
-	  // console.log(allEdges);
 	  let intersecting = false;
+	
 	  allEdges.forEach( edge => {
-	    // debugger;
 	    if (this.intersectsWith(edge)) {
 	      intersecting = true;
-	      // edge.intersecting = true;
 	    }
 	  });
 	  return intersecting;
@@ -508,9 +469,9 @@
 	
 	GameView.prototype.playLevel = function() {
 	  this.game = new Game(this.level);
-	  console.log(this.game);
-	  console.log(this);
-	  console.log("GameView.playLevel");
+	  // console.log(this.game);
+	  // console.log(this);
+	  // console.log("GameView.playLevel");
 	
 	  this.renderGraph();
 	  this.renderModal();
@@ -520,7 +481,7 @@
 	
 	  this.refreshIntervalId = setInterval( () => {
 	    this.follow(this.game, this.currentMousePos);
-	    // this.renderGraph(); // COMMENT BACK IN
+	    this.renderGraph(); // COMMENT BACK IN
 	    // this.checkPlanarity();
 	
 	  }, 1);
@@ -622,14 +583,11 @@
 	
 	GameView.prototype.renderGraph = function() {
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
-	  // console.log("----------------------------");
+	
 	  this.game.edges.forEach( (edge, i) => {
-	    console.log(`Checking edge ${i}`);
-	    // debugger;
-	    // edge.currentlyIntersecting(this.game.edges);
+	    // console.log(`Checking edge ${i}`);
 	    edge.draw(this.ctx, this.game.edges);
 	  });
-	  // debugger;
 	
 	  this.game.vertices.forEach( (vertex, i) => {
 	    vertex.draw(this.ctx);
@@ -650,10 +608,6 @@
 	    if (Vertex.RADIUS > 7) {
 	      withinVertex += (Vertex.RADIUS - 7);
 	    }
-	
-	    // let withinVertex = Math.sqrt(Math.pow(Vertex.RADIUS, 2)*2) + Vertex.RADIUS;
-	
-	
 	
 	    console.log(`withinVertex = ${withinVertex}`);
 	

@@ -4,56 +4,27 @@ const Constants = require('../constants');
 const Edge = function(options) {
   this.vertex1 = options.vertex1;
   this.vertex2 = options.vertex2;
-  // this.color = Constants.BLACK;
 };
 
 Edge.prototype.draw = function(ctx, edges) {
-  // console.log("Edge.draw(ctx, edges)");
   // console.log(edges);
-  // this.intersecting = false;
-  // ctx.strokeStyle = Constants.BLACK;
-  // ctx.beginPath();
-  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
-  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
-  // ctx.stroke();
-  //
-  // edges.forEach( edge => {
-  console.log(edges);
-  // debugger;
     if (this.currentlyIntersecting(edges)) {
-      console.log("Edge is currently intersecting");
-      // this.intersecting = true;
+      // console.log("Edge is currently intersecting");
       ctx.strokeStyle = Constants.LINE_INTERSECTING;
-      // edge.intersecting = true;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
       ctx.lineTo(this.vertex2.x, this.vertex2.y);
       ctx.stroke();
+
     } else {
-      console.log("Edge is not currently intersecting");
+      // console.log("Edge is not currently intersecting");
       ctx.strokeStyle = Constants.BLACK;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
       ctx.lineTo(this.vertex2.x, this.vertex2.y);
       ctx.stroke();
     }
-  // });
 };
-
-  // });
-
-
-  // let intersecting = this.currentlyIntersecting(edges);
-  // if (this.intersecting) {
-  //   ctx.strokeStyle = Constants.LINE_INTERSECTING;
-  // } else {
-  //   ctx.strokeStyle = Constants.BLACK;
-  // }
-  // ctx.beginPath();
-  // ctx.moveTo(this.vertex1.x, this.vertex1.y);
-  // ctx.lineTo(this.vertex2.x, this.vertex2.y);
-  // ctx.stroke();
-// };
 
 Edge.prototype.slope = function() {
   return Util.slope(this.vertex1, this.vertex2);
@@ -85,18 +56,11 @@ Edge.prototype.isHorizontal = function() {
 };
 
 Edge.prototype.intersectsAtX = function(edge) {
-  // console.log("Edge.intersectsAtX(edge)");
-  // console.log(edge);
-  // debugger;
   return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
 };
 
 Edge.prototype.intersectsWith = function(edge) {
-  // console.log("Edge.intersectsWith(edge)");
-  // console.log(edge);
-  // If this edge is vertical, check whether its x is within the bounds for the other edge
 
-  // CHECK IF ONE IS HORIZONTAL
   if (this.isHorizontal()) {
     let y = this.vertex1.y;
     let minY = Math.min(edge.vertex1.y, edge.vertex2.y) + 1;
@@ -138,14 +102,11 @@ Edge.prototype.intersectsWith = function(edge) {
 };
 
 Edge.prototype.currentlyIntersecting = function(allEdges) {
-  // console.log("Edge.currentlyIntersecting(allEdges)");
-  // console.log(allEdges);
   let intersecting = false;
+
   allEdges.forEach( edge => {
-    // debugger;
     if (this.intersectsWith(edge)) {
       intersecting = true;
-      // edge.intersecting = true;
     }
   });
   return intersecting;
