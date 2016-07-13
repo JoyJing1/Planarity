@@ -60,18 +60,9 @@
 	    Game.DIM_Y = window.innerWidth;
 	  }
 	
-	
-	  // Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
-	  // Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
-	
-	  // debugger;
-	
-	
 	  canvasEl.width = Game.DIM_X;
 	  canvasEl.height = Game.DIM_Y;
-	  canvasEl.left = Game.DIM_X/4;
 	
-	  // debugger;
 	  const ctx = canvasEl.getContext("2d");
 	  const rootEl = $('.planary-root');
 	
@@ -104,10 +95,8 @@
 	  const $board = $(".canvas-div");
 	  $board.width(Game.DIM_X).height(Game.DIM_Y);
 	
-	  let leftOffset = (window.innerWidth - Game.DIM_X) / 2;
-	  $board.css( {left: leftOffset} );
-	
-	  // $board.css( {width: Game.DIM_X, height: Game.DIM_Y} );
+	  Game.leftOffset = (window.innerWidth - Game.DIM_X) / 2;
+	  $board.css( {left: Game.leftOffset} );
 	};
 	
 	Game.prototype.buildGraph = function(level) {
@@ -244,11 +233,11 @@
 	    // return radians / 2 / Math.PI * 360;
 	  },
 	
-	  distFromMouse(vertex, event) {
+	  distFromMouse(vertex, currentMousePos) {
 	    const vertexRadius = 12.5;
 	
 	    return Math.sqrt(
-	      Math.pow(vertex.x + vertexRadius - event.pageX, 2) + Math.pow(vertex.y + vertexRadius - event.pageY, 2)
+	      Math.pow(vertex.x + vertexRadius - currentMousePos.x, 2) + Math.pow(vertex.y + vertexRadius - currentMousePos.y, 2)
 	    );
 	  },
 	
@@ -519,16 +508,20 @@
 	  console.log("GameView.bindGraphEvents() in game_view.js");
 	
 	  $("canvas").on("mousedown", event => {
-	    this.offset = (0, 0);
+	    // this.offset = (0, 0);
 	    let vertexSelected = false;
+	    console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
+	    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
 	
 	    this.game.vertices.forEach( vertex => {
-	      const dist = Util.distFromMouse(vertex, event);
+	      const dist = Util.distFromMouse(vertex, this.currentMousePos);
+	      console.log(`(${vertex.x}, ${vertex.y})`);
 	      // console.log(dist);
 	
 	      if (dist < 70 && !vertexSelected) {
 	        vertex.selected = true;
 	        vertex.color = Constants.COLOR_SELECTED;
+	        console.log(`Vertex selected: ${vertex}`);
 	
 	        // vertex.edges.forEach( edge => {
 	        //   edge.color = Constants.LINE_SELECTED;
@@ -551,11 +544,13 @@
 	  });
 	
 	  $(document).mousemove( event => {
+	    // console.log(this.currentMousePos);
+	    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
 	    // Dynamically adjust to fit canvas size
-	    const yAdjust = -65;
-	    const xAdjust = -8;
+	    const yAdjust = -40;
+	    const xAdjust = 0;
 	
-	    this.currentMousePos.x = event.pageX + xAdjust;
+	    this.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
 	    this.currentMousePos.y = event.pageY + yAdjust;
 	  });
 	

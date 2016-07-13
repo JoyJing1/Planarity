@@ -16,10 +16,8 @@ Game.prototype.setPlaySize = function() {
   const $board = $(".canvas-div");
   $board.width(Game.DIM_X).height(Game.DIM_Y);
 
-  let leftOffset = (window.innerWidth - Game.DIM_X) / 2;
-  $board.css( {left: leftOffset} );
-
-  // $board.css( {width: Game.DIM_X, height: Game.DIM_Y} );
+  Game.leftOffset = (window.innerWidth - Game.DIM_X) / 2;
+  $board.css( {left: Game.leftOffset} );
 };
 
 Game.prototype.buildGraph = function(level) {

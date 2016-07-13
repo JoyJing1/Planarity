@@ -110,16 +110,20 @@ GameView.prototype.bindGraphEvents = function() {
   console.log("GameView.bindGraphEvents() in game_view.js");
 
   $("canvas").on("mousedown", event => {
-    this.offset = (0, 0);
+    // this.offset = (0, 0);
     let vertexSelected = false;
+    console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
+    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
 
     this.game.vertices.forEach( vertex => {
-      const dist = Util.distFromMouse(vertex, event);
+      const dist = Util.distFromMouse(vertex, this.currentMousePos);
+      console.log(`(${vertex.x}, ${vertex.y})`);
       // console.log(dist);
 
       if (dist < 70 && !vertexSelected) {
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
+        console.log(`Vertex selected: ${vertex}`);
 
         // vertex.edges.forEach( edge => {
         //   edge.color = Constants.LINE_SELECTED;
@@ -142,11 +146,13 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $(document).mousemove( event => {
+    // console.log(this.currentMousePos);
+    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
     // Dynamically adjust to fit canvas size
-    const yAdjust = -65;
-    const xAdjust = -8;
+    const yAdjust = -40;
+    const xAdjust = 0;
 
-    this.currentMousePos.x = event.pageX + xAdjust;
+    this.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
     this.currentMousePos.y = event.pageY + yAdjust;
   });
 

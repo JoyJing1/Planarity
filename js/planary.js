@@ -14,18 +14,9 @@ document.addEventListener("DOMContentLoaded", function(){
     Game.DIM_Y = window.innerWidth;
   }
 
-
-  // Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
-  // Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
-
-  // debugger;
-
-
   canvasEl.width = Game.DIM_X;
   canvasEl.height = Game.DIM_Y;
-  canvasEl.left = Game.DIM_X/4;
 
-  // debugger;
   const ctx = canvasEl.getContext("2d");
   const rootEl = $('.planary-root');
 

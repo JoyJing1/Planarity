@@ -22,11 +22,11 @@ const Util = {
     // return radians / 2 / Math.PI * 360;
   },
 
-  distFromMouse(vertex, event) {
+  distFromMouse(vertex, currentMousePos) {
     const vertexRadius = 12.5;
 
     return Math.sqrt(
-      Math.pow(vertex.x + vertexRadius - event.pageX, 2) + Math.pow(vertex.y + vertexRadius - event.pageY, 2)
+      Math.pow(vertex.x + vertexRadius - currentMousePos.x, 2) + Math.pow(vertex.y + vertexRadius - currentMousePos.y, 2)
     );
   },
 
