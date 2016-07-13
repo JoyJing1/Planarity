@@ -40,9 +40,11 @@ GameView.prototype.renderButtons = function() {
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 
-  this.root.append($button1);
-  this.root.append($button2);
-  this.root.append($button3);
+  const $canvasDiv = $(".canvas-div");
+
+  $canvasDiv.append($button1);
+  $canvasDiv.append($button2);
+  $canvasDiv.append($button3);
 };
 
 GameView.prototype.bindButtonEvents = function() {

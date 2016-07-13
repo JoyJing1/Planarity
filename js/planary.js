@@ -6,15 +6,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
-  Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
-  Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
+  if (window.innerHeight < window.innerWidth) {
+    Game.DIM_X = window.innerHeight * 0.8;
+    Game.DIM_Y = window.innerHeight * 0.8;
+  } else {
+    Game.DIM_X = window.innerWidth;
+    Game.DIM_Y = window.innerWidth;
+  }
+
+
+  // Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
+  // Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
 
   // debugger;
 
 
   canvasEl.width = Game.DIM_X;
   canvasEl.height = Game.DIM_Y;
-
+  canvasEl.left = Game.DIM_X/4;
 
   // debugger;
   const ctx = canvasEl.getContext("2d");

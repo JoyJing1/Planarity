@@ -14,12 +14,12 @@ html, body {
 }
 
 .previous-level {
-  bottom: 100px;
+  bottom: 0;
   left: 20px;
 }
 
 .next-level {
-  bottom: 100px;
+  bottom: 0;
   right: 20px;
 }
 
@@ -61,6 +61,8 @@ img.previous-level {
 
 .canvas-div {
   margin: 0 auto;
+  position: absolute;
+  /*position: relative;*/
 }
 
 canvas {

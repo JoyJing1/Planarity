@@ -52,15 +52,24 @@
 	
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
 	
-	  Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
-	  Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
+	  if (window.innerHeight < window.innerWidth) {
+	    Game.DIM_X = window.innerHeight * 0.8;
+	    Game.DIM_Y = window.innerHeight * 0.8;
+	  } else {
+	    Game.DIM_X = window.innerWidth;
+	    Game.DIM_Y = window.innerWidth;
+	  }
+	
+	
+	  // Game.DIM_X = Math.min(window.innerWidth, window.innerHeight);
+	  // Game.DIM_Y = Math.min(window.innerWidth, window.innerHeight);
 	
 	  // debugger;
 	
 	
 	  canvasEl.width = Game.DIM_X;
 	  canvasEl.height = Game.DIM_Y;
-	
+	  canvasEl.left = Game.DIM_X/4;
 	
 	  // debugger;
 	  const ctx = canvasEl.getContext("2d");
@@ -87,14 +96,19 @@
 	  this.edges = [];
 	  this.level = level;
 	
+	  this.setPlaySize();
 	  this.buildGraph(level);
 	};
 	
-	// Game.DIM_X = window.innerWidth;
-	// Game.DIM_Y = window.innerHeight;
+	Game.prototype.setPlaySize = function() {
+	  const $board = $(".canvas-div");
+	  $board.width(Game.DIM_X).height(Game.DIM_Y);
 	
-	// Game.DIM_X = 800;
-	// Game.DIM_Y = 800;
+	  let leftOffset = (window.innerWidth - Game.DIM_X) / 2;
+	  $board.css( {left: leftOffset} );
+	
+	  // $board.css( {width: Game.DIM_X, height: Game.DIM_Y} );
+	};
 	
 	Game.prototype.buildGraph = function(level) {
 	
@@ -103,7 +117,7 @@
 	  let numVertices = n * (n-1)/2;
 	
 	  for (let j = 0; j < numVertices; j++) {
-	    // debugger;
+	
 	    let xOffset = Game.DIM_X/2;
 	    let yOffset = Game.DIM_Y/2;
 	
@@ -111,13 +125,7 @@
 	    let yResize = Game.DIM_Y*0.35;
 	
 	    let x = Math.cos(j * 2 * Math.PI / numVertices) * xResize + xOffset;
-	    let y = Math.sin(j * 2 * Math.PI / numVertices) * yResize + yOffset;
-	
-	    // let x = Math.cos(j * 2 * Math.PI / numVertices) * 300 + 400;
-	    // let y = Math.sin(j * 2 * Math.PI / numVertices) * 300 + 400;
-	
-	    // let x = Math.cos(j * 2 * Math.PI / numVertices) * (Game.DIM_X*0.35) + (Game.DIM_X/2);
-	    // let y = Math.sin(j * 2 * Math.PI / numVertices) * (Game.DIM_Y*0.35) + (Game.DIM_Y/2);
+	    let y = Math.sin(j * 2 * Math.PI / numVertices) * xResize + xOffset;
 	
 	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
 	  }
@@ -441,9 +449,11 @@
 	  const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
 	  const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 	
-	  this.root.append($button1);
-	  this.root.append($button2);
-	  this.root.append($button3);
+	  const $canvasDiv = $(".canvas-div");
+	
+	  $canvasDiv.append($button1);
+	  $canvasDiv.append($button2);
+	  $canvasDiv.append($button3);
 	};
 	
 	GameView.prototype.bindButtonEvents = function() {
