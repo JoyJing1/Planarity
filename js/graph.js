@@ -7,11 +7,11 @@ const Graph = {
   pairIndex(n) {
     let pairIndex = {};
 
-    let k = 0;
+    let vertexIdx = 0;
     for (let i = 0; i <= n; i++) {
       for (let j = i+1; j<n; j++) {
-        pairIndex[[i, j]] = k;
-        k++;
+        pairIndex[[i, j]] = vertexIdx;
+        vertexIdx++;
       }
     }
 
@@ -37,20 +37,6 @@ const Graph = {
     return lines;
   },
 
-  calculateIntersections(lines) {
-
-    for (let i = 0; i <= lines.length; i++) {
-      for (let j = i+1; j < lines.length; j++) {
-        const line1 = lines[i];
-        const line2 = lines[j];
-        const intersection = line1.intersectsAtX(line2);
-
-
-
-      }
-    }
-  },
-
   generateGraph(level) {
     const n = level+3;
 
@@ -60,20 +46,41 @@ const Graph = {
     // Generate n non-parallel lines
     const lines = this.generateLines(n);
 
-    // Calculate intersections of every pair of lines
-    // Associate each intersection with its two lines
+    // For each line, order the other lines
+    // by the location of their intersections
+    // with the current line
 
+    let edges = [];
+    lines.forEach( (line1, i1) => {
+      let intersections = [];
+      // let lineHash = {};
 
+      lines.forEach( (line2, i2) => {
+        if (i1 !== i2) {
+          let intersection = line1.intersectsAtX(line2);
+          // Not sure if this will key to "intersection" or value of intersection
+          intersections.push( { x: intersection, line: line2 } );
+          // lineHash[intersection] = line2;
+        }
 
-    let vertices = [];
+      });
 
-    for(let i = 0; i < n; i++) {
-      vertices.push(i);
-    }
+      intersections.sort( (intersect1, intersect2) => {
+        return intersect1.x - intersect2.x;
+      });
 
+      for (let i = 0; i <= intersections.length; i++) {
+        let l1 = intersections[i];
+        let l2 = intersections[i+1];
+        let v1 = pairIndex([i1, l1]);
+        let v2 = pairIndex([i1, l2]);
+        edges.push([v1, v2]);
+      }
 
+    });
+
+    return edges;
   }
-
 
 };
 
