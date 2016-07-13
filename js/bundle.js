@@ -555,7 +555,15 @@
 	    // console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
 	    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
 	    console.log(`Vertex Radius: ${Vertex.RADIUS}`);
-	    let withinVertex = Math.sqrt(Math.pow(Vertex.RADIUS, 2)*2) + Vertex.RADIUS;
+	    let withinVertex = 30;
+	    if (Vertex.RADIUS > 7) {
+	      withinVertex += (Vertex.RADIUS - 7);
+	    }
+	
+	    // let withinVertex = Math.sqrt(Math.pow(Vertex.RADIUS, 2)*2) + Vertex.RADIUS;
+	
+	
+	
 	    console.log(`withinVertex = ${withinVertex}`);
 	
 	    this.game.vertices.forEach( vertex => {
@@ -566,11 +574,6 @@
 	      if (dist < withinVertex && !vertexSelected) {
 	        vertex.selected = true;
 	        vertex.color = Constants.COLOR_SELECTED;
-	        // console.log(`Vertex selected: ${vertex}`);
-	
-	        // vertex.edges.forEach( edge => {
-	        //   edge.color = Constants.LINE_SELECTED;
-	        // });
 	        vertexSelected = true;
 	      }
 	    });
@@ -581,14 +584,6 @@
 	    // console.log("mouseup on canvas callback");
 	    this.game.dropVertices();
 	    this.checkPlanarity();
-	    // this.game.vertices.forEach( vertex => {
-	    //   vertex.selected = false;
-	    //   vertex.color = Constants.COLOR;
-	    // });
-	
-	    // this.game.edges.forEach( edge => {
-	    //   edge.color = Constants.BLACK;
-	    // });
 	  });
 	
 	  $(document).mousemove( event => {
