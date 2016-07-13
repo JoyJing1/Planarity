@@ -40,35 +40,33 @@ const Graph = {
   generateEdges(level) {
     const n = level+3;
 
-    // Build pairIndex hash
+    // Build pairIndex hash from { [pair]: indexOfVertex }
     let pairIndex = this.pairIndex(n);
 
-    // Generate n non-parallel lines
+    // Generate n * (n-1)/2 random lines of differing slope
     const lines = this.generateLines(n);
 
-    // For each line, order the other lines
-    // by the location of their intersections
-    // with the current line
-
+    // For each line, find the intersection of point
+    // of that line with all other lines
     let edges = [];
     lines.forEach( (line1, i1) => {
       let intersections = [];
-      // let lineHash = {};
 
       lines.forEach( (line2, i2) => {
         if (i1 !== i2) {
           let intersection = line1.intersectsAtX(line2);
-          // Not sure if this will key to "intersection" or value of intersection
           intersections.push( { x: intersection, lineIdx: i2 } );
-          // lineHash[intersection] = line2;
         }
 
       });
 
+      // Order lines by intersection point's X coord
       intersections.sort( (intersect1, intersect2) => {
         return intersect1.x - intersect2.x;
       });
 
+      // For each pair of neighboring intersections
+      // create a new edge between them
       for (let i = 0; i < intersections.length-1; i++) {
         let l1 = intersections[i];
         let l2 = intersections[i+1];
