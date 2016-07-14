@@ -1,3 +1,5 @@
+"use strict";
+
 const Edge = require("./edge")
     , Util = require("./util")
     , Vertex = require("./vertex");

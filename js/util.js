@@ -1,3 +1,5 @@
+"use strict";
+
 const Util = {
   slope(vertex1, vertex2) {
     return (vertex2.y - vertex1.y) / (vertex2.x - vertex1.x);

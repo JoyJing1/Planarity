@@ -1,3 +1,5 @@
+"use strict";
+
 const Game = require("./game")
     , GameView = require("./game_view");
 

@@ -1,3 +1,5 @@
+"use strict";
+
 const Constants = require('../constants')
     , Game = require("./game")
     , Util = require("./util")

@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = {
 	COLOR: "#2794EB",
   COLOR_SELECTED: "#47D6B6",
