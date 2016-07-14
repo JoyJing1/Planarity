@@ -15,7 +15,9 @@ const GameView = function (ctx, root, options) {
   this.renderButtons();
   this.bindButtonEvents();
   this.bindGraphEvents();
-  this.playLevel(this.level);
+  this.renderRules();
+  // debugger;
+  this.playLevel(this.level); // Move to renderRules callback?
 };
 
 GameView.prototype.playLevel = function() {
@@ -35,6 +37,11 @@ GameView.prototype.playLevel = function() {
 GameView.prototype.levelUp = function() {
   this.stage += 1;
   this.game.moves = 0;
+
+  if (this.stage > 0) {
+    $(".description").css( {display: "none"} );
+  }
+
   if (this.level === 0 || this.stage >= this.level + 3) {
     this.level += 1;
     this.stage = 0;
@@ -50,8 +57,40 @@ GameView.prototype.levelDown = function() {
   }
 };
 
+GameView.prototype.renderRules = function() {
+  const prevRules = document.getElementsByClassName("rules");
+
+  if (prevRules.length > 0) {
+    const $rulesModal = $(prevRules[0]);
+    $rulesModal.css({display: "block"});
+  } else {
+    const $rulesModal = $("<div>").addClass("modal")
+                        .addClass("rules")
+                        .css({display: "block"});
+    const $rulesContent = $("<div>").addClass("modal-content");
+    const $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
+
+    $rulesContent.append($rules);
+    $rulesModal.append($rulesContent);
+
+    const $playButton = $("<a>").text("Play")
+                        .addClass("button")
+                        .addClass("play");
+
+    $rulesContent.append($playButton);
+
+    $playButton.on("click tap", event => {
+      $rulesModal.css( {display: "none"} );
+      this.playLevel();
+    });
+
+    this.root.append($rulesModal);
+  }
+
+};
+
 GameView.prototype.renderModal = function() {
-  const prevModals = document.getElementsByClassName("modal");
+  const prevModals = document.getElementsByClassName("win-modal");
 
   if (prevModals.length > 0) {
     const $modal = $(prevModals[0]);
@@ -102,22 +141,31 @@ GameView.prototype.renderButtons = function() {
 
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
+  // const $github = $("<img class='github button' src='./images/github.png'></img>");
+  // const $github = $("<a>").addClass("button").addClass("github");
+  const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
+
+  const $buttonRules = $("<a>").addClass("button")
+                        .addClass("show-rules")
+                        .text("Rules");
   const $canvasDiv = $(".canvas-div");
 
   $canvasDiv.append($button2);
   $canvasDiv.append($button3);
+  $canvasDiv.append($github);
+  $canvasDiv.append($buttonRules);
 };
 
 GameView.prototype.checkPlanarity = function() {
   if (this.game.isPlanar()) {
-    const $modal = $(".modal");
+    const $winModal = $(".win-modal");
 
     const $stats = $("<p>");
     const $level = $(".level").text(`Level: ${this.level+1}`);
     const $stage = $(".stage").text(`Stage: ${this.stage+1}`);
     const $moves = $(".moves").text(`Moves: ${this.game.moves}`);
 
-    $modal.css({display: "block"});
+    $winModal.css({display: "block"});
   }
 };
 
@@ -139,6 +187,13 @@ GameView.prototype.bindButtonEvents = function() {
 
     this.levelUp();
     this.playLevel(this.level);
+  });
+
+  $(".show-rules").on("click tap", event => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    $(".rules").css( {display: "block"} );
   });
 
 };
