@@ -13,6 +13,7 @@ const GameView = function (ctx, root, options) {
 
   this.renderButtons();
   this.bindButtonEvents();
+  this.bindGraphEvents();
   this.playLevel(this.level);
 };
 
@@ -25,7 +26,7 @@ GameView.prototype.playLevel = function() {
   // this.numMoves = 0;
   this.renderGraph();
   this.renderModal();
-  this.bindGraphEvents();
+  // this.bindGraphEvents();
   // console.log("after this.bindGraphEvents in GameView()");
 
   this.refreshIntervalId = setInterval( () => {
@@ -39,6 +40,7 @@ GameView.prototype.playLevel = function() {
 GameView.prototype.levelUp = function() {
   this.stage += 1;
   this.game.moves = 0;
+  console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
   console.log(`increment up this.stage --> ${this.stage}`);
   if (this.level === 0 || this.stage >= this.level + 3) {
@@ -52,6 +54,7 @@ GameView.prototype.levelUp = function() {
 GameView.prototype.levelDown = function() {
   this.stage -= 1;
   this.game.moves = 0;
+  console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
   console.log(`increment up this.stage --> ${this.stage}`);
   if (this.stage < 0) {
@@ -197,8 +200,16 @@ GameView.prototype.renderGraph = function() {
 GameView.prototype.bindGraphEvents = function() {
   // console.log("GameView.bindGraphEvents() in game_view.js");
 
+  // Turn off previous events
+
+  //
+  // $("canvas").unbind("mousedown");
+  // $("canvas").unbind("mouseup");
+
   $("canvas").on("mousedown", event => {
-    this.game.moves += 1;
+    event.stopPropagation();
+    event.preventDefault();
+    // this.game.moves += 1;
     console.log("in mousedown callback in GameView");
     // this.numMoves += 1;
     // console.log(this.numMoves);
@@ -222,7 +233,11 @@ GameView.prototype.bindGraphEvents = function() {
 
       if (dist < withinVertex && !vertexSelected) {
         console.log("going through selected vertices");
-        // this.game.moves += 1;
+        // debugger;
+        this.game.moves += 1;
+        console.log(`this.game.moves = ${this.game.moves}`);
+        console.log(vertex);
+
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
         vertexSelected = true;
@@ -232,9 +247,12 @@ GameView.prototype.bindGraphEvents = function() {
   });
 
   $("canvas").on("mouseup", event => {
+    event.stopPropagation();
+    event.preventDefault();
     this.game.dropVertices();
     this.checkPlanarity();
   });
+
 
   $(document).mousemove( event => {
     const yAdjust = -40;
@@ -249,8 +267,11 @@ GameView.prototype.bindGraphEvents = function() {
 GameView.prototype.follow = function(game, currentMousePos) {
   game.vertices.forEach( vertex => {
     if (vertex.selected) {
-      vertex.x = currentMousePos.x;
-      vertex.y = currentMousePos.y;
+      let newX = Math.min(Math.max(currentMousePos.x, Vertex.RADIUS), Game.DIM_X-Vertex.RADIUS);
+      let newY = Math.min(Math.max(currentMousePos.y, Vertex.RADIUS), Game.DIM_Y-Vertex.RADIUS);
+
+      vertex.x = newX;
+      vertex.y = newY;
     }
   });
 
