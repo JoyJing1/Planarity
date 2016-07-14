@@ -25,10 +25,6 @@ Game.prototype.setPlaySize = function() {
 
 
 Game.prototype.setVertexSize = function() {
-  // console.log(Game.DIM_X);
-  // console.log(this.level);
-  // console.log(this.vertices.length);
-
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
 
@@ -59,21 +55,37 @@ Game.prototype.buildGraph = function() {
     this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
   }
 
+  let verticesReached = [];
   edgeCoords.forEach ( edgeCoord => {
-    // Check that in range of vertices
+
     if (edgeCoord[0] < numVertices && edgeCoord[1] < numVertices) {
-      let edge = new Edge({ vertex1: this.vertices[edgeCoord[0]], vertex2: this.vertices[edgeCoord[1]] });
+      const edge = new Edge({ vertex1: this.vertices[edgeCoord[0]], vertex2: this.vertices[edgeCoord[1]] });
       this.edges.push(edge);
 
       this.vertices[edgeCoord[0]].edges.push(edge);
       this.vertices[edgeCoord[1]].edges.push(edge);
+
+      verticesReached.push(edgeCoord[0]);
+      verticesReached.push(edgeCoord[1]);
     }
   });
+
+  for (let i = 0; i < numVertices; i++) {
+    if (!verticesReached.includes(i)) {
+      let v2 = 0;
+      if (i === v2) { v2 += 1; }
+      const edge = new Edge({ vertex1: this.vertices[i], vertex2: this.vertices[v2] });
+
+      this.edges.push(edge);
+
+      this.vertices[i].edges.push(edge);
+      this.vertices[v2].edges.push(edge);
+    }
+  }
 
 };
 
 Game.prototype.dropVertices = function() {
-  // console.log("Game.dropVertices() in game.js");
   this.vertices.forEach( vertex => {
     vertex.selected = false;
     vertex.color = Constants.COLOR;

@@ -94,8 +94,8 @@ Edge.prototype.intersectsWith = function(edge) {
     const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
     const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
 
-    const onFirst = (firstMin < x && x < firstMax);
-    const onSecond = (secondMin < x && x < secondMax);
+    const onFirst = (firstMin <= x && x <= firstMax);
+    const onSecond = (secondMin <= x && x <= secondMax);
 
     return (onFirst && onSecond && !this.shareVertex(edge));
   }
