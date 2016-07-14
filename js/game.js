@@ -7,8 +7,8 @@ const Constants = require('../constants')
     , Vertex = require("./vertex");
 
 const Game = function (options) {
-  this.vertices = [];
-  this.edges = [];
+  // this.vertices = [];
+  // this.edges = [];
   this.level = options.level || 0;
   this.stage = options.stage || 0;
   this.moves = 0;
@@ -31,7 +31,23 @@ Game.prototype.setVertexSize = function() {
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
 
+Game.prototype.isPlanar = function() {
+  let planar = true;
+
+  this.edges.forEach( (edge1, i1) => {
+    this.edges.forEach( (edge2, i2) => {
+      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+        planar = false;
+      }
+    });
+  });
+
+  return planar;
+};
+
 Game.prototype.buildGraph = function() {
+  this.vertices = [];
+  this.edges = [];
 
   let edgeCoords = Graph.generateEdges(this.level);
   let n = this.level + 4;
@@ -81,6 +97,11 @@ Game.prototype.buildGraph = function() {
       this.vertices[i].edges.push(edge);
       this.vertices[v2].edges.push(edge);
     }
+  }
+
+  // If graph is already solved, generate new graph
+  if (this.isPlanar()) {
+    this.buildGraph();
   }
 
 };

@@ -83,8 +83,8 @@
 	    , Vertex = __webpack_require__(6);
 	
 	const Game = function (options) {
-	  this.vertices = [];
-	  this.edges = [];
+	  // this.vertices = [];
+	  // this.edges = [];
 	  this.level = options.level || 0;
 	  this.stage = options.stage || 0;
 	  this.moves = 0;
@@ -107,7 +107,23 @@
 	  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 	};
 	
+	Game.prototype.isPlanar = function() {
+	  let planar = true;
+	
+	  this.edges.forEach( (edge1, i1) => {
+	    this.edges.forEach( (edge2, i2) => {
+	      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+	        planar = false;
+	      }
+	    });
+	  });
+	
+	  return planar;
+	};
+	
 	Game.prototype.buildGraph = function() {
+	  this.vertices = [];
+	  this.edges = [];
 	
 	  let edgeCoords = Graph.generateEdges(this.level);
 	  let n = this.level + 4;
@@ -157,6 +173,11 @@
 	      this.vertices[i].edges.push(edge);
 	      this.vertices[v2].edges.push(edge);
 	    }
+	  }
+	
+	  // If graph is already solved, generate new graph
+	  if (this.isPlanar()) {
+	    this.buildGraph();
 	  }
 	
 	};
@@ -522,10 +543,8 @@
 	  this.renderGraph();
 	  this.renderModal();
 	
-	  // this.refreshIntervalId = setInterval( () => {
 	  let that = this;
 	  function playGame() {
-	    // debugger;
 	    that.follow(that.game, that.currentMousePos);
 	    that.renderGraph();
 	    requestAnimationFrame(playGame);
@@ -584,7 +603,10 @@
 	
 	    $modalContent.append($nextButton);
 	
-	    $nextButton.on("click", event => {
+	    $nextButton.on("click tap", event => {
+	      event.stopPropagation();
+	      event.preventDefault();
+	
 	      this.levelUp();
 	      $modal.css({display: "none"});
 	      cancelAnimationFrame(this.refreshIntervalId);
@@ -607,18 +629,7 @@
 	};
 	
 	GameView.prototype.checkPlanarity = function() {
-	  let planar = true;
-	  const game = this.game;
-	
-	  game.edges.forEach( (edge1, i1) => {
-	    game.edges.forEach( (edge2, i2) => {
-	      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-	        planar = false;
-	      }
-	    });
-	  });
-	
-	  if (planar) {
+	  if (this.game.isPlanar()) {
 	    const $modal = $(".modal");
 	
 	    const $stats = $("<p>");
@@ -632,14 +643,20 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  $(".previous-level").on("click", event => {
+	  $(".previous-level").on("click tap", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    if (this.level > 0) {
 	      this.levelDown();
 	      this.playLevel(this.level);
 	    }
 	  });
 	
-	  $(".next-level").on("click", event => {
+	  $(".next-level").on("click tap", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    this.levelUp();
 	    this.playLevel(this.level);
 	  });
@@ -694,12 +711,16 @@
 	  $("canvas").on("mouseup", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	
 	    this.game.dropVertices();
 	    this.checkPlanarity();
 	  });
 	
 	
 	  $(document).mousemove( event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    const yAdjust = -40;
 	    const xAdjust = 0;
 	

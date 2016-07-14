@@ -23,10 +23,8 @@ GameView.prototype.playLevel = function() {
   this.renderGraph();
   this.renderModal();
 
-  // this.refreshIntervalId = setInterval( () => {
   let that = this;
   function playGame() {
-    // debugger;
     that.follow(that.game, that.currentMousePos);
     that.renderGraph();
     requestAnimationFrame(playGame);
@@ -85,7 +83,10 @@ GameView.prototype.renderModal = function() {
 
     $modalContent.append($nextButton);
 
-    $nextButton.on("click", event => {
+    $nextButton.on("click tap", event => {
+      event.stopPropagation();
+      event.preventDefault();
+
       this.levelUp();
       $modal.css({display: "none"});
       cancelAnimationFrame(this.refreshIntervalId);
@@ -108,18 +109,7 @@ GameView.prototype.renderButtons = function() {
 };
 
 GameView.prototype.checkPlanarity = function() {
-  let planar = true;
-  const game = this.game;
-
-  game.edges.forEach( (edge1, i1) => {
-    game.edges.forEach( (edge2, i2) => {
-      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-        planar = false;
-      }
-    });
-  });
-
-  if (planar) {
+  if (this.game.isPlanar()) {
     const $modal = $(".modal");
 
     const $stats = $("<p>");
@@ -133,14 +123,20 @@ GameView.prototype.checkPlanarity = function() {
 
 GameView.prototype.bindButtonEvents = function() {
 
-  $(".previous-level").on("click", event => {
+  $(".previous-level").on("click tap", event => {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (this.level > 0) {
       this.levelDown();
       this.playLevel(this.level);
     }
   });
 
-  $(".next-level").on("click", event => {
+  $(".next-level").on("click tap", event => {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.levelUp();
     this.playLevel(this.level);
   });
@@ -195,12 +191,16 @@ GameView.prototype.bindGraphEvents = function() {
   $("canvas").on("mouseup", event => {
     event.stopPropagation();
     event.preventDefault();
+
     this.game.dropVertices();
     this.checkPlanarity();
   });
 
 
   $(document).mousemove( event => {
+    event.stopPropagation();
+    event.preventDefault();
+
     const yAdjust = -40;
     const xAdjust = 0;
 
