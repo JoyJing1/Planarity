@@ -32,13 +32,10 @@ GameView.prototype.levelUp = function() {
   this.game.moves = 0;
   console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
-  // console.log(`increment up this.stage --> ${this.stage}`);
   if (this.level === 0 || this.stage >= this.level + 3) {
-    // console.log(`increment up this.level --> ${this.level}`);
     this.level += 1;
     this.stage = 0;
   }
-  // console.log(`GameView.levelUp, moves = ${this.game.moves}`);
 };
 
 GameView.prototype.levelDown = function() {
@@ -46,13 +43,10 @@ GameView.prototype.levelDown = function() {
   this.game.moves = 0;
   console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
-  // console.log(`increment up this.stage --> ${this.stage}`);
   if (this.stage < 0) {
-    // console.log(`increment up this.level --> ${this.level}`);
     this.level -= 1;
     this.stage = this.level + 3;
   }
-  // console.log(`GameView.levelDown, moves = ${this.game.moves}`);
 };
 
 
@@ -69,7 +63,7 @@ GameView.prototype.renderModal = function() {
                     .css( {display: "none"} );
 
       const $modalContent = $("<div>").addClass("modal-content");
-      const $congrats = $("<h2>").text("Congratulations, you made the graph planar!");
+      const $congrats = $("<h2>").text("Congratulations, the graph is planar!");
 
       const $stats = $("<p>");
       const $level = $("<div>").addClass("results level");
@@ -128,7 +122,7 @@ GameView.prototype.checkPlanarity = function() {
   if (planar) {
     const $modal = $(".modal");
 
-    const $stats = $("<p>")
+    const $stats = $("<p>");
     const $level = $(".level").text(`Level: ${this.level+1}`);
     const $stage = $(".stage").text(`Stage: ${this.stage+1}`);
     const $moves = $(".moves").text(`Moves: ${this.game.moves}`);
@@ -142,14 +136,14 @@ GameView.prototype.bindButtonEvents = function() {
   $(".previous-level").on("click", event => {
     if (this.level > 0) {
       this.levelDown();
-      console.log(`leveled down: level = ${this.level}, stage = ${this.stage}`)
+      console.log(`leveled down: level = ${this.level}, stage = ${this.stage}`);
       this.playLevel(this.level);
     }
   });
 
   $(".next-level").on("click", event => {
     this.levelUp();
-    console.log(`leveled up: level = ${this.level}, stage = ${this.stage}`)
+    console.log(`leveled up: level = ${this.level}, stage = ${this.stage}`);
     this.playLevel(this.level);
   });
 
@@ -194,7 +188,7 @@ GameView.prototype.bindGraphEvents = function() {
 
         vertex.neighbors().forEach(neighbor => {
           neighbor.color = Constants.COLOR_NEIGHBOR;
-        })
+        });
       }
     });
 
