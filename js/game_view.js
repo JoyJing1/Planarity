@@ -30,7 +30,6 @@ GameView.prototype.playLevel = function() {
 GameView.prototype.levelUp = function() {
   this.stage += 1;
   this.game.moves = 0;
-  // clearInterval(this.refreshIntervalId);
   if (this.level === 0 || this.stage >= this.level + 3) {
     this.level += 1;
     this.stage = 0;
@@ -40,7 +39,6 @@ GameView.prototype.levelUp = function() {
 GameView.prototype.levelDown = function() {
   this.stage -= 1;
   this.game.moves = 0;
-  // clearInterval(this.refreshIntervalId);
   if (this.stage < 0) {
     this.level -= 1;
     this.stage = this.level + 3;
