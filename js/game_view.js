@@ -9,7 +9,6 @@ const GameView = function (ctx, root, options) {
   this.currentMousePos = { x: -1, y: -1 };
   this.level = options.level || 0;
   this.stage = options.stage || 0;
-  // this.numMoves = 0;
 
   this.renderButtons();
   this.bindButtonEvents();
@@ -19,21 +18,12 @@ const GameView = function (ctx, root, options) {
 
 GameView.prototype.playLevel = function() {
   this.game = new Game({level: this.level, stage: this.stage});
-  // this.numMoves = 0;
-  // console.log(this.game);
-  // console.log(this);
-  // console.log("GameView.playLevel");
-  // this.numMoves = 0;
   this.renderGraph();
   this.renderModal();
-  // this.bindGraphEvents();
-  // console.log("after this.bindGraphEvents in GameView()");
 
   this.refreshIntervalId = setInterval( () => {
     this.follow(this.game, this.currentMousePos);
     this.renderGraph();
-    // this.checkPlanarity();
-
   }, 1);
 };
 
@@ -42,13 +32,13 @@ GameView.prototype.levelUp = function() {
   this.game.moves = 0;
   console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
-  console.log(`increment up this.stage --> ${this.stage}`);
+  // console.log(`increment up this.stage --> ${this.stage}`);
   if (this.level === 0 || this.stage >= this.level + 3) {
-    console.log(`increment up this.level --> ${this.level}`);
+    // console.log(`increment up this.level --> ${this.level}`);
     this.level += 1;
     this.stage = 0;
   }
-  console.log(`GameView.levelUp, moves = ${this.game.moves}`);
+  // console.log(`GameView.levelUp, moves = ${this.game.moves}`);
 };
 
 GameView.prototype.levelDown = function() {
@@ -56,20 +46,17 @@ GameView.prototype.levelDown = function() {
   this.game.moves = 0;
   console.log(this.refreshIntervalId);
   clearInterval(this.refreshIntervalId);
-  console.log(`increment up this.stage --> ${this.stage}`);
+  // console.log(`increment up this.stage --> ${this.stage}`);
   if (this.stage < 0) {
-    console.log(`increment up this.level --> ${this.level}`);
+    // console.log(`increment up this.level --> ${this.level}`);
     this.level -= 1;
     this.stage = this.level + 3;
   }
-  console.log(`GameView.levelDown, moves = ${this.game.moves}`);
-  // console.log(this.game.moves);
+  // console.log(`GameView.levelDown, moves = ${this.game.moves}`);
 };
 
 
 GameView.prototype.renderModal = function() {
-  // console.log("GameView.renderModal()");
-  // let $modal = {};
 
   const prevModals = document.getElementsByClassName("modal");
 
@@ -106,7 +93,6 @@ GameView.prototype.renderModal = function() {
       $nextButton.on("click", event => {
         this.levelUp();
 
-        // clearInterval(this.refreshIntervalId);
         $modal.css({display: "none"});
         this.playLevel();
       });
@@ -118,19 +104,16 @@ GameView.prototype.renderModal = function() {
 
 GameView.prototype.renderButtons = function() {
 
-  // const $button1 = $("<a class='planar-check button'>Is Planar?</a>");
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
 
   const $canvasDiv = $(".canvas-div");
 
-  // $canvasDiv.append($button1);
   $canvasDiv.append($button2);
   $canvasDiv.append($button3);
 };
 
 GameView.prototype.checkPlanarity = function() {
-  // $(".planar-check").on("click", event => {
   let planar = true;
   const game = this.game;
 
@@ -142,13 +125,8 @@ GameView.prototype.checkPlanarity = function() {
     });
   });
 
-  // console.log(`final: ${planar}`);
-
   if (planar) {
-    // console.log("Yay, you made a planar graph!!");
-    // this.game.dropVertices();
     const $modal = $(".modal");
-    // const $modalContent = $(".modal-content");
 
     const $stats = $("<p>")
     const $level = $(".level").text(`Level: ${this.level+1}`);
@@ -166,7 +144,6 @@ GameView.prototype.bindButtonEvents = function() {
 
   $(".previous-level").on("click", event => {
     if (this.level > 0) {
-      // this.level -= 1;
       this.levelDown();
       console.log(`leveled down: level = ${this.level}, stage = ${this.stage}`)
       this.playLevel(this.level);
@@ -174,7 +151,6 @@ GameView.prototype.bindButtonEvents = function() {
   });
 
   $(".next-level").on("click", event => {
-    // this.level += 1;
     this.levelUp();
     console.log(`leveled up: level = ${this.level}, stage = ${this.stage}`)
     this.playLevel(this.level);
@@ -198,38 +174,19 @@ GameView.prototype.renderGraph = function() {
 };
 
 GameView.prototype.bindGraphEvents = function() {
-  // console.log("GameView.bindGraphEvents() in game_view.js");
-
-  // Turn off previous events
-
-  //
-  // $("canvas").unbind("mousedown");
-  // $("canvas").unbind("mouseup");
 
   $("canvas").on("mousedown", event => {
     event.stopPropagation();
     event.preventDefault();
-    // this.game.moves += 1;
     console.log("in mousedown callback in GameView");
-    // this.numMoves += 1;
-    // console.log(this.numMoves);
-    console.log(this.game.moves);
-    // this.offset = (0, 0);
     let vertexSelected = false;
-    // console.log(`Mouse Pos: (${this.currentMousePos.x}, ${this.currentMousePos.y})`);
-    // console.log(`Mouse Pos: (${event.pageX}, ${event.pageY})`);
-    // console.log(`Vertex Radius: ${Vertex.RADIUS}`);
     let withinVertex = 30;
     if (Vertex.RADIUS > 7) {
       withinVertex += (Vertex.RADIUS - 7);
     }
 
-    // console.log(`withinVertex = ${withinVertex}`);
-
     this.game.vertices.forEach( vertex => {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
-      // console.log(`(${vertex.x}, ${vertex.y})`);
-      // console.log(dist);
 
       if (dist < withinVertex && !vertexSelected) {
         console.log("going through selected vertices");
