@@ -1,0 +1,169 @@
+html, body {
+  width:  100%;
+  height: 100%;
+  margin: 0px;
+  font-family: sans-serif;
+  background-color: black;
+}
+
+/*    BUTTONS   ****************************/
+.button, button, input[type="submit"], .clickable {
+  cursor: pointer;
+}
+
+.button {
+  position: absolute;
+  z-index: 1;
+}
+
+.previous-level {
+  bottom: 0;
+  left: 20px;
+}
+
+.next-level {
+  bottom: 0;
+  right: 20px;
+}
+
+a.next-level-modal {
+  position: relative;
+  display: block;
+  padding: 8px 12px;
+  margin: 0 auto;
+  width: 100px;
+  text-align: center;
+  background: #56600FF;
+  border-radius: 10px;
+  font-size: 20px;
+  background: #4531B1;
+  border: 1px solid #4d37c5;
+}
+
+/* Clearfix */
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Modal Background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  width: 60%;
+  position: relative;
+  border-radius: 17px;
+  background-color: black;
+  color: white;
+  border: 3px solid #FFFF00;
+}
+
+.modal-content h2 {
+  font-weight: normal;
+  text-align: center;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.modal-content p {
+  margin-top: 12px;
+}
+
+.modal-content div {
+  margin: 8px auto 0 auto;
+  /* padding-top: 12px; */
+  font-size: 24px;
+  text-align: center;
+  color: #2794EB;
+}
+
+h1 {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 30px;
+  color: white;
+}
+
+p.description {
+  width: 20%;
+  padding: 12px 20px;
+  border: 4px solid #4531B1;
+  box-shadow: 1px 1px 1px 1px #4531B1;
+  position: absolute;
+  margin-left: 15px;
+  color: white;
+  font-size: 20px;
+}
+
+body {
+  position: relative;
+}
+
+img.previous-level, img.next-level {
+  width: 50px;
+}
+
+img.previous-level {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.canvas-div {
+  margin: 0 auto;
+  position: absolute;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0 auto;
+}
+
+div.vertex {
+  position: absolute;
+  display: inline-block;
+  height: 25px;
+  width: 25px;
+  background: lightblue;
+  border-radius: 100px;
+  margin: 0;
+  text-align: center;
+}
+
+.ui-draggable {
+  z-index: 5;
+}
+
+div.edge {
+  background: green;
+  height: 2px;
+  position: absolute;
+}
+
+#e7 {
+  background: red;
+}
+
+#v3, #v5 {
+  background: orange;
+}

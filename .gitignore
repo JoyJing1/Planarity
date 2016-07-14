@@ -1,0 +1,3 @@
+# Ignore bundle files
+bundle.js
+bundle.js.map
