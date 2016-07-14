@@ -9,6 +9,8 @@ const Edge = function(options) {
 Edge.prototype.draw = function(ctx, edges) {
     if (this.currentlyIntersecting(edges)) {
       ctx.strokeStyle = Constants.LINE_INTERSECTING;
+      ctx.shadowColor = Constants.LINE_INTERSECTING;
+      ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
       ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -16,6 +18,8 @@ Edge.prototype.draw = function(ctx, edges) {
 
     } else {
       ctx.strokeStyle = Constants.BLACK;
+      ctx.shadowColro = Constants.BLACK;
+      ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
       ctx.lineTo(this.vertex2.x, this.vertex2.y);

@@ -174,9 +174,10 @@ GameView.prototype.bindGraphEvents = function() {
   $("canvas").on("mousedown", event => {
     event.stopPropagation();
     event.preventDefault();
-    // console.log("in mousedown callback in GameView");
+
     let vertexSelected = false;
     let withinVertex = 30;
+
     if (Vertex.RADIUS > 7) {
       withinVertex += (Vertex.RADIUS - 7);
     }
@@ -185,10 +186,7 @@ GameView.prototype.bindGraphEvents = function() {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
 
       if (dist < withinVertex && !vertexSelected) {
-        // console.log("going through selected vertices");
         this.game.moves += 1;
-        // console.log(`this.game.moves = ${this.game.moves}`);
-        // console.log(vertex);
 
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
