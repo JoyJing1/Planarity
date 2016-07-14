@@ -141,8 +141,6 @@ GameView.prototype.renderButtons = function() {
 
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
-  // const $github = $("<img class='github button' src='./images/github.png'></img>");
-  // const $github = $("<a>").addClass("button").addClass("github");
   const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
 
   const $buttonRules = $("<a>").addClass("button")

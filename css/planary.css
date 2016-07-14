@@ -103,15 +103,9 @@ h1 {
 }
 
 .rules .modal-content {
-  /*background-color: #fefefe;*/
   margin: 15% auto;
   padding: 15px 20px 20px 20px;
   width: 35%;
-  /*position: relative;*/
-  /*border-radius: 17px;*/
-  /*background-color: black;*/
-  /*color: white;*/
-  /*border: 3px solid #4531B1;*/
   text-align: center;
   padding-bottom: 20px;
 }
@@ -126,17 +120,6 @@ a.play {
   width: 35px;
   margin: 0 auto;
 }
-
-/*p.rules {
-  width: 20%;
-  padding: 12px 20px;
-  border: 4px solid #4531B1;
-  box-shadow: 1px 1px 1px 1px #4531B1;
-  position: absolute;
-  margin-left: 15px;
-  color: white;
-  font-size: 20px;
-}*/
 
 body {
   position: relative;
