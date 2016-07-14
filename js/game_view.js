@@ -134,10 +134,7 @@ GameView.prototype.checkPlanarity = function() {
     const $moves = $(".moves").text(`Moves: ${this.game.moves}`);
 
     $modal.css({display: "block"});
-  } else {
-    // console.log("The graph's not planar quite yet");
   }
-
 };
 
 GameView.prototype.bindButtonEvents = function() {
@@ -163,7 +160,6 @@ GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
   this.game.edges.forEach( (edge, i) => {
-    // console.log(`Checking edge ${i}`);
     edge.draw(this.ctx, this.game.edges);
   });
 
@@ -178,7 +174,7 @@ GameView.prototype.bindGraphEvents = function() {
   $("canvas").on("mousedown", event => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("in mousedown callback in GameView");
+    // console.log("in mousedown callback in GameView");
     let vertexSelected = false;
     let withinVertex = 30;
     if (Vertex.RADIUS > 7) {
@@ -189,15 +185,18 @@ GameView.prototype.bindGraphEvents = function() {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
 
       if (dist < withinVertex && !vertexSelected) {
-        console.log("going through selected vertices");
-        // debugger;
+        // console.log("going through selected vertices");
         this.game.moves += 1;
-        console.log(`this.game.moves = ${this.game.moves}`);
-        console.log(vertex);
+        // console.log(`this.game.moves = ${this.game.moves}`);
+        // console.log(vertex);
 
         vertex.selected = true;
         vertex.color = Constants.COLOR_SELECTED;
         vertexSelected = true;
+
+        vertex.neighbors().forEach(neighbor => {
+          neighbor.color = Constants.COLOR_NEIGHBOR;
+        })
       }
     });
 

@@ -21,4 +21,17 @@ Vertex.prototype.draw = function(ctx) {
   ctx.fill();
 };
 
+Vertex.prototype.neighbors = function() {
+  let neighbors = [];
+
+  this.edges.forEach( edge => {
+    if (edge.vertex1 === this) {
+      neighbors.push(edge.vertex2);
+    } else {
+      neighbors.push(edge.vertex1);
+    }
+  })
+  return neighbors;
+};
+
 module.exports = Vertex;

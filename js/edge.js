@@ -7,9 +7,7 @@ const Edge = function(options) {
 };
 
 Edge.prototype.draw = function(ctx, edges) {
-  // console.log(edges);
     if (this.currentlyIntersecting(edges)) {
-      // console.log("Edge is currently intersecting");
       ctx.strokeStyle = Constants.LINE_INTERSECTING;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
@@ -17,7 +15,6 @@ Edge.prototype.draw = function(ctx, edges) {
       ctx.stroke();
 
     } else {
-      // console.log("Edge is not currently intersecting");
       ctx.strokeStyle = Constants.BLACK;
       ctx.beginPath();
       ctx.moveTo(this.vertex1.x, this.vertex1.y);
