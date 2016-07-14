@@ -88,11 +88,11 @@ Edge.prototype.intersectsWith = function(edge) {
   } else {
     let x = this.intersectsAtX(edge);
 
-    const firstMin = Math.min(this.vertex1.x, this.vertex2.x);
-    const firstMax = Math.max(this.vertex1.x, this.vertex2.x);
+    const firstMin = Math.min(this.vertex1.x, this.vertex2.x) + 1;
+    const firstMax = Math.max(this.vertex1.x, this.vertex2.x) - 1;
 
-    const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x);
-    const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x);
+    const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
+    const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
 
     const onFirst = (firstMin <= x && x <= firstMax);
     const onSecond = (secondMin <= x && x <= secondMax);
