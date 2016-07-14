@@ -23,10 +23,15 @@ GameView.prototype.playLevel = function() {
   this.renderGraph();
   this.renderModal();
 
-  this.refreshIntervalId = setInterval( () => {
-    this.follow(this.game, this.currentMousePos);
-    this.renderGraph();
-  }, 1);
+  // this.refreshIntervalId = setInterval( () => {
+  let that = this;
+  function playGame() {
+    // debugger;
+    that.follow(that.game, that.currentMousePos);
+    that.renderGraph();
+    requestAnimationFrame(playGame);
+  }
+  requestAnimationFrame(playGame);
 };
 
 GameView.prototype.levelUp = function() {
@@ -83,6 +88,7 @@ GameView.prototype.renderModal = function() {
     $nextButton.on("click", event => {
       this.levelUp();
       $modal.css({display: "none"});
+      cancelAnimationFrame(this.refreshIntervalId);
       this.playLevel();
     });
 

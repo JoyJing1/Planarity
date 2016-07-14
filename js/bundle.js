@@ -44,6 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Game = __webpack_require__(1)
 	    , GameView = __webpack_require__(7);
 	
@@ -72,6 +74,8 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Constants = __webpack_require__(2)
 	    , Edge = __webpack_require__(3)
 	    , Graph = __webpack_require__(5)
@@ -171,6 +175,8 @@
 /* 2 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	module.exports = {
 		COLOR: "#2794EB",
 	  COLOR_SELECTED: "#47D6B6",
@@ -186,6 +192,8 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Constants = __webpack_require__(2)
 	    , Util = __webpack_require__(4);
 	
@@ -308,6 +316,8 @@
 /* 4 */
 /***/ function(module, exports) {
 
+	"use strict";
+	
 	const Util = {
 	  slope(vertex1, vertex2) {
 	    return (vertex2.y - vertex1.y) / (vertex2.x - vertex1.x);
@@ -341,6 +351,8 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Edge = __webpack_require__(3)
 	    , Util = __webpack_require__(4)
 	    , Vertex = __webpack_require__(6);
@@ -438,6 +450,8 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Constants = __webpack_require__(2);
 	
 	const Vertex = function(options) {
@@ -483,6 +497,8 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
 	const Constants = __webpack_require__(2)
 	    , Game = __webpack_require__(1)
 	    , Util = __webpack_require__(4)
@@ -506,10 +522,15 @@
 	  this.renderGraph();
 	  this.renderModal();
 	
-	  this.refreshIntervalId = setInterval( () => {
-	    this.follow(this.game, this.currentMousePos);
-	    this.renderGraph();
-	  }, 1);
+	  // this.refreshIntervalId = setInterval( () => {
+	  let that = this;
+	  function playGame() {
+	    // debugger;
+	    that.follow(that.game, that.currentMousePos);
+	    that.renderGraph();
+	    requestAnimationFrame(playGame);
+	  }
+	  requestAnimationFrame(playGame);
 	};
 	
 	GameView.prototype.levelUp = function() {
@@ -566,6 +587,7 @@
 	    $nextButton.on("click", event => {
 	      this.levelUp();
 	      $modal.css({display: "none"});
+	      cancelAnimationFrame(this.refreshIntervalId);
 	      this.playLevel();
 	    });
 	
