@@ -14,14 +14,6 @@ const Util = {
     );
   },
 
-  angle(vertex1, vertex2) {
-    const diffY = vertex2.y - vertex1.y;
-    const diffX = vertex2.x - vertex1.x;
-    const radians = Math.atan( diffY / diffX );
-    return radians;
-    // return radians / 2 / Math.PI * 360;
-  },
-
   distFromMouse(vertex, currentMousePos) {
     const vertexRadius = 12.5;
 

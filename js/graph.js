@@ -1,6 +1,6 @@
-const Edge = require("./edge");
-const Vertex = require("./vertex");
-const Util = require("./util");
+const Edge = require("./edge")
+    , Util = require("./util")
+    , Vertex = require("./vertex");
 
 const Graph = {
 
@@ -29,11 +29,9 @@ const Graph = {
       let slope = Util.slope(v1, v2);
       if (!slopes.includes(slope)) {
         let line = new Edge({ vertex1: v1, vertex2: v2});
-        // lines.push({v1: v1, v2: v2, slope: slope});
         lines.push(line);
       }
     }
-    // Check that this is generating liens correctly
     return lines;
   },
 
@@ -46,7 +44,7 @@ const Graph = {
     // Generate n * (n-1)/2 random lines of differing slope
     const lines = this.generateLines(n);
 
-    // For each line, find the intersection of point
+    // For each line, find the intersection points
     // of that line with all other lines
     let edges = [];
     lines.forEach( (line1, i1) => {

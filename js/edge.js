@@ -1,5 +1,5 @@
-const Util = require("./util");
-const Constants = require('../constants');
+const Constants = require('../constants')
+    , Util = require("./util");
 
 const Edge = function(options) {
   this.vertex1 = options.vertex1;

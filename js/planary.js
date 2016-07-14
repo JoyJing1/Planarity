@@ -1,5 +1,5 @@
-const Game = require("./game");
-const GameView = require("./game_view");
+const Game = require("./game")
+    , GameView = require("./game_view");
 
 document.addEventListener("DOMContentLoaded", function(){
   console.log("DOMContentLoaded");

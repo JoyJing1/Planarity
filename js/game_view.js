@@ -1,7 +1,7 @@
-const Util = require("./util");
-const Game = require("./game");
-const Constants = require('../constants');
-const Vertex = require('./vertex');
+const Constants = require('../constants')
+    , Game = require("./game")
+    , Util = require("./util")
+    , Vertex = require('./vertex');
 
 const GameView = function (ctx, root, options) {
   this.ctx = ctx;
@@ -49,58 +49,54 @@ GameView.prototype.levelDown = function() {
   }
 };
 
-
 GameView.prototype.renderModal = function() {
-
   const prevModals = document.getElementsByClassName("modal");
 
-    if (prevModals.length > 0) {
-      const $modal = $(prevModals[0]);
+  if (prevModals.length > 0) {
+    const $modal = $(prevModals[0]);
 
-    } else {
-      const $modal = $("<div>").addClass("modal")
-                    .addClass("win-modal")
-                    .css( {display: "none"} );
+  } else {
+    const $modal = $("<div>").addClass("modal")
+                  .addClass("win-modal")
+                  .css( {display: "none"} );
 
-      const $modalContent = $("<div>").addClass("modal-content");
-      const $congrats = $("<h2>").text("Congratulations, the graph is planar!");
+    const $modalContent = $("<div>").addClass("modal-content");
+    const $congrats = $("<h2>").text("Congratulations, the graph is planar!");
 
-      const $stats = $("<p>");
-      const $level = $("<div>").addClass("results level");
-      const $stage = $("<div>").addClass("results stage");
-      const $moves = $("<div>").addClass("results moves");
+    const $stats = $("<p>");
+    const $level = $("<div>").addClass("results level");
+    const $stage = $("<div>").addClass("results stage");
+    const $moves = $("<div>").addClass("results moves");
 
-      $stats.append($level);
-      $stats.append($stage);
-      $stats.append($moves);
+    $stats.append($level);
+    $stats.append($stage);
+    $stats.append($moves);
 
-      $modalContent.append($congrats);
-      $modalContent.append($stats);
-      $modal.append($modalContent);
+    $modalContent.append($congrats);
+    $modalContent.append($stats);
+    $modal.append($modalContent);
 
-      const $nextButton = $("<a>").text("Next Level")
-                          .addClass("button")
-                          .addClass("next-level-modal");
+    const $nextButton = $("<a>").text("Next Level")
+                        .addClass("button")
+                        .addClass("next-level-modal");
 
-      $modalContent.append($nextButton);
+    $modalContent.append($nextButton);
 
-      $nextButton.on("click", event => {
-        this.levelUp();
+    $nextButton.on("click", event => {
+      this.levelUp();
+      $modal.css({display: "none"});
+      this.playLevel();
+    });
 
-        $modal.css({display: "none"});
-        this.playLevel();
-      });
+    this.root.append($modal);
+  }
 
-      this.root.append($modal);
-    }
-
-  };
+};
 
 GameView.prototype.renderButtons = function() {
 
   const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
   const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
-
   const $canvasDiv = $(".canvas-div");
 
   $canvasDiv.append($button2);

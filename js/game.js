@@ -1,8 +1,8 @@
-const Edge = require("./edge");
-const Vertex = require("./vertex");
-const Util = require("./util");
-const Graph = require("./graph");
-const Constants = require('../constants');
+const Constants = require('../constants')
+    , Edge = require("./edge")
+    , Graph = require("./graph")
+    , Util = require("./util")
+    , Vertex = require("./vertex");
 
 const Game = function (options) {
   this.vertices = [];
@@ -34,13 +34,10 @@ Game.prototype.buildGraph = function() {
   let edgeCoords = Graph.generateEdges(this.level);
   let n = this.level + 4;
   let numVertices = (n * (n-1)/2);
-  // console.log(numVertices);
 
   if (this.level > 0) {
     numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
-    // console.log(numVertices);
   }
-
 
   for (let j = 0; j < numVertices; j++) {
 
@@ -92,29 +89,5 @@ Game.prototype.dropVertices = function() {
     vertex.color = Constants.COLOR;
   });
 };
-
-//
-// Game.prototype.levelUp = function() {
-//   this.stage += 1;
-//   this.moves = 0;
-//   console.log(`increment up this.stage --> ${this.stage}`);
-//   if (this.stage >= this.level + 3) {
-//     console.log(`increment up this.level --> ${this.level}`);
-//     this.level += 1;
-//     this.stage = 0;
-//   }
-// };
-//
-// Game.prototype.levelDown = function() {
-//   this.stage -= 1;
-//   this.moves = 0;
-//   console.log(`increment up this.stage --> ${this.stage}`);
-//   if (this.stage < 0) {
-//     console.log(`increment up this.level --> ${this.level}`);
-//     this.level -= 1;
-//     this.stage = this.level + 3;
-//   }
-// };
-
 
 module.exports = Game;
