@@ -16,7 +16,6 @@ const GameView = function (ctx, root, options) {
   this.bindButtonEvents();
   this.bindGraphEvents();
   this.renderRules();
-  // debugger;
   this.playLevel(this.level); // Move to renderRules callback?
 };
 
@@ -81,7 +80,6 @@ GameView.prototype.renderRules = function() {
 
     $playButton.on("click tap", event => {
       $rulesModal.css( {display: "none"} );
-      this.playLevel();
     });
 
     this.root.append($rulesModal);
@@ -139,10 +137,8 @@ GameView.prototype.renderModal = function() {
 
 GameView.prototype.renderButtons = function() {
 
-  const $button2 = $("<div>").addClass("buton").addClass("previous-level");
-  const $button3 = $("<div>").addClass("buton").addClass("next-level");
-  // const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
-  // const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
+  const $button2 = $("<div>").addClass("buton").addClass("nav").addClass("previous-level");
+  const $button3 = $("<div>").addClass("buton").addClass("nav").addClass("next-level");
   const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
 
   const $buttonRules = $("<a>").addClass("button")
