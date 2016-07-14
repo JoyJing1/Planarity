@@ -17,14 +17,39 @@ html, body {
   z-index: 1;
 }
 
+/*.nav {
+  height: 40px;
+  width: 40px;
+  background-size: contain;
+}*/
+
 .previous-level {
+  background-image: url("../images/arrow.png");
   bottom: 0;
   left: 20px;
+  height: 50px;
+  width: 50px;
+  background-size: contain;
+  position: absolute;
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  -ms-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 .next-level {
+  background-image: url("../images/arrow.png");
   bottom: 0;
   right: 20px;
+  height: 50px;
+  width: 50px;
+  background-size: contain;
+  position: absolute;
+}
+
+.previous-level:hover, .next-level:hover {
+  background-image: url("../images/arrow-hover.png");
 }
 
 a.next-level-modal {
@@ -84,6 +109,7 @@ a.next-level-modal {
 
 .modal-content p {
   margin: 0 0 15px 0;
+  line-height: 1.47em;
   /*margin-top: 12px;*/
 }
 
@@ -125,7 +151,7 @@ body {
   position: relative;
 }
 
-img.previous-level, img.next-level {
+/*img.previous-level, img.next-level {
   width: 50px;
 }
 
@@ -135,7 +161,7 @@ img.previous-level {
   -ms-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
-}
+}*/
 
 a.show-rules {
   color: white;
@@ -167,7 +193,7 @@ div.github {
 }
 
 div.github:hover {
-  background-image: url("../images/github-selected.png");
+  background-image: url("../images/github-hover.png");
 }
 
 .canvas-div {
