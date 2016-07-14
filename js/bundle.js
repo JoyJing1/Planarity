@@ -708,7 +708,7 @@
 	
 	  });
 	
-	  $("canvas").on("mouseup", event => {
+	  $(document).on("mouseup", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
