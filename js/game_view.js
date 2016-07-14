@@ -30,8 +30,7 @@ GameView.prototype.playLevel = function() {
 GameView.prototype.levelUp = function() {
   this.stage += 1;
   this.game.moves = 0;
-  console.log(this.refreshIntervalId);
-  clearInterval(this.refreshIntervalId);
+  // clearInterval(this.refreshIntervalId);
   if (this.level === 0 || this.stage >= this.level + 3) {
     this.level += 1;
     this.stage = 0;
@@ -41,8 +40,7 @@ GameView.prototype.levelUp = function() {
 GameView.prototype.levelDown = function() {
   this.stage -= 1;
   this.game.moves = 0;
-  console.log(this.refreshIntervalId);
-  clearInterval(this.refreshIntervalId);
+  // clearInterval(this.refreshIntervalId);
   if (this.stage < 0) {
     this.level -= 1;
     this.stage = this.level + 3;
@@ -132,14 +130,12 @@ GameView.prototype.bindButtonEvents = function() {
   $(".previous-level").on("click", event => {
     if (this.level > 0) {
       this.levelDown();
-      console.log(`leveled down: level = ${this.level}, stage = ${this.stage}`);
       this.playLevel(this.level);
     }
   });
 
   $(".next-level").on("click", event => {
     this.levelUp();
-    console.log(`leveled up: level = ${this.level}, stage = ${this.stage}`);
     this.playLevel(this.level);
   });
 
