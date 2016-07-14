@@ -30,12 +30,13 @@ html, body {
 a.next-level-modal {
   position: relative;
   display: block;
-  padding: 10px 3px;
-  margin: 20px auto 5px auto;
+  padding: 10px 14px;
+  margin: 0 auto;
   width: 100px;
   text-align: center;
-  background: #A6ACEC; /*Color of modal button*/
-  border-radius: 5px;
+  background: #A6ACEC;
+  border-radius: 10px;
+  font-size: 20px;
 }
 
 /* Clearfix */
@@ -76,6 +77,18 @@ a.next-level-modal {
   width: 90%;
   margin: 0 auto;
 }
+
+.modal-content p {
+  margin-top: 12px;
+}
+
+.modal-content div {
+  margin: 8px auto 0 auto;
+  /* padding-top: 12px; */
+  font-size: 24px;
+  text-align: center;
+}
+
 
 h1 {
   text-align: center;

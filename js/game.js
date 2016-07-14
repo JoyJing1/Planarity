@@ -9,6 +9,7 @@ const Game = function (options) {
   this.edges = [];
   this.level = options.level || 0;
   this.stage = options.stage || 0;
+  this.moves = 0;
 
   this.setPlaySize();
   this.buildGraph();
@@ -33,11 +34,11 @@ Game.prototype.buildGraph = function() {
   let edgeCoords = Graph.generateEdges(this.level);
   let n = this.level + 4;
   let numVertices = (n * (n-1)/2);
-  console.log(numVertices);
+  // console.log(numVertices);
 
   if (this.level > 0) {
     numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
-    console.log(numVertices);
+    // console.log(numVertices);
   }
 
 
@@ -92,26 +93,28 @@ Game.prototype.dropVertices = function() {
   });
 };
 
-
-Game.prototype.levelUp = function() {
-  this.stage += 1;
-  console.log(`increment up this.stage --> ${this.stage}`);
-  if (this.stage >= this.level + 3) {
-    console.log(`increment up this.level --> ${this.level}`);
-    this.level += 1;
-    this.stage = 0;
-  }
-};
-
-Game.prototype.levelDown = function() {
-  this.stage -= 1;
-  console.log(`increment up this.stage --> ${this.stage}`);
-  if (this.stage < 0) {
-    console.log(`increment up this.level --> ${this.level}`);
-    this.level -= 1;
-    this.stage = this.level + 3;
-  }
-};
+//
+// Game.prototype.levelUp = function() {
+//   this.stage += 1;
+//   this.moves = 0;
+//   console.log(`increment up this.stage --> ${this.stage}`);
+//   if (this.stage >= this.level + 3) {
+//     console.log(`increment up this.level --> ${this.level}`);
+//     this.level += 1;
+//     this.stage = 0;
+//   }
+// };
+//
+// Game.prototype.levelDown = function() {
+//   this.stage -= 1;
+//   this.moves = 0;
+//   console.log(`increment up this.stage --> ${this.stage}`);
+//   if (this.stage < 0) {
+//     console.log(`increment up this.level --> ${this.level}`);
+//     this.level -= 1;
+//     this.stage = this.level + 3;
+//   }
+// };
 
 
 module.exports = Game;

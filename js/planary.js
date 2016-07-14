@@ -20,8 +20,5 @@ document.addEventListener("DOMContentLoaded", function(){
   const ctx = canvasEl.getContext("2d");
   const rootEl = $('.planary-root');
 
-  // console.log('created ctx & game in planary.js');
-  // console.log(ctx);
-
   new GameView(ctx, rootEl, {level: 0, stage: 0});
 });
