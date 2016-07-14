@@ -677,9 +677,9 @@
 	    const $winModal = $(".win-modal");
 	
 	    const $stats = $("<p>");
-	    const $level = $(".level").text(`Level: ${this.level+1}`);
-	    const $stage = $(".stage").text(`Stage: ${this.stage+1}`);
-	    const $moves = $(".moves").text(`Moves: ${this.game.moves}`);
+	    const $level = $(".level").empty().append(`Level: <span>${this.level+1}</span>`);
+	    const $stage = $(".stage").empty().append(`Stage: <span>${this.stage+1}</span>`);
+	    const $moves = $(".moves").empty().append(`Moves: <span>${this.game.moves}</span>`);
 	
 	    $winModal.css({display: "block"});
 	  }

@@ -124,6 +124,10 @@ a.next-level-modal {
   color: #2794EB;
 }
 
+div span {
+  color: white;
+}
+
 h1 {
   text-align: center;
   margin: 0 auto;
