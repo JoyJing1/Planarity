@@ -89,11 +89,17 @@ a.next-level-modal {
   text-align: center;
 }
 
-
 h1 {
   text-align: center;
   margin: 0 auto;
   margin-top: 30px;
+}
+
+p.description {
+  width: 20%;
+  padding: 12px 20px;
+  border: 4px solid purple;
+  position: absolute;
 }
 
 body {
