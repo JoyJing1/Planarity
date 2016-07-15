@@ -46,7 +46,7 @@
 
 	"use strict";
 	
-	const Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	const Game = __webpack_require__(1)
 	    , GameView = __webpack_require__(7);
 	
 	document.addEventListener("DOMContentLoaded", function(){
@@ -71,7 +71,134 @@
 
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	const Constants = __webpack_require__(2)
+	    , Edge = __webpack_require__(3)
+	    , Graph = __webpack_require__(5)
+	    , Util = __webpack_require__(4)
+	    , Vertex = __webpack_require__(6);
+	
+	const Game = function (options) {
+	  // this.vertices = [];
+	  // this.edges = [];
+	  this.level = options.level || 0;
+	  this.stage = options.stage || 0;
+	  this.moves = 0;
+	
+	  this.setPlaySize();
+	  this.buildGraph();
+	  this.setVertexSize();
+	};
+	
+	Game.prototype.setPlaySize = function() {
+	  const $board = $(".canvas-div");
+	  $board.width(Game.DIM_X).height(Game.DIM_Y);
+	
+	  Game.leftOffset = (window.innerWidth - Game.DIM_X) / 2;
+	  $board.css( {left: Game.leftOffset} );
+	};
+	
+	
+	Game.prototype.setVertexSize = function() {
+	  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
+	};
+	
+	Game.prototype.isPlanar = function() {
+	  let planar = true;
+	
+	  this.edges.forEach( (edge1, i1) => {
+	    this.edges.forEach( (edge2, i2) => {
+	      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
+	        planar = false;
+	      }
+	    });
+	  });
+	
+	  return planar;
+	};
+	
+	Game.prototype.buildGraph = function() {
+	  this.vertices = [];
+	  this.edges = [];
+	
+	  // Pass in n instead of level
+	  let edgeCoords = Graph.generateEdges(this.level);
+	  let n = this.level + 4;
+	  let numVertices = (n * (n-1)/2);
+	
+	  if (this.level > 0) {
+	    numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
+	  }
+	
+	  for (let j = 0; j < numVertices; j++) {
+	
+	    let xOffset = Game.DIM_X/2;
+	    let yOffset = Game.DIM_Y/2;
+	
+	    let xResize = Game.DIM_X*0.35;
+	    let yResize = Game.DIM_Y*0.35;
+	
+	    let x = Math.cos(j * 2 * Math.PI / numVertices) * xResize + xOffset;
+	    let y = Math.sin(j * 2 * Math.PI / numVertices) * xResize + xOffset;
+	
+	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
+	  }
+	
+	  // this.vertices. -- randomize order
+	
+	  let verticesReached = [];
+	  edgeCoords.forEach ( (edgeCoord, i) => {
+	
+	    if (edgeCoord[0] < numVertices && edgeCoord[1] < numVertices) {
+	      const edge = new Edge({ vertex1: this.vertices[edgeCoord[0]],
+	                              vertex2: this.vertices[edgeCoord[1]],
+	                              idx: i });
+	      this.edges.push(edge);
+	
+	      this.vertices[edgeCoord[0]].edges.push(edge);
+	      this.vertices[edgeCoord[1]].edges.push(edge);
+	
+	      verticesReached.push(edgeCoord[0]);
+	      verticesReached.push(edgeCoord[1]);
+	    }
+	  });
+	
+	  for (let i = 0; i < numVertices; i++) {
+	    if (!verticesReached.includes(i)) {
+	      let v2 = 0;
+	      if (i === v2) { v2 += 1; }
+	      const edge = new Edge({ vertex1: this.vertices[i],
+	                              vertex2: this.vertices[v2],
+	                              idx: edges.length });
+	      this.edges.push(edge);
+	
+	      this.vertices[i].edges.push(edge);
+	      this.vertices[v2].edges.push(edge);
+	    }
+	  }
+	
+	  // If graph is already solved, generate new graph
+	  if (this.isPlanar()) {
+	    this.buildGraph();
+	  }
+	
+	};
+	
+	Game.prototype.dropVertices = function() {
+	  this.vertices.forEach( vertex => {
+	    vertex.selected = false;
+	    vertex.color = Constants.COLOR;
+	  });
+	};
+	
+	module.exports = Game;
+
+
+/***/ },
 /* 2 */
 /***/ function(module, exports) {
 
@@ -91,7 +218,255 @@
 
 
 /***/ },
-/* 3 */,
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	const Constants = __webpack_require__(2)
+	    , Util = __webpack_require__(4);
+	
+	const Edge = function(options) {
+	  this.vertex1 = options.vertex1;
+	  this.vertex2 = options.vertex2;
+	  this.idx = options.idx;
+	};
+	
+	Edge.prototype.draw = function(ctx, edges) {
+	  if (this.currentlyIntersecting(edges)) {
+	    ctx.strokeStyle = Constants.LINE_INTERSECTING;
+	    ctx.shadowColor = Constants.LINE_INTERSECTING;
+	    ctx.lineWidth = 3;
+	    ctx.beginPath();
+	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	    ctx.stroke();
+	
+	  } else {
+	    ctx.strokeStyle = Constants.BLACK;
+	    ctx.lineWidth = 3;
+	    ctx.beginPath();
+	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	    ctx.stroke();
+	  }
+	};
+	
+	Edge.prototype.slope = function() {
+	
+	  if (this.vertex1.x === this.vertex2.x) {
+	    return 100000;
+	  } else if (this.vertex1.x < this.vertex2.x) {
+	    return (this.vertex2.y - this.vertex1.y) / (this.vertex2.x - this.vertex1.x);
+	  } else {
+	    return (this.vertex1.y - this.vertex2.y) / (this.vertex1.x - this.vertex2.x);
+	  }
+	
+	};
+	
+	Edge.prototype.xIntercept = function() {
+	  if (this.isVertical()) {
+	    return this.vertex1.x;
+	  } else if (this.isHorizontal()) {
+	    return 1000000;
+	  } else {
+	    return -this.yIntercept()/this.slope();
+	  }
+	};
+	
+	Edge.prototype.yIntercept = function() {
+	  if (this.isVertical()) {
+	    return 1000000;
+	  } else if (this.isHorizontal()) {
+	    return this.vertex1.y;
+	  } else {
+	    return this.vertex1.y - (this.slope()*this.vertex1.x);
+	  }
+	};
+	
+	Edge.prototype.shareVertex = function(edge) {
+	  return (
+	    this.vertex1 === edge.vertex1
+	    || this.vertex1 === edge.vertex2
+	    || this.vertex2 === edge.vertex1
+	    || this.vertex2 === edge.vertex2
+	  );
+	};
+	
+	Edge.prototype.isVertical = function() {
+	  return (Math.abs(this.vertex1.x - this.vertex2.x) < Constants.EPSILON);
+	  // return (this.vertex1.x === this.vertex2.x);
+	};
+	
+	Edge.prototype.isHorizontal = function() {
+	  return (Math.abs(this.vertex1.y - this.vertex2.y) < Constants.EPSILON);
+	  // return (this.vertex1.y === this.vertex2.y);
+	};
+	
+	Edge.prototype.intersectsAtX = function(edge) {
+	  return (edge.yIntercept() - this.yIntercept()) / (this.slope() - edge.slope());
+	};
+	
+	Edge.prototype.xValue = function(y) {
+	  return (y - this.yIntercept())/this.slope();
+	};
+	
+	Edge.prototype.yValue = function(x) {
+	  return (this.slope() * x) + this.yIntercept();
+	};
+	
+	Edge.prototype.minX = function() {
+	  return Math.min(this.vertex1.x, this.vertex2.x);
+	};
+	
+	Edge.prototype.maxX = function() {
+	  return Math.max(this.vertex1.x, this.vertex2.x);
+	};
+	
+	Edge.prototype.minY = function() {
+	  return Math.min(this.vertex1.y, this.vertex2.y);
+	};
+	
+	Edge.prototype.maxY = function() {
+	  return Math.max(this.vertex1.y, this.vertex2.y);
+	};
+	
+	Edge.prototype.intersectsWith = function(edge) {
+	  if (this === edge) {
+	    return false;
+	
+	  } else if (this.vertex1 === edge.vertex1) {
+	    let response = false;
+	
+	    let slope1 = Util.slope(this.vertex1, this.vertex2);
+	    let slope2 = Util.slope(edge.vertex1, edge.vertex2);
+	
+	    if (slope1 === slope2) {
+	      response = true;
+	    }
+	    return response;
+	
+	  } else if (this.vertex1 === edge.vertex2) {
+	    let response = false;
+	
+	    let slope1 = Util.slope(this.vertex1, this.vertex2);
+	    let slope2 = Util.slope(edge.vertex2, edge.vertex1);
+	
+	    if (slope1 === slope2) {
+	      response = true;
+	    }
+	    return response;
+	
+	  } else if (this.vertex2 === edge.vertex1) {
+	    let response = false;
+	
+	    let slope1 = Util.slope(this.vertex2, this.vertex1);
+	    let slope2 = Util.slope(edge.vertex1, edge.vertex2);
+	
+	    if (slope1 === slope2) {
+	      response = true;
+	    }
+	    return response;
+	
+	  } else if (this.vertex2 === edge.vertex2) {
+	    let response = false;
+	
+	    let slope1 = Util.slope(this.vertex2, this.vertex1);
+	    let slope2 = Util.slope(edge.vertex2, edge.vertex1);
+	
+	    if (slope1 === slope2) {
+	      response = true;
+	    }
+	    return response;
+	
+	  } else if (this.isHorizontal()) {
+	    let response = false;
+	
+	    if (edge.minY()+1 < this.vertex1.y && this.vertex1.y < edge.maxY()-1) {
+	      if (edge.isVertical()) {
+	        response = true;
+	      } else {
+	        let xValue = edge.xValue(this.vertex1.y);
+	        if (this.minX()+1 < xValue && xValue < this.maxX()-1) {
+	          response = true;
+	        }
+	      }
+	    }
+	    return response;
+	
+	  } else if (edge.isHorizontal()) {
+	    let response = false;
+	    if (this.minY()+1 < edge.vertex1.y && edge.vertex1.y < this.maxY()-1) {
+	      if (this.isVertical()) {
+	        response = true;
+	      } else {
+	        let xValue = this.xValue(edge.vertex1.y);
+	        if (edge.minX()+1 < xValue && xValue < edge.maxX()-1) {
+	          response = true;
+	        }
+	      }
+	    }
+	    return response;
+	
+	  } else if (this.isVertical()) {
+	    let response = false;
+	    if (edge.minX()+1 < this.vertex1.x && this.vertex1.x < edge.maxX()-1) {
+	      if (edge.isHorizontal()) {
+	        response = true;
+	      } else {
+	        let yValue = edge.yValue(this.vertex1.x);
+	        if (this.minY()+1 < yValue && yValue < this.maxY()-1) {
+	          response = true;
+	        }
+	      }
+	    }
+	    return response;
+	
+	  } else if (edge.isVertical()){
+	    let response = false;
+	
+	    if (this.minX()+1 < edge.vertex1.x && edge.vertex1.x < this.maxX()-1) {
+	      if (this.isHorizontal()) {
+	        response = true;
+	      } else {
+	        let yValue = this.yValue(edge.vertex1.x);
+	        if (edge.minY()+1 < yValue && yValue < edge.maxY()-1) {
+	          response = true;
+	        }
+	      }
+	    }
+	    return response;
+	
+	  // } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
+	  } else if (this.slope() === edge.slope()) {
+	    return false;
+	
+	  } else {
+	    const x = this.intersectsAtX(edge);
+	    const y = this.yValue(x);
+	
+	    const xWithinRange = (this.minX()+1 < x && x < this.maxX()-1 && edge.minX()+1 < x && x < edge.maxX()-1);
+	    const yWithinRange = (this.minY()+1 < y && y < this.maxY()-1 && edge.minY()+1 < y && y < edge.maxY()-1);
+	
+	    return xWithinRange && yWithinRange;
+	  }
+	};
+	
+	Edge.prototype.currentlyIntersecting = function(allEdges) {
+	  let intersecting = false;
+	
+	  allEdges.forEach( edge => {
+	    if (this.intersectsWith(edge)) {
+	      intersecting = true;
+	    }
+	  });
+	  return intersecting;
+	};
+	
+	module.exports = Edge;
+
+
+/***/ },
 /* 4 */
 /***/ function(module, exports) {
 
@@ -131,7 +506,108 @@
 
 
 /***/ },
-/* 5 */,
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	const Edge = __webpack_require__(3)
+	    , Util = __webpack_require__(4)
+	    , Vertex = __webpack_require__(6);
+	
+	const Graph = {
+	
+	  pairIndex(n) {
+	    let pairIndex = {};
+	
+	    let vertexIdx = 0;
+	    for (let i = 0; i <= n; i++) {
+	      for (let j = i+1; j<n; j++) {
+	        pairIndex[`${i},${j}`] = vertexIdx;
+	        vertexIdx++;
+	      }
+	    }
+	
+	    return pairIndex;
+	  },
+	
+	  generateLines(n) {
+	    let lines = [];
+	    let slopes = [];
+	
+	    while (lines.length < n) {
+	      let v1 = new Vertex( { x: Math.random(), y: Math.random() });
+	      let v2 = new Vertex( { x: Math.random(), y: Math.random() });
+	
+	      let slope = Util.slope(v1, v2);
+	      // let inverseSlope = Util.slope(v2, v1);
+	      if (!slopes.includes(slope)) {
+	        let line = new Edge({ vertex1: v1, vertex2: v2, idx: lines.length});
+	        lines.push(line);
+	      }
+	    }
+	    return lines;
+	  },
+	
+	  generateEdges(level) {
+	    const n = level+4;
+	
+	    // Build pairIndex hash from { [pair]: indexOfVertex }
+	    let pairIndex = this.pairIndex(n);
+	
+	    // Generate n * (n-1)/2 random lines of differing slope
+	    const lines = this.generateLines(n);
+	
+	    // For each line, find the intersection points
+	    // of that line with all other lines
+	    let edges = [];
+	    lines.forEach( (line1, i1) => {
+	      let intersections = [];
+	
+	      lines.forEach( (line2, i2) => {
+	        if (i1 !== i2) {
+	          debugger;
+	          let intersection = line1.intersectsAtX(line2);
+	          intersections.push( { x: intersection, lineIdx: i2 } );
+	        }
+	
+	      });
+	
+	      // Order lines by intersection point's X coord
+	      intersections.sort( (intersect1, intersect2) => {
+	        return intersect1.x - intersect2.x;
+	      });
+	      console.log(intersections); // x always 0
+	
+	      // For each pair of neighboring intersections
+	      // create a new edge between them
+	      for (let i = 0; i < intersections.length-1; i++) {
+	        let l1 = intersections[i];
+	        let l2 = intersections[i+1];
+	
+	        let indices1 = [i1, l1.lineIdx];
+	        let indices2 = [i1, l2.lineIdx];
+	
+	        indices1.sort( (a, b) => a-b  );
+	        indices2.sort( (a, b) => a-b  );
+	
+	        let v1 = pairIndex[indices1];
+	        let v2 = pairIndex[indices2];
+	
+	        edges.push([v1, v2]);
+	      }
+	
+	    });
+	
+	    return edges;
+	  }
+	
+	};
+	
+	module.exports = Graph;
+
+
+/***/ },
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -185,7 +661,7 @@
 	"use strict";
 	
 	const Constants = __webpack_require__(2)
-	    , Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+	    , Game = __webpack_require__(1)
 	    , Util = __webpack_require__(4)
 	    , Vertex = __webpack_require__(6);
 	

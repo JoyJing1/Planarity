@@ -105,7 +105,7 @@ Game.prototype.buildGraph = function() {
     }
   }
 
-  If graph is already solved, generate new graph
+  // If graph is already solved, generate new graph
   if (this.isPlanar()) {
     this.buildGraph();
   }
