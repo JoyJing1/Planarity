@@ -79,7 +79,7 @@ GameView.prototype.renderRules = function() {
 
     $rulesContent.append($playButton);
 
-    $playButton.on("click tap", event => {
+    $playButton.on("tap click", event => {
       $rulesModal.css( {display: "none"} );
     });
 
@@ -121,7 +121,7 @@ GameView.prototype.renderModal = function() {
 
     $modalContent.append($nextButton);
 
-    $nextButton.on("click tap", event => {
+    $nextButton.on("tap click", event => {
       event.stopPropagation();
       event.preventDefault();
 
@@ -168,7 +168,7 @@ GameView.prototype.checkPlanarity = function() {
 
 GameView.prototype.bindButtonEvents = function() {
 
-  $(".previous-level").on("click tap", event => {
+  $(".previous-level").on("tap click", event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -178,7 +178,7 @@ GameView.prototype.bindButtonEvents = function() {
     }
   });
 
-  $(".next-level").on("click tap", event => {
+  $(".next-level").on("tap click", event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -186,7 +186,7 @@ GameView.prototype.bindButtonEvents = function() {
     this.playLevel(this.level);
   });
 
-  $(".show-rules").on("click tap", event => {
+  $(".show-rules").on("tap click", event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -258,7 +258,7 @@ GameView.prototype.bindGraphEvents = function() {
     this.currentMousePos.y = event.pageY + yAdjust;
   });
 
-  document.addEventListener("touchmove", event => {
+  $(document).addEventListener("touchmove", event => {
     event.stopPropagation();
     event.preventDefault();
 
