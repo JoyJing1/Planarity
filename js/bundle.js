@@ -819,7 +819,10 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  $(".previous-level").on("tap click", event => {
+	  $("previous-level").off("tap");
+	  $("previous-level").off("click");
+	
+	  $("previous-level").on("tap click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
@@ -829,7 +832,10 @@
 	    }
 	  });
 	
-	  $(".next-level").on("tap click", event => {
+	
+	  $("next-level").off("tap");
+	  $("next-level").off("click");
+	  $("next-level").on("tap click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
@@ -837,7 +843,9 @@
 	    this.playLevel(this.level);
 	  });
 	
-	  $(".show-rules").on("tap click", event => {
+	  $("show-rules").off("tap");
+	  $("show-rules").off("click");
+	  $("show-rules").on("tap click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
@@ -861,6 +869,8 @@
 	
 	GameView.prototype.bindGraphEvents = function() {
 	
+	  $("canvas").off("mousedown");
+	  $("canvas").off("touchstart");
 	  $("canvas").on("mousedown touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -890,6 +900,9 @@
 	
 	  });
 	
+	  $(document).off("mouseup");
+	  $(document).off("touchend");
+	
 	  $(document).on("mouseup touchend", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -898,6 +911,7 @@
 	    this.checkPlanarity();
 	  });
 	
+	  $(document).off("mousemove");
 	  $(document).mousemove( event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -909,11 +923,18 @@
 	    this.currentMousePos.y = event.pageY + yAdjust;
 	  });
 	
+	  $(document).off("touchmove");
 	  $(document).on("touchmove", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	
-	    let touch = event.touches[0];
+	    // console.log(event);
+	    // console.log(event.originalEvent);
+	    // console.log(event.originalEvent.targetTouches[0]);
+	    // console.log(event.originalEvent.targetTouches[0].pageX);
+	    // console.log(event.originalEvent.targetTouches[0].pageY);
+	    // debugger;
+	    let touch = event.originalEvent.targetTouches[0];
+	    console.log(touch);
 	
 	    if (touch) {
 	      const yAdjust = -40;
