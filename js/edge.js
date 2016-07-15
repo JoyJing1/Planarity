@@ -71,13 +71,13 @@ Edge.prototype.shareVertex = function(edge) {
 };
 
 Edge.prototype.isVertical = function() {
-  // return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
-  return (this.vertex1.x === this.vertex2.x);
+  return (Math.abs(this.vertex1.x - this.vertex2.x) < Constants.EPSILON);
+  // return (this.vertex1.x === this.vertex2.x);
 };
 
 Edge.prototype.isHorizontal = function() {
-  // return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
-  return (this.vertex1.y === this.vertex2.y);
+  return (Math.abs(this.vertex1.y - this.vertex2.y) < Constants.EPSILON);
+  // return (this.vertex1.y === this.vertex2.y);
 };
 
 Edge.prototype.intersectsAtX = function(edge) {

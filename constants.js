@@ -9,5 +9,5 @@ module.exports = {
   LINE_SELECTED: "#6150C1",
   LINE_INTERSECTING: "#FF9090",
 	RADIUS: 15,
-  EPSILON: 0.01
+  EPSILON: 0.00001
 };

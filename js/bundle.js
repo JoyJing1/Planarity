@@ -213,7 +213,7 @@
 	  LINE_SELECTED: "#6150C1",
 	  LINE_INTERSECTING: "#FF9090",
 		RADIUS: 15,
-	  EPSILON: 0.01
+	  EPSILON: 0.00001
 	};
 
 
@@ -294,13 +294,13 @@
 	};
 	
 	Edge.prototype.isVertical = function() {
-	  // return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
-	  return (this.vertex1.x === this.vertex2.x);
+	  return (Math.abs(this.vertex1.x - this.vertex2.x) < Constants.EPSILON);
+	  // return (this.vertex1.x === this.vertex2.x);
 	};
 	
 	Edge.prototype.isHorizontal = function() {
-	  // return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
-	  return (this.vertex1.y === this.vertex2.y);
+	  return (Math.abs(this.vertex1.y - this.vertex2.y) < Constants.EPSILON);
+	  // return (this.vertex1.y === this.vertex2.y);
 	};
 	
 	Edge.prototype.intersectsAtX = function(edge) {
