@@ -49,6 +49,7 @@ Game.prototype.buildGraph = function() {
   this.vertices = [];
   this.edges = [];
 
+  // Pass in n instead of level
   let edgeCoords = Graph.generateEdges(this.level);
   let n = this.level + 4;
   let numVertices = (n * (n-1)/2);
@@ -70,6 +71,8 @@ Game.prototype.buildGraph = function() {
 
     this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
   }
+
+  // this.vertices. -- randomize order
 
   let verticesReached = [];
   edgeCoords.forEach ( (edgeCoord, i) => {
@@ -94,8 +97,7 @@ Game.prototype.buildGraph = function() {
       if (i === v2) { v2 += 1; }
       const edge = new Edge({ vertex1: this.vertices[i],
                               vertex2: this.vertices[v2],
-                              idx: i });
-
+                              idx: edges.length });
       this.edges.push(edge);
 
       this.vertices[i].edges.push(edge);
@@ -104,9 +106,9 @@ Game.prototype.buildGraph = function() {
   }
 
   // If graph is already solved, generate new graph
-  if (this.isPlanar()) {
-    this.buildGraph();
-  }
+  // if (this.isPlanar()) {
+  //   this.buildGraph();
+  // }
 
 };
 

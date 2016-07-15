@@ -125,6 +125,7 @@
 	  this.vertices = [];
 	  this.edges = [];
 	
+	  // Pass in n instead of level
 	  let edgeCoords = Graph.generateEdges(this.level);
 	  let n = this.level + 4;
 	  let numVertices = (n * (n-1)/2);
@@ -146,6 +147,8 @@
 	
 	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
 	  }
+	
+	  // this.vertices. -- randomize order
 	
 	  let verticesReached = [];
 	  edgeCoords.forEach ( (edgeCoord, i) => {
@@ -170,8 +173,7 @@
 	      if (i === v2) { v2 += 1; }
 	      const edge = new Edge({ vertex1: this.vertices[i],
 	                              vertex2: this.vertices[v2],
-	                              idx: i });
-	
+	                              idx: edges.length });
 	      this.edges.push(edge);
 	
 	      this.vertices[i].edges.push(edge);
@@ -180,9 +182,9 @@
 	  }
 	
 	  // If graph is already solved, generate new graph
-	  if (this.isPlanar()) {
-	    this.buildGraph();
-	  }
+	  // if (this.isPlanar()) {
+	  //   this.buildGraph();
+	  // }
 	
 	};
 	
@@ -292,11 +294,13 @@
 	};
 	
 	Edge.prototype.isVertical = function() {
-	  return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
+	  // return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
+	  return (this.vertex1.x === this.vertex2.x);
 	};
 	
 	Edge.prototype.isHorizontal = function() {
-	  return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
+	  // return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
+	  return (this.vertex1.y === this.vertex2.y);
 	};
 	
 	Edge.prototype.intersectsAtX = function(edge) {
@@ -313,19 +317,19 @@
 	
 	Edge.prototype.minX = function() {
 	  return Math.min(this.vertex1.x, this.vertex2.x);
-	}
+	};
 	
 	Edge.prototype.maxX = function() {
 	  return Math.max(this.vertex1.x, this.vertex2.x);
-	}
+	};
 	
 	Edge.prototype.minY = function() {
 	  return Math.min(this.vertex1.y, this.vertex2.y);
-	}
+	};
 	
 	Edge.prototype.maxY = function() {
 	  return Math.max(this.vertex1.y, this.vertex2.y);
-	}
+	};
 	
 	Edge.prototype.intersectsWith = function(edge) {
 	  if (this === edge) {
@@ -433,15 +437,16 @@
 	    }
 	    return response;
 	
-	  } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
-	    return false
+	  // } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
+	  } else if (this.slope() === edge.slope()) {
+	    return false;
 	
 	  } else {
 	    const x = this.intersectsAtX(edge);
 	    const y = this.yValue(x);
 	
-	    const xWithinRange = (this.minX()+1 < x && x < this.maxX()-1 && edge.minX()+1 < x && x < edge.maxX()-1)
-	    const yWithinRange = (this.minY()+1 < y && y < this.maxY()-1 && edge.minY()+1 < y && y < edge.maxY()-1)
+	    const xWithinRange = (this.minX()+1 < x && x < this.maxX()-1 && edge.minX()+1 < x && x < edge.maxX()-1);
+	    const yWithinRange = (this.minY()+1 < y && y < this.maxY()-1 && edge.minY()+1 < y && y < edge.maxY()-1);
 	
 	    return xWithinRange && yWithinRange;
 	  }
@@ -535,8 +540,9 @@
 	      let v2 = new Vertex( { x: Math.random(), y: Math.random() });
 	
 	      let slope = Util.slope(v1, v2);
+	      // let inverseSlope = Util.slope(v2, v1);
 	      if (!slopes.includes(slope)) {
-	        let line = new Edge({ vertex1: v1, vertex2: v2});
+	        let line = new Edge({ vertex1: v1, vertex2: v2, idx: lines.length});
 	        lines.push(line);
 	      }
 	    }
@@ -560,6 +566,7 @@
 	
 	      lines.forEach( (line2, i2) => {
 	        if (i1 !== i2) {
+	          debugger;
 	          let intersection = line1.intersectsAtX(line2);
 	          intersections.push( { x: intersection, lineIdx: i2 } );
 	        }
@@ -570,6 +577,7 @@
 	      intersections.sort( (intersect1, intersect2) => {
 	        return intersect1.x - intersect2.x;
 	      });
+	      console.log(intersections); // x always 0
 	
 	      // For each pair of neighboring intersections
 	      // create a new edge between them

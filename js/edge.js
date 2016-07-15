@@ -71,11 +71,13 @@ Edge.prototype.shareVertex = function(edge) {
 };
 
 Edge.prototype.isVertical = function() {
-  return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
+  // return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
+  return (this.vertex1.x === this.vertex2.x);
 };
 
 Edge.prototype.isHorizontal = function() {
-  return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
+  // return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
+  return (this.vertex1.y === this.vertex2.y);
 };
 
 Edge.prototype.intersectsAtX = function(edge) {
@@ -92,19 +94,19 @@ Edge.prototype.yValue = function(x) {
 
 Edge.prototype.minX = function() {
   return Math.min(this.vertex1.x, this.vertex2.x);
-}
+};
 
 Edge.prototype.maxX = function() {
   return Math.max(this.vertex1.x, this.vertex2.x);
-}
+};
 
 Edge.prototype.minY = function() {
   return Math.min(this.vertex1.y, this.vertex2.y);
-}
+};
 
 Edge.prototype.maxY = function() {
   return Math.max(this.vertex1.y, this.vertex2.y);
-}
+};
 
 Edge.prototype.intersectsWith = function(edge) {
   if (this === edge) {
@@ -212,15 +214,16 @@ Edge.prototype.intersectsWith = function(edge) {
     }
     return response;
 
-  } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
-    return false
+  // } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
+  } else if (this.slope() === edge.slope()) {
+    return false;
 
   } else {
     const x = this.intersectsAtX(edge);
     const y = this.yValue(x);
 
-    const xWithinRange = (this.minX()+1 < x && x < this.maxX()-1 && edge.minX()+1 < x && x < edge.maxX()-1)
-    const yWithinRange = (this.minY()+1 < y && y < this.maxY()-1 && edge.minY()+1 < y && y < edge.maxY()-1)
+    const xWithinRange = (this.minX()+1 < x && x < this.maxX()-1 && edge.minX()+1 < x && x < edge.maxX()-1);
+    const yWithinRange = (this.minY()+1 < y && y < this.maxY()-1 && edge.minY()+1 < y && y < edge.maxY()-1);
 
     return xWithinRange && yWithinRange;
   }
