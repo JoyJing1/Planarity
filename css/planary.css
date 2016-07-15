@@ -211,10 +211,6 @@ div.vertex {
   text-align: center;
 }
 
-/*.ui-draggable {
-  z-index: 5;
-}*/
-
 div.edge {
   background: green;
   height: 2px;

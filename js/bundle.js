@@ -83,8 +83,6 @@
 	    , Vertex = __webpack_require__(6);
 	
 	const Game = function (options) {
-	  // this.vertices = [];
-	  // this.edges = [];
 	  this.level = options.level || 0;
 	  this.stage = options.stage || 0;
 	  this.moves = 0;
@@ -126,7 +124,6 @@
 	  this.edges = [];
 	  const n = this.level + 4;
 	
-	  // Pass in n instead of level
 	  const edgeCoords = Graph.generateEdges(n);
 	  let numVertices = (n * (n-1)/2);
 	
@@ -472,21 +469,6 @@
 	    return (vertex2.y - vertex1.y) / (vertex2.x - vertex1.x);
 	  },
 	
-	  xIntercept(vertex, slope) {
-	    return vertex.y - (slope * vertex.x);
-	  },
-	
-	  // yIntercept(vertex, slope) {
-	  //   return vertex.y - (slope * vertex.x);
-	  // },
-	
-	  dist(vertex1, vertex2) {
-	    return Math.sqrt(
-	      Math.pow(vertex1.x - vertex2.x, 2)
-	        + Math.pow(vertex1.y - vertex2.y, 2)
-	    );
-	  },
-	
 	  distFromMouse(vertex, currentMousePos) {
 	    const vertexRadius = 12.5;
 	
@@ -820,13 +802,12 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  // $("previous-level").off("touchstart");
-	  // $("previous-level").off("click");
+	  $("previous-level").off("touchstart");
+	  $("previous-level").off("click");
 	  console.log("binding previous-level-button action");
 	  $(".previous-level").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    console.log("touchstart/clicked on previous-level button");
 	
 	    if (this.level > 0) {
 	      this.levelDown();
@@ -834,9 +815,8 @@
 	    }
 	  });
 	
-	  // $("next-level").off("touchstart");
-	  // $("next-level").off("click");
-	  console.log("binding next-level-button action");
+	  $("next-level").off("touchstart");
+	  $("next-level").off("click");
 	  $(".next-level").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -846,9 +826,8 @@
 	    this.playLevel(this.level);
 	  });
 	
-	  // $("show-rules").off("touchstart");
-	  // $("show-rules").off("click");
-	  console.log("binding show-rules-button action");
+	  $("show-rules").off("touchstart");
+	  $("show-rules").off("click");
 	  $(".show-rules").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -879,8 +858,6 @@
 	  $("canvas").on("mousedown touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    console.log("touchstart/mousedown on canvas button");
-	    console.log(this.currentMousePos);
 	
 	    let vertexSelected = false;
 	    let withinVertex = 30;
@@ -902,8 +879,6 @@
 	
 	    this.game.vertices.forEach( vertex => {
 	      const dist = Util.distFromMouse(vertex, this.currentMousePos);
-	      // console.log(`(${vertex.x}, ${vertex.y})`);
-	      console.log(dist);
 	
 	      if (dist < withinVertex && !vertexSelected) {
 	        this.game.moves += 1;
@@ -920,9 +895,8 @@
 	
 	  });
 	
-	  // $(document).off("mouseup");
-	  // $(document).off("touchend");
-	
+	  $(document).off("mouseup");
+	  $(document).off("touchend");
 	  $(document).on("mouseup touchend", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -932,7 +906,7 @@
 	    this.checkPlanarity();
 	  });
 	
-	  // $(document).off("mousemove");
+	  $(document).off("mousemove");
 	  $(document).mousemove( event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -944,18 +918,11 @@
 	    this.currentMousePos.y = event.pageY + yAdjust;
 	  });
 	
-	  // $(document).off("touchmove");
+	  $(document).off("touchmove");
 	  $(document).on("touchmove", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    // console.log(event);
-	    // console.log(event.originalEvent);
-	    // console.log(event.originalEvent.targetTouches[0]);
-	    // console.log(event.originalEvent.targetTouches[0].pageX);
-	    // console.log(event.originalEvent.targetTouches[0].pageY);
-	    // debugger;
 	    let touch = event.originalEvent.targetTouches[0];
-	    // console.log(touch);
 	
 	    if (touch) {
 	      const yAdjust = -40;

@@ -7,8 +7,6 @@ const Constants = require('../constants')
     , Vertex = require("./vertex");
 
 const Game = function (options) {
-  // this.vertices = [];
-  // this.edges = [];
   this.level = options.level || 0;
   this.stage = options.stage || 0;
   this.moves = 0;
@@ -50,7 +48,6 @@ Game.prototype.buildGraph = function() {
   this.edges = [];
   const n = this.level + 4;
 
-  // Pass in n instead of level
   const edgeCoords = Graph.generateEdges(n);
   let numVertices = (n * (n-1)/2);
 
