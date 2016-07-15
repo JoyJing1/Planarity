@@ -15,14 +15,12 @@ const GameView = function (ctx, root, options) {
   this.renderButtons();
   this.bindButtonEvents();
   this.bindGraphEvents();
-  // this.renderRules();
+  this.renderRules();
   this.playLevel(this.level); // Move to renderRules callback?
 };
 
 GameView.prototype.playLevel = function() {
   this.game = new Game({level: this.level, stage: this.stage});
-  // console.log("-------------------------------------------");
-  // console.log('START RENDERING GRAPH');
 
   this.renderGraph();
   this.renderModal();
