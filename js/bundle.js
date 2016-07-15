@@ -730,9 +730,13 @@
 	
 	    $rulesContent.append($playButton);
 	
-	    $playButton.on("tap click", event => {
+	    $playButton.on("touchstart click", event => {
+	      console.log("touchstart/clicked on $playButton");
 	      $rulesModal.css( {display: "none"} );
 	    });
+	
+	
+	
 	
 	    this.root.append($rulesModal);
 	  }
@@ -772,9 +776,10 @@
 	
 	    $modalContent.append($nextButton);
 	
-	    $nextButton.on("tap click", event => {
+	    $nextButton.on("touchstart click", event => {
 	      event.stopPropagation();
 	      event.preventDefault();
+	      console.log("touchstart/clicked on $nextButton");
 	
 	      this.levelUp();
 	      $modal.css({display: "none"});
@@ -789,8 +794,8 @@
 	
 	GameView.prototype.renderButtons = function() {
 	
-	  const $button2 = $("<div>").addClass("buton").addClass("nav").addClass("previous-level");
-	  const $button3 = $("<div>").addClass("buton").addClass("nav").addClass("next-level");
+	  const $button2 = $("<div>").addClass("button").addClass("nav").addClass("previous-level");
+	  const $button3 = $("<div>").addClass("button").addClass("nav").addClass("next-level");
 	  const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
 	
 	  const $buttonRules = $("<a>").addClass("button")
@@ -819,12 +824,12 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  $("previous-level").off("tap");
+	  $("previous-level").off("touchstart");
 	  $("previous-level").off("click");
-	
-	  $("previous-level").on("tap click", event => {
+	  $("previous-level").on("touchstart click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	    console.log("touchstart/clicked on previous-level button");
 	
 	    if (this.level > 0) {
 	      this.levelDown();
@@ -833,21 +838,23 @@
 	  });
 	
 	
-	  $("next-level").off("tap");
+	  $("next-level").off("touchstart");
 	  $("next-level").off("click");
-	  $("next-level").on("tap click", event => {
+	  $("next-level").on("touchstart click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	    console.log("touchstart/clicked on next-level button");
 	
 	    this.levelUp();
 	    this.playLevel(this.level);
 	  });
 	
-	  $("show-rules").off("tap");
+	  $("show-rules").off("touchstart");
 	  $("show-rules").off("click");
-	  $("show-rules").on("tap click", event => {
+	  $("show-rules").on("touchstart click", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	    console.log("touchstart/clicked on show-rules button");
 	
 	    $(".rules").css( {display: "block"} );
 	  });
@@ -874,6 +881,8 @@
 	  $("canvas").on("mousedown touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	    console.log("touchstart/mousedown on canvas button");
+	    console.log(this.currentMousePos);
 	
 	    let vertexSelected = false;
 	    let withinVertex = 30;
@@ -882,8 +891,24 @@
 	      withinVertex += (Vertex.RADIUS - 7);
 	    }
 	
+	    let touch = event.originalEvent.targetTouches[0];
+	    // console.log(touch);
+	
+	    if (touch) {
+	      // withinVertex = 20;
+	      const yAdjust = -40;
+	      const xAdjust = 0;
+	
+	      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
+	      this.currentMousePos.y = touch.pageY + yAdjust;
+	      // console.log("inside touch of canvas");
+	      // console.log(this.currentMousePos);
+	    }
+	
 	    this.game.vertices.forEach( vertex => {
 	      const dist = Util.distFromMouse(vertex, this.currentMousePos);
+	      // console.log(`(${vertex.x}, ${vertex.y})`);
+	      console.log(dist);
 	
 	      if (dist < withinVertex && !vertexSelected) {
 	        this.game.moves += 1;
@@ -906,6 +931,7 @@
 	  $(document).on("mouseup touchend", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	    console.log("touchend/mouseup on document button");
 	
 	    this.game.dropVertices();
 	    this.checkPlanarity();
@@ -934,7 +960,7 @@
 	    // console.log(event.originalEvent.targetTouches[0].pageY);
 	    // debugger;
 	    let touch = event.originalEvent.targetTouches[0];
-	    console.log(touch);
+	    // console.log(touch);
 	
 	    if (touch) {
 	      const yAdjust = -40;
@@ -942,8 +968,15 @@
 	
 	      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
 	      this.currentMousePos.y = touch.pageY + yAdjust;
+	      console.log(this.currentMousePos);
 	    }
 	  });
+	
+	  // $(document).on("touchstart", event => {
+	  //   console.log("captured tap event");
+	  //   console.log(event);
+	  // });
+	
 	
 	};
 	
