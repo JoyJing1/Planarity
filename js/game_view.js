@@ -169,9 +169,10 @@ GameView.prototype.checkPlanarity = function() {
 
 GameView.prototype.bindButtonEvents = function() {
 
-  $("previous-level").off("touchstart");
-  $("previous-level").off("click");
-  $("previous-level").on("touchstart click", event => {
+  // $("previous-level").off("touchstart");
+  // $("previous-level").off("click");
+  console.log("binding previous-level-button action");
+  $(".previous-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
     console.log("touchstart/clicked on previous-level button");
@@ -182,9 +183,10 @@ GameView.prototype.bindButtonEvents = function() {
     }
   });
 
-  $("next-level").off("touchstart");
-  $("next-level").off("click");
-  $("next-level").on("touchstart click", event => {
+  // $("next-level").off("touchstart");
+  // $("next-level").off("click");
+  console.log("binding next-level-button action");
+  $(".next-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
     console.log("touchstart/clicked on next-level button");
@@ -193,9 +195,10 @@ GameView.prototype.bindButtonEvents = function() {
     this.playLevel(this.level);
   });
 
-  $("show-rules").off("touchstart");
-  $("show-rules").off("click");
-  $("show-rules").on("touchstart click", event => {
+  // $("show-rules").off("touchstart");
+  // $("show-rules").off("click");
+  console.log("binding show-rules-button action");
+  $(".show-rules").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
     console.log("touchstart/clicked on show-rules button");
@@ -266,8 +269,8 @@ GameView.prototype.bindGraphEvents = function() {
 
   });
 
-  $(document).off("mouseup");
-  $(document).off("touchend");
+  // $(document).off("mouseup");
+  // $(document).off("touchend");
 
   $(document).on("mouseup touchend", event => {
     event.stopPropagation();
@@ -278,7 +281,7 @@ GameView.prototype.bindGraphEvents = function() {
     this.checkPlanarity();
   });
 
-  $(document).off("mousemove");
+  // $(document).off("mousemove");
   $(document).mousemove( event => {
     event.stopPropagation();
     event.preventDefault();
@@ -290,7 +293,7 @@ GameView.prototype.bindGraphEvents = function() {
     this.currentMousePos.y = event.pageY + yAdjust;
   });
 
-  $(document).off("touchmove");
+  // $(document).off("touchmove");
   $(document).on("touchmove", event => {
     event.stopPropagation();
     event.preventDefault();
