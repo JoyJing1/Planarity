@@ -65,7 +65,6 @@ const Graph = {
       intersections.sort( (intersect1, intersect2) => {
         return intersect1.x - intersect2.x;
       });
-      console.log(intersections); // x always 0
 
       // For each pair of neighboring intersections
       // create a new edge between them
