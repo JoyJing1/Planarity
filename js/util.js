@@ -9,6 +9,10 @@ const Util = {
     return vertex.y - (slope * vertex.x);
   },
 
+  // yIntercept(vertex, slope) {
+  //   return vertex.y - (slope * vertex.x);
+  // },
+
   dist(vertex1, vertex2) {
     return Math.sqrt(
       Math.pow(vertex1.x - vertex2.x, 2)

@@ -72,10 +72,12 @@ Game.prototype.buildGraph = function() {
   }
 
   let verticesReached = [];
-  edgeCoords.forEach ( edgeCoord => {
+  edgeCoords.forEach ( (edgeCoord, i) => {
 
     if (edgeCoord[0] < numVertices && edgeCoord[1] < numVertices) {
-      const edge = new Edge({ vertex1: this.vertices[edgeCoord[0]], vertex2: this.vertices[edgeCoord[1]] });
+      const edge = new Edge({ vertex1: this.vertices[edgeCoord[0]],
+                              vertex2: this.vertices[edgeCoord[1]],
+                              idx: i });
       this.edges.push(edge);
 
       this.vertices[edgeCoord[0]].edges.push(edge);
@@ -90,7 +92,9 @@ Game.prototype.buildGraph = function() {
     if (!verticesReached.includes(i)) {
       let v2 = 0;
       if (i === v2) { v2 += 1; }
-      const edge = new Edge({ vertex1: this.vertices[i], vertex2: this.vertices[v2] });
+      const edge = new Edge({ vertex1: this.vertices[i],
+                              vertex2: this.vertices[v2],
+                              idx: i });
 
       this.edges.push(edge);
 
