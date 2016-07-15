@@ -31,7 +31,7 @@ Game.prototype.setVertexSize = function() {
 
   let mq = window.matchMedia('all and (max-width: 700px)');
   if(mq.matches) {
-    Vertex.RADIUS = Vertex.RADIUS * 20;
+    Vertex.RADIUS = Vertex.RADIUS * 30;
     console.log("increased size of vertex based on media size");
     // the width of browser is more then 700px
   } else {
