@@ -29,6 +29,7 @@ html, body {
   -ms-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   transform: scaleX(-1);
+  z-index: 2;
 }
 
 .next-level {
@@ -39,6 +40,7 @@ html, body {
   width: 50px;
   background-size: contain;
   position: absolute;
+  z-index: 2;
 }
 
 .previous-level:hover, .next-level:hover {
@@ -70,7 +72,7 @@ a.next-level-modal {
 .modal {
   display: none;
   position: fixed;
-  z-index: 2;
+  z-index: 5;
   left: 0;
   top: 0;
   width: 100%;
@@ -107,12 +109,17 @@ a.next-level-modal {
   font-size: 20px;
 }
 
-.modal-content div {
+.win-modal-content p {
   margin: 8px auto 0 auto;
   font-size: 24px;
   text-align: center;
   color: #2794EB;
 }
+
+.results {
+  color: #2794EB;
+}
+
 
 div span {
   color: white;
@@ -204,9 +211,9 @@ div.vertex {
   text-align: center;
 }
 
-.ui-draggable {
+/*.ui-draggable {
   z-index: 5;
-}
+}*/
 
 div.edge {
   background: green;

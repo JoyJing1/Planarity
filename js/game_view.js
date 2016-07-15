@@ -37,7 +37,6 @@ GameView.prototype.playLevel = function() {
 GameView.prototype.levelUp = function() {
   this.stage += 1;
   this.game.moves = 0;
-
   if (this.stage > 0) {
     $(".description").css( {display: "none"} );
   }
@@ -84,9 +83,6 @@ GameView.prototype.renderRules = function() {
       $rulesModal.css( {display: "none"} );
     });
 
-
-
-
     this.root.append($rulesModal);
   }
 
@@ -103,10 +99,10 @@ GameView.prototype.renderModal = function() {
                   .addClass("win-modal")
                   .css( {display: "none"} );
 
-    const $modalContent = $("<div>").addClass("modal-content");
+    const $modalContent = $("<div>").addClass("modal-content").addClass("win-modal-content");
     const $congrats = $("<h2>").text("Congratulations, the graph is planar!");
 
-    const $stats = $("<p>");
+    const $stats = $("<p>").addClass("stats");
     const $level = $("<div>").addClass("results level");
     const $stage = $("<div>").addClass("results stage");
     const $moves = $("<div>").addClass("results moves");
@@ -186,7 +182,6 @@ GameView.prototype.bindButtonEvents = function() {
     }
   });
 
-
   $("next-level").off("touchstart");
   $("next-level").off("click");
   $("next-level").on("touchstart click", event => {
@@ -240,18 +235,15 @@ GameView.prototype.bindGraphEvents = function() {
       withinVertex += (Vertex.RADIUS - 7);
     }
 
-    let touch = event.originalEvent.targetTouches[0];
-    // console.log(touch);
+    if (event.originalEvent.targetTouches) {
+      let touch = event.originalEvent.targetTouches[0];
+      if (touch) {
+        const yAdjust = -40;
+        const xAdjust = 0;
 
-    if (touch) {
-      // withinVertex = 20;
-      const yAdjust = -40;
-      const xAdjust = 0;
-
-      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
-      this.currentMousePos.y = touch.pageY + yAdjust;
-      // console.log("inside touch of canvas");
-      // console.log(this.currentMousePos);
+        this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
+        this.currentMousePos.y = touch.pageY + yAdjust;
+      }
     }
 
     this.game.vertices.forEach( vertex => {
@@ -320,12 +312,6 @@ GameView.prototype.bindGraphEvents = function() {
       console.log(this.currentMousePos);
     }
   });
-
-  // $(document).on("touchstart", event => {
-  //   console.log("captured tap event");
-  //   console.log(event);
-  // });
-
 
 };
 
