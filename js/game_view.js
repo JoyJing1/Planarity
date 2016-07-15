@@ -79,7 +79,7 @@ GameView.prototype.renderRules = function() {
 
     $rulesContent.append($playButton);
 
-    $playButton.on("tap", event => {
+    $playButton.on("tap click", event => {
       $rulesModal.css( {display: "none"} );
     });
 
