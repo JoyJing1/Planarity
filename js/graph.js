@@ -38,9 +38,7 @@ const Graph = {
     return lines;
   },
 
-  generateEdges(level) {
-    const n = level+4;
-
+  generateEdges(n) {
     // Build pairIndex hash from { [pair]: indexOfVertex }
     let pairIndex = this.pairIndex(n);
 
@@ -55,7 +53,6 @@ const Graph = {
 
       lines.forEach( (line2, i2) => {
         if (i1 !== i2) {
-          debugger;
           let intersection = line1.intersectsAtX(line2);
           intersections.push( { x: intersection, lineIdx: i2 } );
         }
@@ -66,7 +63,6 @@ const Graph = {
       intersections.sort( (intersect1, intersect2) => {
         return intersect1.x - intersect2.x;
       });
-      console.log(intersections); // x always 0
 
       // For each pair of neighboring intersections
       // create a new edge between them

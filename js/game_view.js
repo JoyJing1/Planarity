@@ -16,7 +16,7 @@ const GameView = function (ctx, root, options) {
   this.bindButtonEvents();
   this.bindGraphEvents();
   this.renderRules();
-  this.playLevel(this.level); // Move to renderRules callback?
+  this.playLevel(this.level);
 };
 
 GameView.prototype.playLevel = function() {
@@ -194,7 +194,6 @@ GameView.prototype.bindButtonEvents = function() {
   });
 
 };
-
 
 GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
