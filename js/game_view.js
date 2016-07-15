@@ -16,7 +16,7 @@ const GameView = function (ctx, root, options) {
   this.bindButtonEvents();
   this.bindGraphEvents();
   this.renderRules();
-  this.playLevel(this.level); // Move to renderRules callback?
+  this.playLevel(this.level);
 };
 
 GameView.prototype.playLevel = function() {
@@ -195,7 +195,6 @@ GameView.prototype.bindButtonEvents = function() {
 
 };
 
-
 GameView.prototype.renderGraph = function() {
   this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 
@@ -211,7 +210,7 @@ GameView.prototype.renderGraph = function() {
 
 GameView.prototype.bindGraphEvents = function() {
 
-  $("canvas").on("mousedown", event => {
+  $("canvas").on("mousedown touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -240,7 +239,7 @@ GameView.prototype.bindGraphEvents = function() {
 
   });
 
-  $(document).on("mouseup", event => {
+  $(document).on("mouseup touchend", event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -257,6 +256,21 @@ GameView.prototype.bindGraphEvents = function() {
 
     this.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
     this.currentMousePos.y = event.pageY + yAdjust;
+  });
+
+  document.addEventListener("touchmove", event => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    let touch = event.touches[0];
+
+    if (touch) {
+      const yAdjust = -40;
+      const xAdjust = 0;
+
+      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
+      this.currentMousePos.y = touch.pageY + yAdjust;
+    }
   });
 
 };

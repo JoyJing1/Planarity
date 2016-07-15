@@ -124,10 +124,10 @@
 	Game.prototype.buildGraph = function() {
 	  this.vertices = [];
 	  this.edges = [];
+	  const n = this.level + 4;
 	
 	  // Pass in n instead of level
-	  let edgeCoords = Graph.generateEdges(this.level);
-	  let n = this.level + 4;
+	  const edgeCoords = Graph.generateEdges(n);
 	  let numVertices = (n * (n-1)/2);
 	
 	  if (this.level > 0) {
@@ -136,19 +136,17 @@
 	
 	  for (let j = 0; j < numVertices; j++) {
 	
-	    let xOffset = Game.DIM_X/2;
-	    let yOffset = Game.DIM_Y/2;
+	    const xOffset = Game.DIM_X/2;
+	    const yOffset = Game.DIM_Y/2;
 	
-	    let xResize = Game.DIM_X*0.35;
-	    let yResize = Game.DIM_Y*0.35;
+	    const xResize = Game.DIM_X*0.35;
+	    const yResize = Game.DIM_Y*0.35;
 	
-	    let x = Math.cos(j * 2 * Math.PI / numVertices) * xResize + xOffset;
-	    let y = Math.sin(j * 2 * Math.PI / numVertices) * xResize + xOffset;
+	    const x = Math.cos(j * 2 * Math.PI / numVertices) * xResize + xOffset;
+	    const y = Math.sin(j * 2 * Math.PI / numVertices) * xResize + xOffset;
 	
 	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
 	  }
-	
-	  // this.vertices. -- randomize order
 	
 	  let verticesReached = [];
 	  edgeCoords.forEach ( (edgeCoord, i) => {
@@ -295,12 +293,10 @@
 	
 	Edge.prototype.isVertical = function() {
 	  return (Math.abs(this.vertex1.x - this.vertex2.x) < Constants.EPSILON);
-	  // return (this.vertex1.x === this.vertex2.x);
 	};
 	
 	Edge.prototype.isHorizontal = function() {
 	  return (Math.abs(this.vertex1.y - this.vertex2.y) < Constants.EPSILON);
-	  // return (this.vertex1.y === this.vertex2.y);
 	};
 	
 	Edge.prototype.intersectsAtX = function(edge) {
@@ -437,7 +433,6 @@
 	    }
 	    return response;
 	
-	  // } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
 	  } else if (this.slope() === edge.slope()) {
 	    return false;
 	
@@ -549,9 +544,7 @@
 	    return lines;
 	  },
 	
-	  generateEdges(level) {
-	    const n = level+4;
-	
+	  generateEdges(n) {
 	    // Build pairIndex hash from { [pair]: indexOfVertex }
 	    let pairIndex = this.pairIndex(n);
 	
@@ -674,7 +667,7 @@
 	  this.bindButtonEvents();
 	  this.bindGraphEvents();
 	  this.renderRules();
-	  this.playLevel(this.level); // Move to renderRules callback?
+	  this.playLevel(this.level);
 	};
 	
 	GameView.prototype.playLevel = function() {
@@ -853,7 +846,6 @@
 	
 	};
 	
-	
 	GameView.prototype.renderGraph = function() {
 	  this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 	
@@ -869,7 +861,7 @@
 	
 	GameView.prototype.bindGraphEvents = function() {
 	
-	  $("canvas").on("mousedown", event => {
+	  $("canvas").on("mousedown touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
@@ -898,7 +890,7 @@
 	
 	  });
 	
-	  $(document).on("mouseup", event => {
+	  $(document).on("mouseup touchend", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	
@@ -915,6 +907,21 @@
 	
 	    this.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
 	    this.currentMousePos.y = event.pageY + yAdjust;
+	  });
+	
+	  document.addEventListener("touchmove", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
+	    let touch = event.touches[0];
+	
+	    if (touch) {
+	      const yAdjust = -40;
+	      const xAdjust = 0;
+	
+	      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
+	      this.currentMousePos.y = touch.pageY + yAdjust;
+	    }
 	  });
 	
 	};

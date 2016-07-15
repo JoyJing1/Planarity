@@ -4,7 +4,6 @@ html, body {
   margin: 0px;
   font-family: 'Lato', sans-serif;
   background-color: black;
-  /*word-break: break-all;*/
 }
 
 /*    BUTTONS   ****************************/
@@ -16,12 +15,6 @@ html, body {
   position: absolute;
   z-index: 1;
 }
-
-/*.nav {
-  height: 40px;
-  width: 40px;
-  background-size: contain;
-}*/
 
 .previous-level {
   background-image: url("../images/arrow.png");
@@ -64,8 +57,6 @@ a.next-level-modal {
   font-size: 20px;
   background: #4531B1;
   border: 1px solid #4d37c5;
-  /*margin-top: 20px;
-  margin-bottom: 8px;*/
 }
 
 /* Clearfix */
@@ -113,12 +104,10 @@ a.next-level-modal {
 .modal-content p {
   margin: 0 0 15px 0;
   line-height: 1.47em;
-  /*margin-top: 12px;*/
 }
 
 .modal-content div {
   margin: 8px auto 0 auto;
-  /* padding-top: 12px; */
   font-size: 24px;
   text-align: center;
   color: #2794EB;
@@ -157,18 +146,6 @@ a.play {
 body {
   position: relative;
 }
-
-/*img.previous-level, img.next-level {
-  width: 50px;
-}
-
-img.previous-level {
-  -webkit-transform: scaleX(-1);
-  -moz-transform: scaleX(-1);
-  -ms-transform: scaleX(-1);
-  -o-transform: scaleX(-1);
-  transform: scaleX(-1);
-}*/
 
 a.show-rules {
   color: white;

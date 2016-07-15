@@ -72,12 +72,10 @@ Edge.prototype.shareVertex = function(edge) {
 
 Edge.prototype.isVertical = function() {
   return (Math.abs(this.vertex1.x - this.vertex2.x) < Constants.EPSILON);
-  // return (this.vertex1.x === this.vertex2.x);
 };
 
 Edge.prototype.isHorizontal = function() {
   return (Math.abs(this.vertex1.y - this.vertex2.y) < Constants.EPSILON);
-  // return (this.vertex1.y === this.vertex2.y);
 };
 
 Edge.prototype.intersectsAtX = function(edge) {
@@ -214,7 +212,6 @@ Edge.prototype.intersectsWith = function(edge) {
     }
     return response;
 
-  // } else if (Math.abs(this.slope()-edge.slope()) < Constants.EPSILON) {
   } else if (this.slope() === edge.slope()) {
     return false;
 
