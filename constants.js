@@ -7,5 +7,6 @@ module.exports = {
   BLACK: "#000000",
   LINE_SELECTED: "#6150C1",
   LINE_INTERSECTING: "#FF9090",
-	RADIUS: 15
+	RADIUS: 15,
+  EPSILON: 0.01
 };

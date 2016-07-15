@@ -205,7 +205,8 @@
 	  BLACK: "#000000",
 	  LINE_SELECTED: "#6150C1",
 	  LINE_INTERSECTING: "#FF9090",
-		RADIUS: 15
+		RADIUS: 15,
+	  EPSILON: 0.01
 	};
 
 
@@ -224,24 +225,28 @@
 	};
 	
 	Edge.prototype.draw = function(ctx, edges) {
-	    if (this.currentlyIntersecting(edges)) {
-	      ctx.strokeStyle = Constants.LINE_INTERSECTING;
-	      ctx.shadowColor = Constants.LINE_INTERSECTING;
-	      ctx.lineWidth = 3;
-	      ctx.beginPath();
-	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	      ctx.stroke();
+	  // console.log(this);
+	  // debugger;
+	  if (this.currentlyIntersecting(edges)) {
+	    // console.log(`FINAL: TRUE`);
+	    ctx.strokeStyle = Constants.LINE_INTERSECTING;
+	    ctx.shadowColor = Constants.LINE_INTERSECTING;
+	    ctx.lineWidth = 3;
+	    ctx.beginPath();
+	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	    ctx.stroke();
 	
-	    } else {
-	      ctx.strokeStyle = Constants.BLACK;
-	      ctx.shadowColro = Constants.BLACK;
-	      ctx.lineWidth = 3;
-	      ctx.beginPath();
-	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	      ctx.stroke();
-	    }
+	  } else {
+	    // console.log(`FINAL: FALSE`);
+	    ctx.strokeStyle = Constants.BLACK;
+	    ctx.shadowColro = Constants.BLACK;
+	    ctx.lineWidth = 3;
+	    ctx.beginPath();
+	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
+	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
+	    ctx.stroke();
+	  }
 	};
 	
 	Edge.prototype.slope = function() {
@@ -277,31 +282,118 @@
 	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
 	};
 	
-	Edge.prototype.intersectsWith = function(edge) {
+	Edge.prototype.xValue = function(y) {
+	  return (y - this.xIntercept())/this.slope();
+	};
 	
-	  if (this.isHorizontal()) {
-	    let y = this.vertex1.y;
-	    let minY = Math.min(edge.vertex1.y, edge.vertex2.y) + 1;
-	    let maxY = Math.max(edge.vertex1.y, edge.vertex2.y) - 1;
-	    return (minY < y && y < maxY);
+	Edge.prototype.yValue = function(x) {
+	  return this.slope()*x + xIntercept(this.vertex1, this.slope());
+	};
+	
+	Edge.prototype.minX = function() {
+	  return Math.min(this.vertex1.x, this.vertex2.x);
+	}
+	Edge.prototype.maxX = function() {
+	  return Math.max(this.vertex1.x, this.vertex2.x);
+	}
+	Edge.prototype.minY = function() {
+	  return Math.min(this.vertex1.y, this.vertex2.y);
+	}
+	Edge.prototype.maxY = function() {
+	  return Math.max(this.vertex1.y, this.vertex2.y);
+	}
+	
+	
+	Edge.prototype.intersectsWith = function(edge) {
+	  // debugger;
+	  // let response = false;
+	  if (this === edge) {
+	    return false;
+	  } else if (this.vertex1 === edge.vertex1) {
+	    // console.log("this.vertex1 === edge.vertex1");
+	    let response = false;
+	    let slope1 = Util.slope(this.vertex1, this.vertex2);
+	    let slope2 = Util.slope(edge.vertex1, edge.vertex2);
+	    // if (Math.abs(slope1, slope2) < Constants.EPSILON) {
+	    if (slope1 === slope2) {
+	      // console.log("true line 73");
+	      response = true;
+	    // } else {
+	    //   return false
+	    }
+	    // console.log(response);
+	    return response;
+	
+	  } else if (this.vertex1 === edge.vertex2) {
+	    // console.log("this.vertex1 === edge.vertex2");
+	    let response = false;
+	    let slope1 = Util.slope(this.vertex1, this.vertex2);
+	    let slope2 = Util.slope(edge.vertex2, edge.vertex1);
+	    // if (Math.abs(slope1, slope2) < Constants.EPSILON) {
+	    if (slope1 === slope2) {
+	      response = true;
+	      // console.log("true line 87");
+	    // } else {
+	    //   return false
+	    }
+	    // console.log(response);
+	    return response;
+	
+	  } else if (this.vertex2 === edge.vertex1) {
+	    // console.log("this.vertex2 === edge.vertex1");
+	    let response = false;
+	    let slope1 = Util.slope(this.vertex2, this.vertex1);
+	    let slope2 = Util.slope(edge.vertex1, edge.vertex2);
+	    // if (Math.abs(slope1, slope2) < Constants.EPSILON) {
+	    if (slope1 === slope2) {
+	      response = true;
+	      // console.log("true line 100");
+	    // } else {
+	    //   return false
+	    }
+	    // console.log(response);
+	    return response;
+	
+	  } else if (this.vertex2 === edge.vertex2) {
+	    // console.log("this.vertex2 === edge.vertex2");
+	    let response = false;
+	    let slope1 = Util.slope(this.vertex2, this.vertex1);
+	    let slope2 = Util.slope(edge.vertex2, edge.vertex1);
+	    // if (Math.abs(slope1, slope2) < Constants.EPSILON) {
+	    if (slope1 === slope2) {
+	      response = true;
+	      // console.log("true line 113");
+	    // } else {
+	    //   return false
+	    }
+	    // console.log(response);
+	    return response;
+	
+	  } else if (this.isHorizontal()) {
+	    let response = false;
+	    if (edge.minY()+1 < this.vertex1.y && this.vertex1.y < edge.maxY()-1) {
+	      let xValue = edge.xValue(this.vertex1.y);
+	      if (this.minX()+1 < xValue || xValue < this.maxX()-1) {
+	        response = true;
+	      }
+	    }
+	    return response;
 	
 	  } else if (edge.isHorizontal()) {
-	    let y = edge.vertex1.y;
-	    let minY = Math.min(this.vertex1.y, this.vertex2.y) + 1;
-	    let maxY = Math.max(this.vertex1.y, this.vertex2.y) - 1;
-	    return (minY < y && y < maxY);
+	    let response = false;
+	    if (this.minY()+1 < edge.vertex1.y && edge.vertex1.y < this.maxY()-1) {
+	      let xValue = this.xValue(edge.vertex1.y);
+	      if (edge.minX()+1 < xValue || xValue < edge.maxX()-1) {
+	        response = true;
+	      }
+	    }
+	    return response;
 	
 	  } else if (this.isVertical()) {
-	    let x = this.vertex1.x;
-	    const minX = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
-	    const maxX = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
-	    return (minX < x && x < maxX);
+	    return (edge.minX()+1 < this.vertex1.x && this.vertex1.x < edge.maxX()-1);
 	
 	  } else if (edge.isVertical()){
-	    let x = edge.vertex1.x;
-	    const minX = Math.min(this.vertex1.x, this.vertex2.x) + 1;
-	    const maxX = Math.max(this.vertex1.x, this.vertex2.x) - 1;
-	    return (minX < x && x < maxX);
+	    return (this.minX()+1 < edge.vertex1.x && edge.vertex1.x < this.maxX()-1);
 	
 	  } else {
 	    let x = this.intersectsAtX(edge);
@@ -312,9 +404,11 @@
 	    const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
 	    const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
 	
-	    const onFirst = (firstMin <= x && x <= firstMax);
-	    const onSecond = (secondMin <= x && x <= secondMax);
+	    const onFirst = (firstMin+1 < x && x < firstMax-1);
+	    const onSecond = (secondMin+1 < x && x < secondMax-1);
 	
+	    // console.log("line 159");
+	    // console.log(onFirst && onSecond && !this.shareVertex(edge));
 	    return (onFirst && onSecond && !this.shareVertex(edge));
 	  }
 	};
