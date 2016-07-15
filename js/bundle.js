@@ -46,7 +46,7 @@
 
 	"use strict";
 	
-	const Game = __webpack_require__(1)
+	const Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
 	    , GameView = __webpack_require__(7);
 	
 	document.addEventListener("DOMContentLoaded", function(){
@@ -71,107 +71,7 @@
 
 
 /***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	const Constants = __webpack_require__(2)
-	    , Edge = __webpack_require__(3)
-	    , Graph = __webpack_require__(5)
-	    , Util = __webpack_require__(4)
-	    , Vertex = __webpack_require__(6);
-	
-	const Game = function (options) {
-	  this.vertices = [];
-	  this.edges = [];
-	  this.level = options.level || 0;
-	  this.stage = options.stage || 0;
-	  this.moves = 0;
-	
-	  this.setPlaySize();
-	  this.buildGraph();
-	  this.setVertexSize();
-	};
-	
-	Game.prototype.setPlaySize = function() {
-	  const $board = $(".canvas-div");
-	  $board.width(Game.DIM_X).height(Game.DIM_Y);
-	
-	  Game.leftOffset = (window.innerWidth - Game.DIM_X) / 2;
-	  $board.css( {left: Game.leftOffset} );
-	};
-	
-	
-	Game.prototype.setVertexSize = function() {
-	  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
-	};
-	
-	Game.prototype.buildGraph = function() {
-	
-	  let edgeCoords = Graph.generateEdges(this.level);
-	  let n = this.level + 4;
-	  let numVertices = (n * (n-1)/2);
-	
-	  if (this.level > 0) {
-	    numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
-	  }
-	
-	  for (let j = 0; j < numVertices; j++) {
-	
-	    let xOffset = Game.DIM_X/2;
-	    let yOffset = Game.DIM_Y/2;
-	
-	    let xResize = Game.DIM_X*0.35;
-	    let yResize = Game.DIM_Y*0.35;
-	
-	    let x = Math.cos(j * 2 * Math.PI / numVertices) * xResize + xOffset;
-	    let y = Math.sin(j * 2 * Math.PI / numVertices) * xResize + xOffset;
-	
-	    this.vertices.push(new Vertex({ x: x, y: y, index: j }) );
-	  }
-	
-	  let verticesReached = [];
-	  edgeCoords.forEach ( edgeCoord => {
-	
-	    if (edgeCoord[0] < numVertices && edgeCoord[1] < numVertices) {
-	      const edge = new Edge({ vertex1: this.vertices[edgeCoord[0]], vertex2: this.vertices[edgeCoord[1]] });
-	      this.edges.push(edge);
-	
-	      this.vertices[edgeCoord[0]].edges.push(edge);
-	      this.vertices[edgeCoord[1]].edges.push(edge);
-	
-	      verticesReached.push(edgeCoord[0]);
-	      verticesReached.push(edgeCoord[1]);
-	    }
-	  });
-	
-	  for (let i = 0; i < numVertices; i++) {
-	    if (!verticesReached.includes(i)) {
-	      let v2 = 0;
-	      if (i === v2) { v2 += 1; }
-	      const edge = new Edge({ vertex1: this.vertices[i], vertex2: this.vertices[v2] });
-	
-	      this.edges.push(edge);
-	
-	      this.vertices[i].edges.push(edge);
-	      this.vertices[v2].edges.push(edge);
-	    }
-	  }
-	
-	};
-	
-	Game.prototype.dropVertices = function() {
-	  this.vertices.forEach( vertex => {
-	    vertex.selected = false;
-	    vertex.color = Constants.COLOR;
-	  });
-	};
-	
-	module.exports = Game;
-
-
-/***/ },
+/* 1 */,
 /* 2 */
 /***/ function(module, exports) {
 
@@ -182,137 +82,16 @@
 	  COLOR_SELECTED: "#47D6B6",
 	  COLOR_NEIGHBOR: "#4531B1",
 	  BLACK: "#000000",
+	  WHITE: "#FFFFFF",
 	  LINE_SELECTED: "#6150C1",
 	  LINE_INTERSECTING: "#FF9090",
-		RADIUS: 15
+		RADIUS: 15,
+	  EPSILON: 0.00001
 	};
 
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	const Constants = __webpack_require__(2)
-	    , Util = __webpack_require__(4);
-	
-	const Edge = function(options) {
-	  this.vertex1 = options.vertex1;
-	  this.vertex2 = options.vertex2;
-	};
-	
-	Edge.prototype.draw = function(ctx, edges) {
-	    if (this.currentlyIntersecting(edges)) {
-	      ctx.strokeStyle = Constants.LINE_INTERSECTING;
-	      ctx.shadowColor = Constants.LINE_INTERSECTING;
-	      ctx.lineWidth = 3;
-	      ctx.beginPath();
-	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	      ctx.stroke();
-	
-	    } else {
-	      ctx.strokeStyle = Constants.BLACK;
-	      ctx.shadowColro = Constants.BLACK;
-	      ctx.lineWidth = 3;
-	      ctx.beginPath();
-	      ctx.moveTo(this.vertex1.x, this.vertex1.y);
-	      ctx.lineTo(this.vertex2.x, this.vertex2.y);
-	      ctx.stroke();
-	    }
-	};
-	
-	Edge.prototype.slope = function() {
-	  return Util.slope(this.vertex1, this.vertex2);
-	};
-	
-	Edge.prototype.xIntercept = function() {
-	  if (this.isVertical()) {
-	    return this.vertex1.x;
-	  } else {
-	    return Util.xIntercept(this.vertex1, this.slope());
-	  }
-	};
-	
-	Edge.prototype.shareVertex = function(edge) {
-	  return (
-	    this.vertex1 === edge.vertex1
-	    || this.vertex1 === edge.vertex2
-	    || this.vertex2 === edge.vertex1
-	    || this.vertex2 === edge.vertex2
-	  );
-	};
-	
-	Edge.prototype.isVertical = function() {
-	  return (Math.abs(this.vertex1.x - this.vertex2.x) < 1);
-	};
-	
-	Edge.prototype.isHorizontal = function() {
-	  return (Math.abs(this.vertex1.y - this.vertex2.y) < 1);
-	};
-	
-	Edge.prototype.intersectsAtX = function(edge) {
-	  return (edge.xIntercept() - this.xIntercept()) / (this.slope() - edge.slope());
-	};
-	
-	Edge.prototype.intersectsWith = function(edge) {
-	
-	  if (this.isHorizontal()) {
-	    let y = this.vertex1.y;
-	    let minY = Math.min(edge.vertex1.y, edge.vertex2.y) + 1;
-	    let maxY = Math.max(edge.vertex1.y, edge.vertex2.y) - 1;
-	    return (minY < y && y < maxY);
-	
-	  } else if (edge.isHorizontal()) {
-	    let y = edge.vertex1.y;
-	    let minY = Math.min(this.vertex1.y, this.vertex2.y) + 1;
-	    let maxY = Math.max(this.vertex1.y, this.vertex2.y) - 1;
-	    return (minY < y && y < maxY);
-	
-	  } else if (this.isVertical()) {
-	    let x = this.vertex1.x;
-	    const minX = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
-	    const maxX = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
-	    return (minX < x && x < maxX);
-	
-	  } else if (edge.isVertical()){
-	    let x = edge.vertex1.x;
-	    const minX = Math.min(this.vertex1.x, this.vertex2.x) + 1;
-	    const maxX = Math.max(this.vertex1.x, this.vertex2.x) - 1;
-	    return (minX < x && x < maxX);
-	
-	  } else {
-	    let x = this.intersectsAtX(edge);
-	
-	    const firstMin = Math.min(this.vertex1.x, this.vertex2.x) + 1;
-	    const firstMax = Math.max(this.vertex1.x, this.vertex2.x) - 1;
-	
-	    const secondMin = Math.min(edge.vertex1.x, edge.vertex2.x) + 1;
-	    const secondMax = Math.max(edge.vertex1.x, edge.vertex2.x) - 1;
-	
-	    const onFirst = (firstMin <= x && x <= firstMax);
-	    const onSecond = (secondMin <= x && x <= secondMax);
-	
-	    return (onFirst && onSecond && !this.shareVertex(edge));
-	  }
-	};
-	
-	Edge.prototype.currentlyIntersecting = function(allEdges) {
-	  let intersecting = false;
-	
-	  allEdges.forEach( edge => {
-	    if (this.intersectsWith(edge)) {
-	      intersecting = true;
-	    }
-	  });
-	  return intersecting;
-	};
-	
-	module.exports = Edge;
-
-
-/***/ },
+/* 3 */,
 /* 4 */
 /***/ function(module, exports) {
 
@@ -326,6 +105,10 @@
 	  xIntercept(vertex, slope) {
 	    return vertex.y - (slope * vertex.x);
 	  },
+	
+	  // yIntercept(vertex, slope) {
+	  //   return vertex.y - (slope * vertex.x);
+	  // },
 	
 	  dist(vertex1, vertex2) {
 	    return Math.sqrt(
@@ -348,105 +131,7 @@
 
 
 /***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	const Edge = __webpack_require__(3)
-	    , Util = __webpack_require__(4)
-	    , Vertex = __webpack_require__(6);
-	
-	const Graph = {
-	
-	  pairIndex(n) {
-	    let pairIndex = {};
-	
-	    let vertexIdx = 0;
-	    for (let i = 0; i <= n; i++) {
-	      for (let j = i+1; j<n; j++) {
-	        pairIndex[`${i},${j}`] = vertexIdx;
-	        vertexIdx++;
-	      }
-	    }
-	
-	    return pairIndex;
-	  },
-	
-	  generateLines(n) {
-	    let lines = [];
-	    let slopes = [];
-	
-	    while (lines.length < n) {
-	      let v1 = new Vertex( { x: Math.random(), y: Math.random() });
-	      let v2 = new Vertex( { x: Math.random(), y: Math.random() });
-	
-	      let slope = Util.slope(v1, v2);
-	      if (!slopes.includes(slope)) {
-	        let line = new Edge({ vertex1: v1, vertex2: v2});
-	        lines.push(line);
-	      }
-	    }
-	    return lines;
-	  },
-	
-	  generateEdges(level) {
-	    const n = level+4;
-	
-	    // Build pairIndex hash from { [pair]: indexOfVertex }
-	    let pairIndex = this.pairIndex(n);
-	
-	    // Generate n * (n-1)/2 random lines of differing slope
-	    const lines = this.generateLines(n);
-	
-	    // For each line, find the intersection points
-	    // of that line with all other lines
-	    let edges = [];
-	    lines.forEach( (line1, i1) => {
-	      let intersections = [];
-	
-	      lines.forEach( (line2, i2) => {
-	        if (i1 !== i2) {
-	          let intersection = line1.intersectsAtX(line2);
-	          intersections.push( { x: intersection, lineIdx: i2 } );
-	        }
-	
-	      });
-	
-	      // Order lines by intersection point's X coord
-	      intersections.sort( (intersect1, intersect2) => {
-	        return intersect1.x - intersect2.x;
-	      });
-	
-	      // For each pair of neighboring intersections
-	      // create a new edge between them
-	      for (let i = 0; i < intersections.length-1; i++) {
-	        let l1 = intersections[i];
-	        let l2 = intersections[i+1];
-	
-	        let indices1 = [i1, l1.lineIdx];
-	        let indices2 = [i1, l2.lineIdx];
-	
-	        indices1.sort( (a, b) => a-b  );
-	        indices2.sort( (a, b) => a-b  );
-	
-	        let v1 = pairIndex[indices1];
-	        let v2 = pairIndex[indices2];
-	
-	        edges.push([v1, v2]);
-	      }
-	
-	    });
-	
-	    return edges;
-	  }
-	
-	};
-	
-	module.exports = Graph;
-
-
-/***/ },
+/* 5 */,
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -500,7 +185,7 @@
 	"use strict";
 	
 	const Constants = __webpack_require__(2)
-	    , Game = __webpack_require__(1)
+	    , Game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./game\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
 	    , Util = __webpack_require__(4)
 	    , Vertex = __webpack_require__(6);
 	
@@ -514,23 +199,33 @@
 	  this.renderButtons();
 	  this.bindButtonEvents();
 	  this.bindGraphEvents();
-	  this.playLevel(this.level);
+	  this.renderRules();
+	  this.playLevel(this.level); // Move to renderRules callback?
 	};
 	
 	GameView.prototype.playLevel = function() {
 	  this.game = new Game({level: this.level, stage: this.stage});
+	
 	  this.renderGraph();
 	  this.renderModal();
 	
-	  this.refreshIntervalId = setInterval( () => {
-	    this.follow(this.game, this.currentMousePos);
-	    this.renderGraph();
-	  }, 1);
+	  let that = this;
+	  function playGame() {
+	    that.follow(that.game, that.currentMousePos);
+	    that.renderGraph();
+	    requestAnimationFrame(playGame);
+	  }
+	  requestAnimationFrame(playGame);
 	};
 	
 	GameView.prototype.levelUp = function() {
 	  this.stage += 1;
 	  this.game.moves = 0;
+	
+	  if (this.stage > 0) {
+	    $(".description").css( {display: "none"} );
+	  }
+	
 	  if (this.level === 0 || this.stage >= this.level + 3) {
 	    this.level += 1;
 	    this.stage = 0;
@@ -546,8 +241,39 @@
 	  }
 	};
 	
+	GameView.prototype.renderRules = function() {
+	  const prevRules = document.getElementsByClassName("rules");
+	
+	  if (prevRules.length > 0) {
+	    const $rulesModal = $(prevRules[0]);
+	    $rulesModal.css({display: "block"});
+	  } else {
+	    const $rulesModal = $("<div>").addClass("modal")
+	                        .addClass("rules")
+	                        .css({display: "block"});
+	    const $rulesContent = $("<div>").addClass("modal-content");
+	    const $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
+	
+	    $rulesContent.append($rules);
+	    $rulesModal.append($rulesContent);
+	
+	    const $playButton = $("<a>").text("Play")
+	                        .addClass("button")
+	                        .addClass("play");
+	
+	    $rulesContent.append($playButton);
+	
+	    $playButton.on("click tap", event => {
+	      $rulesModal.css( {display: "none"} );
+	    });
+	
+	    this.root.append($rulesModal);
+	  }
+	
+	};
+	
 	GameView.prototype.renderModal = function() {
-	  const prevModals = document.getElementsByClassName("modal");
+	  const prevModals = document.getElementsByClassName("win-modal");
 	
 	  if (prevModals.length > 0) {
 	    const $modal = $(prevModals[0]);
@@ -579,9 +305,13 @@
 	
 	    $modalContent.append($nextButton);
 	
-	    $nextButton.on("click", event => {
+	    $nextButton.on("click tap", event => {
+	      event.stopPropagation();
+	      event.preventDefault();
+	
 	      this.levelUp();
 	      $modal.css({display: "none"});
+	      cancelAnimationFrame(this.refreshIntervalId);
 	      this.playLevel();
 	    });
 	
@@ -592,50 +322,59 @@
 	
 	GameView.prototype.renderButtons = function() {
 	
-	  const $button2 = $("<img class='previous-level button' src='./images/arrow.png'></img>");
-	  const $button3 = $("<img class='next-level button' src='./images/arrow.png'></img>");
+	  const $button2 = $("<div>").addClass("buton").addClass("nav").addClass("previous-level");
+	  const $button3 = $("<div>").addClass("buton").addClass("nav").addClass("next-level");
+	  const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
+	
+	  const $buttonRules = $("<a>").addClass("button")
+	                        .addClass("show-rules")
+	                        .text("Rules");
 	  const $canvasDiv = $(".canvas-div");
 	
 	  $canvasDiv.append($button2);
 	  $canvasDiv.append($button3);
+	  $canvasDiv.append($github);
+	  $canvasDiv.append($buttonRules);
 	};
 	
 	GameView.prototype.checkPlanarity = function() {
-	  let planar = true;
-	  const game = this.game;
-	
-	  game.edges.forEach( (edge1, i1) => {
-	    game.edges.forEach( (edge2, i2) => {
-	      if (i1 !== i2 && edge1.intersectsWith(edge2)) {
-	        planar = false;
-	      }
-	    });
-	  });
-	
-	  if (planar) {
-	    const $modal = $(".modal");
+	  if (this.game.isPlanar()) {
+	    const $winModal = $(".win-modal");
 	
 	    const $stats = $("<p>");
-	    const $level = $(".level").text(`Level: ${this.level+1}`);
-	    const $stage = $(".stage").text(`Stage: ${this.stage+1}`);
-	    const $moves = $(".moves").text(`Moves: ${this.game.moves}`);
+	    const $level = $(".level").empty().append(`Level: <span>${this.level+1}</span>`);
+	    const $stage = $(".stage").empty().append(`Stage: <span>${this.stage+1}</span>`);
+	    const $moves = $(".moves").empty().append(`Moves: <span>${this.game.moves}</span>`);
 	
-	    $modal.css({display: "block"});
+	    $winModal.css({display: "block"});
 	  }
 	};
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  $(".previous-level").on("click", event => {
+	  $(".previous-level").on("click tap", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    if (this.level > 0) {
 	      this.levelDown();
 	      this.playLevel(this.level);
 	    }
 	  });
 	
-	  $(".next-level").on("click", event => {
+	  $(".next-level").on("click tap", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    this.levelUp();
 	    this.playLevel(this.level);
+	  });
+	
+	  $(".show-rules").on("click tap", event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
+	    $(".rules").css( {display: "block"} );
 	  });
 	
 	};
@@ -685,15 +424,18 @@
 	
 	  });
 	
-	  $("canvas").on("mouseup", event => {
+	  $(document).on("mouseup", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
+	
 	    this.game.dropVertices();
 	    this.checkPlanarity();
 	  });
 	
-	
 	  $(document).mousemove( event => {
+	    event.stopPropagation();
+	    event.preventDefault();
+	
 	    const yAdjust = -40;
 	    const xAdjust = 0;
 	
