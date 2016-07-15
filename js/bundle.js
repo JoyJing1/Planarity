@@ -566,7 +566,6 @@
 	
 	      lines.forEach( (line2, i2) => {
 	        if (i1 !== i2) {
-	          debugger;
 	          let intersection = line1.intersectsAtX(line2);
 	          intersections.push( { x: intersection, lineIdx: i2 } );
 	        }
