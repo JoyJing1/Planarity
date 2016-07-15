@@ -128,7 +128,7 @@
 	
 	  // Pass in n instead of level
 	  const edgeCoords = Graph.generateEdges(n);
-	  const numVertices = (n * (n-1)/2);
+	  let numVertices = (n * (n-1)/2);
 	
 	  if (this.level > 0) {
 	    numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
