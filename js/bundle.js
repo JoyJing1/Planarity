@@ -200,12 +200,12 @@
 	"use strict";
 	
 	module.exports = {
-		COLOR: "#2794EB",
+		COLOR: "#046FD8",
 	  COLOR_SELECTED: "#47D6B6",
 	  COLOR_NEIGHBOR: "#4531B1",
 	  BLACK: "#000000",
 	  WHITE: "#FFFFFF",
-	  LINE_SELECTED: "#6150C1",
+	  LINE_FREE: "#47D6B6",
 	  LINE_INTERSECTING: "#FF9090",
 		RADIUS: 15,
 	  EPSILON: 0.00001
@@ -239,6 +239,7 @@
 	
 	  } else {
 	    ctx.strokeStyle = Constants.BLACK;
+	    ctx.shadowColor = Constants.LINE_FREE;
 	    ctx.lineWidth = 3;
 	    ctx.beginPath();
 	    ctx.moveTo(this.vertex1.x, this.vertex1.y);

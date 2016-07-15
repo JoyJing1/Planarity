@@ -21,6 +21,7 @@ Edge.prototype.draw = function(ctx, edges) {
 
   } else {
     ctx.strokeStyle = Constants.BLACK;
+    ctx.shadowColor = Constants.LINE_FREE;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
