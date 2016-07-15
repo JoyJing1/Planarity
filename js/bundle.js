@@ -447,10 +447,12 @@
 	
 	Edge.prototype.currentlyIntersecting = function(allEdges) {
 	  let intersecting = false;
-	
+	  this.intersecting = false;
 	  allEdges.forEach( edge => {
 	    if (this.intersectsWith(edge)) {
 	      intersecting = true;
+	      this.intersecting = true;
+	      edge.intersecting = true;
 	    }
 	  });
 	  return intersecting;
@@ -803,9 +805,9 @@
 	
 	GameView.prototype.bindButtonEvents = function() {
 	
-	  $("previous-level").off("touchstart");
-	  $("previous-level").off("click");
-	  console.log("binding previous-level-button action");
+	  $(".previous-level").off("touchstart");
+	  $(".previous-level").off("click");
+	  // console.log("binding previous-level-button action");
 	  $(".previous-level").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -816,19 +818,19 @@
 	    }
 	  });
 	
-	  $("next-level").off("touchstart");
-	  $("next-level").off("click");
+	  $(".next-level").off("touchstart");
+	  $(".next-level").off("click");
 	  $(".next-level").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    console.log("touchstart/clicked on next-level button");
+	    // console.log("touchstart/clicked on next-level button");
 	
 	    this.levelUp();
 	    this.playLevel(this.level);
 	  });
 	
-	  $("show-rules").off("touchstart");
-	  $("show-rules").off("click");
+	  $(".show-rules").off("touchstart");
+	  $(".show-rules").off("click");
 	  $(".show-rules").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();

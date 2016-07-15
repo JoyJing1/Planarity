@@ -229,10 +229,12 @@ Edge.prototype.intersectsWith = function(edge) {
 
 Edge.prototype.currentlyIntersecting = function(allEdges) {
   let intersecting = false;
-
+  this.intersecting = false;
   allEdges.forEach( edge => {
     if (this.intersectsWith(edge)) {
       intersecting = true;
+      this.intersecting = true;
+      edge.intersecting = true;
     }
   });
   return intersecting;

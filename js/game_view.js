@@ -169,9 +169,9 @@ GameView.prototype.checkPlanarity = function() {
 
 GameView.prototype.bindButtonEvents = function() {
 
-  $("previous-level").off("touchstart");
-  $("previous-level").off("click");
-  console.log("binding previous-level-button action");
+  $(".previous-level").off("touchstart");
+  $(".previous-level").off("click");
+  // console.log("binding previous-level-button action");
   $(".previous-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
@@ -182,19 +182,19 @@ GameView.prototype.bindButtonEvents = function() {
     }
   });
 
-  $("next-level").off("touchstart");
-  $("next-level").off("click");
+  $(".next-level").off("touchstart");
+  $(".next-level").off("click");
   $(".next-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("touchstart/clicked on next-level button");
+    // console.log("touchstart/clicked on next-level button");
 
     this.levelUp();
     this.playLevel(this.level);
   });
 
-  $("show-rules").off("touchstart");
-  $("show-rules").off("click");
+  $(".show-rules").off("touchstart");
+  $(".show-rules").off("click");
   $(".show-rules").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
