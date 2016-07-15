@@ -18,8 +18,8 @@ Vertex.prototype.pos = function() {
 
 Vertex.prototype.draw = function(ctx) {
   ctx.fillStyle = this.color;
-  ctx.shadowBlur = 10;
   ctx.shadowColor = this.color;
+  ctx.shadowBlur = 10;
   ctx.beginPath();
   ctx.arc(this.x, this.y, Vertex.RADIUS, 0, 2 * Math.PI);
   ctx.fill();

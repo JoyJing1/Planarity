@@ -205,7 +205,7 @@
 	  COLOR_NEIGHBOR: "#4531B1",
 	  BLACK: "#000000",
 	  WHITE: "#FFFFFF",
-	  LINE_FREE: "#47D6B6",
+	  LINE_FREE: "#6AF794",
 	  LINE_INTERSECTING: "#FF9090",
 		RADIUS: 15,
 	  EPSILON: 0.00001
@@ -231,7 +231,8 @@
 	  if (this.currentlyIntersecting(edges)) {
 	    ctx.strokeStyle = Constants.LINE_INTERSECTING;
 	    ctx.shadowColor = Constants.LINE_INTERSECTING;
-	    ctx.lineWidth = 3;
+	    ctx.lineWidth = 5;
+	    ctx.shadowBlur = 5;
 	    ctx.beginPath();
 	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -240,7 +241,8 @@
 	  } else {
 	    ctx.strokeStyle = Constants.BLACK;
 	    ctx.shadowColor = Constants.LINE_FREE;
-	    ctx.lineWidth = 3;
+	    ctx.lineWidth = 5;
+	    ctx.shadowBlur = 15;
 	    ctx.beginPath();
 	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
 	    ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -447,12 +449,10 @@
 	
 	Edge.prototype.currentlyIntersecting = function(allEdges) {
 	  let intersecting = false;
-	  this.intersecting = false;
+	
 	  allEdges.forEach( edge => {
 	    if (this.intersectsWith(edge)) {
 	      intersecting = true;
-	      this.intersecting = true;
-	      edge.intersecting = true;
 	    }
 	  });
 	  return intersecting;
@@ -607,8 +607,8 @@
 	
 	Vertex.prototype.draw = function(ctx) {
 	  ctx.fillStyle = this.color;
-	  ctx.shadowBlur = 10;
 	  ctx.shadowColor = this.color;
+	  ctx.shadowBlur = 10;
 	  ctx.beginPath();
 	  ctx.arc(this.x, this.y, Vertex.RADIUS, 0, 2 * Math.PI);
 	  ctx.fill();

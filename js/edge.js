@@ -13,7 +13,8 @@ Edge.prototype.draw = function(ctx, edges) {
   if (this.currentlyIntersecting(edges)) {
     ctx.strokeStyle = Constants.LINE_INTERSECTING;
     ctx.shadowColor = Constants.LINE_INTERSECTING;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 5;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
     ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -22,7 +23,8 @@ Edge.prototype.draw = function(ctx, edges) {
   } else {
     ctx.strokeStyle = Constants.BLACK;
     ctx.shadowColor = Constants.LINE_FREE;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 15;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
     ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -229,12 +231,10 @@ Edge.prototype.intersectsWith = function(edge) {
 
 Edge.prototype.currentlyIntersecting = function(allEdges) {
   let intersecting = false;
-  this.intersecting = false;
+
   allEdges.forEach( edge => {
     if (this.intersectsWith(edge)) {
       intersecting = true;
-      this.intersecting = true;
-      edge.intersecting = true;
     }
   });
   return intersecting;
