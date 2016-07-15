@@ -715,7 +715,7 @@
 	    $rulesContent.append($playButton);
 	
 	    $playButton.on("touchstart click", event => {
-	      console.log("touchstart/clicked on $playButton");
+	      // console.log("touchstart/clicked on $playButton");
 	      $rulesModal.css( {display: "none"} );
 	    });
 	
@@ -760,7 +760,7 @@
 	    $nextButton.on("touchstart click", event => {
 	      event.stopPropagation();
 	      event.preventDefault();
-	      console.log("touchstart/clicked on $nextButton");
+	      // console.log("touchstart/clicked on $nextButton");
 	
 	      this.levelUp();
 	      $modal.css({display: "none"});
@@ -834,7 +834,7 @@
 	  $(".show-rules").on("click touchstart", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    console.log("touchstart/clicked on show-rules button");
+	    // console.log("touchstart/clicked on show-rules button");
 	
 	    $(".rules").css( {display: "block"} );
 	  });
@@ -903,7 +903,7 @@
 	  $(document).on("mouseup touchend", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
-	    console.log("touchend/mouseup on document button");
+	    // console.log("touchend/mouseup on document button");
 	
 	    this.game.dropVertices();
 	    this.checkPlanarity();
@@ -933,7 +933,7 @@
 	
 	      this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
 	      this.currentMousePos.y = touch.pageY + yAdjust;
-	      console.log(this.currentMousePos);
+	      // console.log(this.currentMousePos);
 	    }
 	  });
 	
