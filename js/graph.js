@@ -29,8 +29,9 @@ const Graph = {
       let v2 = new Vertex( { x: Math.random(), y: Math.random() });
 
       let slope = Util.slope(v1, v2);
+      // let inverseSlope = Util.slope(v2, v1);
       if (!slopes.includes(slope)) {
-        let line = new Edge({ vertex1: v1, vertex2: v2});
+        let line = new Edge({ vertex1: v1, vertex2: v2, idx: lines.length});
         lines.push(line);
       }
     }
@@ -54,6 +55,7 @@ const Graph = {
 
       lines.forEach( (line2, i2) => {
         if (i1 !== i2) {
+          debugger;
           let intersection = line1.intersectsAtX(line2);
           intersections.push( { x: intersection, lineIdx: i2 } );
         }
@@ -64,6 +66,7 @@ const Graph = {
       intersections.sort( (intersect1, intersect2) => {
         return intersect1.x - intersect2.x;
       });
+      console.log(intersections); // x always 0
 
       // For each pair of neighboring intersections
       // create a new edge between them
