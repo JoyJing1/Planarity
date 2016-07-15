@@ -242,7 +242,6 @@
 	
 	  } else {
 	    ctx.strokeStyle = Constants.BLACK;
-	    ctx.shadowColor = Constants.BLACK;
 	    ctx.lineWidth = 3;
 	    ctx.beginPath();
 	    ctx.moveTo(this.vertex1.x, this.vertex1.y);
