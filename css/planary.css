@@ -104,6 +104,7 @@ a.next-level-modal {
 .modal-content p {
   margin: 0 0 15px 0;
   line-height: 1.47em;
+  font-size: 20px;
 }
 
 .modal-content div {
