@@ -13,7 +13,6 @@ const Game = function (options) {
 
   this.setPlaySize();
   this.buildGraph();
-  console.log("About to set vertex size");
   this.setVertexSize();
 };
 
@@ -26,32 +25,8 @@ Game.prototype.setPlaySize = function() {
 };
 
 Game.prototype.setVertexSize = function() {
-  console.log("inside Game.setVertexSize");
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
-
-  let mq = window.matchMedia('all and (max-width: 700px)');
-  if(mq.matches) {
-    Vertex.RADIUS = Vertex.RADIUS * 1000;
-    console.log("increased size of vertex based on media size");
-    // the width of browser is more then 700px
-  } else {
-    // the width of browser is less then 700px
-  }
-
-  // if (isTouchDevice()) {
-  // }
 };
-
-function isTouchDevice(){
-	try {
-		document.createEvent("TouchEvent");
-    console.log("is touch device");
-		return true;
-	} catch(e) {
-    console.log("is not a touch device");
-		return false;
-	}
-}
 
 Game.prototype.isPlanar = function() {
   let planar = true;

@@ -4,7 +4,6 @@ const Game = require("./game")
     , GameView = require("./game_view");
 
 document.addEventListener("DOMContentLoaded", function(){
-  console.log("DOMContentLoaded");
   const canvasEl = document.getElementsByTagName("canvas")[0];
 
   if (window.innerHeight < window.innerWidth) {

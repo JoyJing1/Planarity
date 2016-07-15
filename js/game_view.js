@@ -6,7 +6,6 @@ const Constants = require('../constants')
     , Vertex = require('./vertex');
 
 const GameView = function (ctx, root, options) {
-  console.log("Create new GameView");
   this.ctx = ctx;
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
@@ -80,7 +79,6 @@ GameView.prototype.renderRules = function() {
     $rulesContent.append($playButton);
 
     $playButton.on("touchstart click", event => {
-      // console.log("touchstart/clicked on $playButton");
       $rulesModal.css( {display: "none"} );
     });
 
@@ -125,7 +123,6 @@ GameView.prototype.renderModal = function() {
     $nextButton.on("touchstart click", event => {
       event.stopPropagation();
       event.preventDefault();
-      // console.log("touchstart/clicked on $nextButton");
 
       this.levelUp();
       $modal.css({display: "none"});
@@ -172,7 +169,6 @@ GameView.prototype.bindButtonEvents = function() {
 
   $(".previous-level").off("touchstart");
   $(".previous-level").off("click");
-  // console.log("binding previous-level-button action");
   $(".previous-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
@@ -188,7 +184,6 @@ GameView.prototype.bindButtonEvents = function() {
   $(".next-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
-    // console.log("touchstart/clicked on next-level button");
 
     this.levelUp();
     this.playLevel(this.level);
@@ -199,7 +194,6 @@ GameView.prototype.bindButtonEvents = function() {
   $(".show-rules").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
-    // console.log("touchstart/clicked on show-rules button");
 
     $(".rules").css( {display: "block"} );
   });
