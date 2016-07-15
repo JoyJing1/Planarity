@@ -14,7 +14,7 @@ Edge.prototype.draw = function(ctx, edges) {
     ctx.strokeStyle = Constants.LINE_INTERSECTING;
     ctx.shadowColor = Constants.LINE_INTERSECTING;
     ctx.lineWidth = 5;
-    ctx.shadowBlur = 5;
+    ctx.shadowBlur = ;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
     ctx.lineTo(this.vertex2.x, this.vertex2.y);

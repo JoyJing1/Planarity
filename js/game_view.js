@@ -6,6 +6,7 @@ const Constants = require('../constants')
     , Vertex = require('./vertex');
 
 const GameView = function (ctx, root, options) {
+  console.log("Create new GameView");
   this.ctx = ctx;
   this.root = root;
   this.currentMousePos = { x: -1, y: -1 };
@@ -267,7 +268,6 @@ GameView.prototype.bindGraphEvents = function() {
   $(document).on("mouseup touchend", event => {
     event.stopPropagation();
     event.preventDefault();
-    // console.log("touchend/mouseup on document button");
 
     this.game.dropVertices();
     this.checkPlanarity();
@@ -297,7 +297,6 @@ GameView.prototype.bindGraphEvents = function() {
 
       this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
       this.currentMousePos.y = touch.pageY + yAdjust;
-      // console.log(this.currentMousePos);
     }
   });
 
