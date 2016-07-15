@@ -730,7 +730,7 @@
 	
 	    $rulesContent.append($playButton);
 	
-	    $playButton.on("tap click", event => {
+	    $playButton.on("tap", event => {
 	      $rulesModal.css( {display: "none"} );
 	    });
 	
@@ -909,7 +909,7 @@
 	    this.currentMousePos.y = event.pageY + yAdjust;
 	  });
 	
-	  $(document).addEventListener("touchmove", event => {
+	  $(document).on("touchmove", event => {
 	    event.stopPropagation();
 	    event.preventDefault();
 	

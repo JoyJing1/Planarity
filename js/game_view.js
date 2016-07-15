@@ -79,7 +79,7 @@ GameView.prototype.renderRules = function() {
 
     $rulesContent.append($playButton);
 
-    $playButton.on("tap click", event => {
+    $playButton.on("tap", event => {
       $rulesModal.css( {display: "none"} );
     });
 
@@ -258,7 +258,7 @@ GameView.prototype.bindGraphEvents = function() {
     this.currentMousePos.y = event.pageY + yAdjust;
   });
 
-  $(document).addEventListener("touchmove", event => {
+  $(document).on("touchmove", event => {
     event.stopPropagation();
     event.preventDefault();
 
