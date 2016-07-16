@@ -16,11 +16,11 @@ Planarity is a mathematical brain teaser that challenges the player to transform
 The game generates a new random graph at the beginning of each level. Determining whether a graph is planar is a non-trivial matter, so I modified an algorithm by [John Tantalo][john-tantalo]. My algorithm starts with a minimum of 4 non-parallel lines.
 
 [john-tantalo]: http://johntantalo.com/wiki/Planarity/
-<img src="./screenshots/graph-lines.jpg" width=400/>
+<img src="./screenshots/graph-lines.jpg" width=200/>
 
 All n(n-1)/2 intersections are labelled as vertices, and the edges between neighboring vertices are recorded as the edges of the final graph.
 
-<img src="./screenshots/graph-vertices.jpg" width=400/>
+<img src="./screenshots/graph-vertices.jpg" width=200/>
 <img src="./screenshots/graph-edges.jpg" width=400/>
 
 This process translates into the following JavaScript code:
@@ -77,6 +77,12 @@ This process translates into the following JavaScript code:
   }
 ```
 
+Because this process adds n-1 vertices for every increase in `level`, I created intermediary `stages` that only add only one new vertex per stage. To do so, I start with a planar graph associated with the next level, then remove `(n-1) - s` vertices (and their associated edges). Because stages begin at stage 0, I adjust with a `+1`.
+
+```javascript
+numVertices = (n * (n-1)/2) - (n-1) + this.stage + 1;
+```
+
 ### Edge Crossing Determination
 
 I categorized edge crossings into four possible situations:
@@ -112,12 +118,32 @@ return xWithinRange && yWithinRange;
 
 ### User Interaction
 
+I used HTML Canvas to draw the edges and vertices, and added `mousedown`, `mouseup`, and `mousemove` handlers to determine when a user clicks on a vertex and draggs it to another position. I change the color of the edges based on whether they are currently crossed or free, to make the game more intuitive for a player who may not know what a planar graph is. I also change the color of the vertices based on whether the user is currently moving it, or if it is neighboring the currently selected vertex.
 
+<img src="./screenshots/color-highlighting" width=400/>
+
+When the graph is a planar, a modal pops up to congratulate the player and displays the number of moves the player took to solve the puzzle, as well as the current level and stage.
+
+<img src="./screenshots/congrats.png" width=400/>
+
+I also provide buttons in the bottom corners to allow a user to fast-forward through levels, or move back to previous levels. The easiest level has 6 nodes, and the most difficult can have an infinite number of vertices.
+
+<img src="./screenshots/difficult-game.png" width=400/>
 
 ### Responsive Web Design
 
-<!--  Canvas size -->
-<!--  Vertex size -->
+To make the game playable on screens of any size, I set the width and height of the canvas based on the window size. I made the canvas is square, to guarantee that the vertices will be distributed evenly and in a polygonal fashion.
 
+The radius of the vertices is determined based on the proportion of the window size and the number of vertices, with a minimum of 5 pixels.
+
+```javasript
+Game.prototype.setVertexSize = function() {
+  Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
+};
+```
 
 ### Mobile Capabilities
+
+I included `touchstart`, `touchend`, and `touchmove` event handlers to allow users to play the game on their phone. The game currently works well on Android phones, but sometimes has difficulty rendering on iPhones.
+
+Future optimizations will include increasing the vertex radius on devices with small screens.
