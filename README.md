@@ -120,7 +120,7 @@ return xWithinRange && yWithinRange;
 
 I used HTML Canvas to draw the edges and vertices, and added `mousedown`, `mouseup`, and `mousemove` handlers to determine when a user clicks on a vertex and draggs it to another position. I change the color of the edges based on whether they are currently crossed or free, to make the game more intuitive for a player who may not know what a planar graph is. I also change the color of the vertices based on whether the user is currently moving it, or if it is neighboring the currently selected vertex.
 
-<img src="./screenshots/color-highlighting" width=400/>
+<img src="./screenshots/color-highlighting.png" width=400/>
 
 When the graph is a planar, a modal pops up to congratulate the player and displays the number of moves the player took to solve the puzzle, as well as the current level and stage.
 
@@ -136,7 +136,7 @@ To make the game playable on screens of any size, I set the width and height of 
 
 The radius of the vertices is determined based on the proportion of the window size and the number of vertices, with a minimum of 5 pixels.
 
-```javasript
+```javascript
 Game.prototype.setVertexSize = function() {
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };
