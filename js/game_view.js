@@ -231,10 +231,8 @@ GameView.prototype.bindGraphEvents = function() {
     if (event.originalEvent.targetTouches) {
       let touch = event.originalEvent.targetTouches[0];
       if (touch) {
-        // const yAdjust = -40;
-        const yAdjust = -136;
+        const yAdjust = -120;
         const xAdjust = 0;
-        // console.log(`(${touch.pageX}, ${touch.pageY})`);
 
         this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
         this.currentMousePos.y = touch.pageY + yAdjust;
@@ -243,7 +241,6 @@ GameView.prototype.bindGraphEvents = function() {
 
     this.game.vertices.forEach( vertex => {
       const dist = Util.distFromMouse(vertex, this.currentMousePos);
-      // console.log(dist);
 
       if (dist < withinVertex && !vertexSelected) {
         this.game.moves += 1;
@@ -274,9 +271,7 @@ GameView.prototype.bindGraphEvents = function() {
   $(document).mousemove( event => {
     event.stopPropagation();
     event.preventDefault();
-    // console.log(`${event.pageX}, ${event.pageY}`);
 
-    // const yAdjust = 0;
     const yAdjust = -120;
     const xAdjust = 0;
 
@@ -289,13 +284,10 @@ GameView.prototype.bindGraphEvents = function() {
     event.stopPropagation();
     event.preventDefault();
     let touch = event.originalEvent.targetTouches[0];
-    // console.log("inside touchmove callback");
 
     if (touch) {
       const yAdjust = -120;
-      // const yAdjust = -40;
       const xAdjust = 0;
-      // console.log(`${touch.pageX}, ${touch.pageY}`);
 
       this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
       this.currentMousePos.y = touch.pageY + yAdjust;
