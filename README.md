@@ -147,3 +147,6 @@ Game.prototype.setVertexSize = function() {
 I included `touchstart`, `touchend`, and `touchmove` event handlers to allow users to play the game on their phone. The game currently works well on Android phones, but sometimes has difficulty rendering on iPhones.
 
 Future optimizations will include increasing the vertex radius on devices with small screens.
+
+Developed by [Joy Jing][joy-jing]
+[joy-jing]: https://joyjing1.github.io/
