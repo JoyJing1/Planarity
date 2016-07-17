@@ -56,10 +56,13 @@ a.next-level-modal {
   text-align: center;
   background: #56600FF;
   border-radius: 10px;
+  /*font-size: 60px;*/
   font-size: 20px;
   background: #4531B1;
   border: 1px solid #4d37c5;
 }
+
+
 
 /* Clearfix */
 .clearfix:after {
@@ -107,11 +110,13 @@ a.next-level-modal {
   margin: 0 0 15px 0;
   line-height: 1.47em;
   font-size: 20px;
+  /*font-size: 20px;*/
 }
 
 .win-modal-content p {
   margin: 8px auto 0 auto;
   font-size: 24px;
+  /*font-size: 72px;*/
   text-align: center;
   color: #2794EB;
 }
@@ -119,7 +124,6 @@ a.next-level-modal {
 .results {
   color: #2794EB;
 }
-
 
 div span {
   color: white;
@@ -131,6 +135,7 @@ h1 {
   margin-top: 30px;
   color: white;
 }
+
 
 .rules .modal-content {
   margin: 15% auto;
@@ -165,6 +170,7 @@ a.show-rules {
   margin: 0 auto;
   margin: 15px auto;
   font-size: 15px;
+  /*font-size: 45px;*/
   border: 2px solid white;
   text-align: center;
 }
@@ -178,11 +184,14 @@ div.github {
   background-image: url("../images/github.png");
   width: 40px;
   height: 40px;
+  /*width: 80px;
+  height: 80px;*/
   background-size: contain;
   position: absolute;
   bottom: 0;
   left: calc(50% - 20px);
 }
+
 
 div.github:hover {
   background-image: url("../images/github-hover.png");
@@ -200,7 +209,60 @@ canvas {
   margin: 0 auto;
 }
 
-div.vertex {
+@media only screen and (max-device-width: 700px) {
+  /* DESKTOP*/
+  h1 {
+    font-size: 100px;
+  }
+
+  .previous-level, .next-level {
+    height: 100px;
+    width: 100px;
+  }
+
+  a.next-level-modal {
+    font-size: 60px;
+    width: 310px;
+  }
+
+  .rules .modal-content {
+    width: 60%;
+  }
+
+  .modal-content h2 {
+    font-size: 50px;
+  }
+
+  .modal-content p {
+    font-size: 50px;
+  }
+
+  .win-modal-content p {
+    font-size: 50px;
+  }
+
+  a.show-rules {
+    font-size: 40px;
+    width: 147px;
+  }
+
+  div.github {
+    height: 80px;
+    width: 80px;
+  }
+
+  a.play {
+    width: 120px;
+    font-size: 50px;
+  }
+
+  /*.results {
+    font-size: 50px
+  }*/
+}
+
+
+/*div.vertex {
   position: absolute;
   display: inline-block;
   height: 25px;
@@ -215,12 +277,12 @@ div.edge {
   background: green;
   height: 2px;
   position: absolute;
-}
-
+}*/
+/*
 #e7 {
   background: red;
 }
 
 #v3, #v5 {
   background: orange;
-}
+}*/
