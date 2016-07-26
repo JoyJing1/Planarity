@@ -250,7 +250,7 @@ GameView.prototype.bindGraphEvents = function() {
     if (event.originalEvent.targetTouches) {
       let touch = event.originalEvent.targetTouches[0];
       if (touch) {
-        const yAdjust = -167;
+        const yAdjust = -203;
         const xAdjust = 0;
 
         this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;

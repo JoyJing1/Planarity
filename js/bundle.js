@@ -872,7 +872,7 @@
 	    if (event.originalEvent.targetTouches) {
 	      var touch = event.originalEvent.targetTouches[0];
 	      if (touch) {
-	        var yAdjust = -167;
+	        var yAdjust = -203;
 	        var xAdjust = 0;
 	
 	        _this5.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
