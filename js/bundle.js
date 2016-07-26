@@ -202,11 +202,7 @@
 	"use strict";
 	
 	module.exports = {
-<<<<<<< HEAD
-	  COLOR: "#2794EB",
-=======
 	  COLOR: "#046FD8",
->>>>>>> master
 	  COLOR_SELECTED: "#47D6B6",
 	  COLOR_NEIGHBOR: "#4531B1",
 	  BLACK: "#000000",
@@ -326,16 +322,11 @@
 	};
 	
 	Edge.prototype.intersectsWith = function (edge) {
-<<<<<<< HEAD
-	  if (this === edge) {
-	    return false;
-=======
 	  // If edges are the same
 	  if (this === edge) {
 	    return false;
 	
 	    // If edges share a vertex
->>>>>>> master
 	  } else if (this.vertex1 === edge.vertex1) {
 	    var response = false;
 	
@@ -376,11 +367,8 @@
 	      _response3 = true;
 	    }
 	    return _response3;
-<<<<<<< HEAD
-=======
 	
 	    // If one of the edges is horizontal
->>>>>>> master
 	  } else if (this.isHorizontal()) {
 	    var _response4 = false;
 	
@@ -408,11 +396,8 @@
 	      }
 	    }
 	    return _response5;
-<<<<<<< HEAD
-=======
 	
 	    // If one of the edges is vertical
->>>>>>> master
 	  } else if (this.isVertical()) {
 	    var _response6 = false;
 	    if (edge.minX() + 1 < this.vertex1.x && this.vertex1.x < edge.maxX() - 1) {
@@ -440,17 +425,12 @@
 	      }
 	    }
 	    return _response7;
-<<<<<<< HEAD
-	  } else if (this.slope() === edge.slope()) {
-	    return false;
-=======
 	
 	    // If edges are parallel
 	  } else if (this.slope() === edge.slope()) {
 	    return false;
 	
 	    // If edges are both diagonal and do not share a vertex
->>>>>>> master
 	  } else {
 	    var x = this.intersectsAtX(edge);
 	    var y = this.yValue(x);
@@ -464,15 +444,9 @@
 	
 	Edge.prototype.currentlyIntersecting = function (allEdges) {
 	  var _this = this;
-<<<<<<< HEAD
 	
 	  var intersecting = false;
 	
-=======
-	
-	  var intersecting = false;
-	
->>>>>>> master
 	  allEdges.forEach(function (edge) {
 	    if (_this.intersectsWith(edge)) {
 	      intersecting = true;
@@ -630,15 +604,9 @@
 	
 	Vertex.prototype.neighbors = function () {
 	  var _this = this;
-<<<<<<< HEAD
 	
 	  var neighbors = [];
 	
-=======
-	
-	  var neighbors = [];
-	
->>>>>>> master
 	  this.edges.forEach(function (edge) {
 	    if (edge.vertex1 === _this) {
 	      neighbors.push(edge.vertex2);
@@ -727,20 +695,6 @@
 	      var $rulesContent = $("<div>").addClass("modal-content");
 	      var $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
 	
-<<<<<<< HEAD
-	      $rulesContent.append($rules);
-	      $rulesModal.append($rulesContent);
-	
-	      var $playButton = $("<a>").text("Play").addClass("button").addClass("play");
-	
-	      $rulesContent.append($playButton);
-	
-	      $playButton.on("touchstart click", function (event) {
-	        console.log("touchstart/clicked on $playButton");
-	        $rulesModal.css({ display: "none" });
-	      });
-	
-=======
 	      var $definitions = $("<p class='definitions'>A <a href='https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)'>graph</a> is a collection of nodes and edges.</br>A graph is <a href='https://en.wikipedia.org/wiki/Planar_graph'>planar</a> when it has no intersecting edges.</p>");
 	
 	      // .addClass("definitions").text("A <a>graph</a> is a collection of nodes and vertices. A graph is <a>planar</a> when it has no intersecting lines.");
@@ -761,7 +715,6 @@
 	        $rulesModal.css({ display: "none" });
 	      });
 	
->>>>>>> master
 	      _this.root.append($rulesModal);
 	    })();
 	  }
@@ -801,10 +754,6 @@
 	      $nextButton.on("touchstart click", function (event) {
 	        event.stopPropagation();
 	        event.preventDefault();
-<<<<<<< HEAD
-	        console.log("touchstart/clicked on $nextButton");
-=======
->>>>>>> master
 	
 	        _this2.levelUp();
 	        $modal.css({ display: "none" });
@@ -812,8 +761,6 @@
 	        _this2.playLevel();
 	      });
 	
-<<<<<<< HEAD
-=======
 	      $modal.on("touchstart click", function (event) {
 	        event.stopPropagation();
 	        event.preventDefault();
@@ -824,7 +771,6 @@
 	        _this2.playLevel();
 	      });
 	
->>>>>>> master
 	      _this2.root.append($modal);
 	    })();
 	  }
@@ -834,11 +780,7 @@
 	
 	  var $button2 = $("<div>").addClass("button").addClass("nav").addClass("previous-level");
 	  var $button3 = $("<div>").addClass("button").addClass("nav").addClass("next-level");
-<<<<<<< HEAD
-	  var $github = $("<a href=\"https://github.com/joyjing1\"><div class=\"button github\"/></a>");
-=======
 	  var $github = $("<a href=\"https://github.com/JoyJing1/Planarity\"><div class=\"button github\"/></a>");
->>>>>>> master
 	
 	  var $buttonRules = $("<a>").addClass("button").addClass("show-rules").text("Rules");
 	  var $canvasDiv = $(".canvas-div");
@@ -865,14 +807,8 @@
 	GameView.prototype.bindButtonEvents = function () {
 	  var _this3 = this;
 	
-<<<<<<< HEAD
-	  $("previous-level").off("touchstart");
-	  $("previous-level").off("click");
-	  console.log("binding previous-level-button action");
-=======
 	  $(".previous-level").off("touchstart");
 	  $(".previous-level").off("click");
->>>>>>> master
 	  $(".previous-level").on("click touchstart", function (event) {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -883,13 +819,8 @@
 	    }
 	  });
 	
-<<<<<<< HEAD
-	  $("next-level").off("touchstart");
-	  $("next-level").off("click");
-=======
 	  $(".next-level").off("touchstart");
 	  $(".next-level").off("click");
->>>>>>> master
 	  $(".next-level").on("click touchstart", function (event) {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -898,13 +829,8 @@
 	    _this3.playLevel(_this3.level);
 	  });
 	
-<<<<<<< HEAD
-	  $("show-rules").off("touchstart");
-	  $("show-rules").off("click");
-=======
 	  $(".show-rules").off("touchstart");
 	  $(".show-rules").off("click");
->>>>>>> master
 	  $(".show-rules").on("click touchstart", function (event) {
 	    event.stopPropagation();
 	    event.preventDefault();
@@ -946,11 +872,7 @@
 	    if (event.originalEvent.targetTouches) {
 	      var touch = event.originalEvent.targetTouches[0];
 	      if (touch) {
-<<<<<<< HEAD
-	        var yAdjust = -40;
-=======
 	        var yAdjust = -203;
->>>>>>> master
 	        var xAdjust = 0;
 	
 	        _this5.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
@@ -990,11 +912,7 @@
 	    event.stopPropagation();
 	    event.preventDefault();
 	
-<<<<<<< HEAD
-	    var yAdjust = -40;
-=======
 	    var yAdjust = -70;
->>>>>>> master
 	    var xAdjust = 0;
 	
 	    _this5.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
@@ -1008,19 +926,11 @@
 	    var touch = event.originalEvent.targetTouches[0];
 	
 	    if (touch) {
-<<<<<<< HEAD
-	      var yAdjust = -40;
-=======
 	      var yAdjust = -167;
->>>>>>> master
 	      var xAdjust = 0;
 	
 	      _this5.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
 	      _this5.currentMousePos.y = touch.pageY + yAdjust;
-<<<<<<< HEAD
-	      console.log(_this5.currentMousePos);
-=======
->>>>>>> master
 	    }
 	  });
 	};
