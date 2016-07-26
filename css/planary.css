@@ -9,6 +9,7 @@ html, body {
 h1 {
   font-size: 66px;
 }
+
 /*    BUTTONS   ****************************/
 .button, button, input[type="submit"], .clickable {
   cursor: pointer;
@@ -25,8 +26,6 @@ h1 {
   left: 20px;
   height: 100px;
   width: 100px;
-  /*height: 50px;
-  width: 50px;*/
   background-size: contain;
   position: absolute;
   -webkit-transform: scaleX(-1);
@@ -43,8 +42,6 @@ h1 {
   right: 20px;
   height: 100px;
   width: 100px;
-  /*height: 50px;
-  width: 50px;*/
   background-size: contain;
   position: absolute;
   z-index: 2;
@@ -57,20 +54,19 @@ h1 {
 a.next-level-modal {
   position: relative;
   display: block;
-  padding: 8px 12px;
   margin: 20px auto 8px auto;
   width: 310px;
-  /*width: 100px;*/
   text-align: center;
   background: #56600FF;
-  border-radius: 10px;
   font-size: 60px;
-  /*font-size: 20px;*/
   background: #4531B1;
-  border: 1px solid #4d37c5;
+
+  /*padding: 8px 12px;
+  border-radius: 10px;*/
+
+  padding: 15px 31px;
+  border-radius: 23px;
 }
-
-
 
 /* Clearfix */
 .clearfix:after {
@@ -103,7 +99,8 @@ a.next-level-modal {
   border-radius: 17px;
   background-color: black;
   color: white;
-  border: 3px solid #FFFF00;
+  /*border: 3px solid #47D6B6;*/
+  border: 3px solid #6699ff;
 }
 
 .modal-content h2 {
@@ -118,20 +115,33 @@ a.next-level-modal {
 .modal-content p {
   margin: 0 0 15px 0;
   line-height: 1.47em;
-  /*font-size: 20px;*/
   font-size: 50px;
+}
+
+p.definitions {
+  margin-bottom: 0;
+  margin-top: 15px;
+  font-size: 35px;
+}
+
+p.definitions a {
+  text-decoration: initial;
+  color: #47D6B6;
+}
+
+p.definitions a:hover {
+  color: #6699ff;
 }
 
 .win-modal-content p {
   margin: 8px auto 0 auto;
-  /*font-size: 24px;*/
   font-size: 50px;
   text-align: center;
   color: #2794EB;
 }
 
 .results {
-  color: #2794EB;
+  color: #47D6B6;
 }
 
 div span {
@@ -145,12 +155,10 @@ h1 {
   color: white;
 }
 
-
 .rules .modal-content {
   margin: 15% auto;
   padding: 15px 20px 20px 20px;
   width: 60%;
-  /*width: 35%;*/
   text-align: center;
   padding-bottom: 20px;
 }
@@ -159,13 +167,13 @@ a.play {
   display: block;
   position: relative;
   background-color: #4531B1;
-  border: 1px solid #4d37c5;
-  padding: 6px 12px;
-  border-radius: 5px;
-  /*width: 35px;*/
+  /*padding: 6px 12px;
+  border-radius: 5px;*/
+
+  padding: 16px 24px;
+  border-radius: 23px;
   width: 120px;
   margin: 0 auto;
-  /*font-size: 16px;*/
   font-size: 50px;
 }
 
@@ -179,11 +187,9 @@ a.show-rules {
   position: relative;
   padding: 6px 12px;
   border-radius: 9px;
-  /*width: 42px;*/
   width: 147px;
   margin: 0 auto;
   margin: 15px auto;
-  /*font-size: 15px;*/
   font-size: 40px;
   border: 2px solid white;
   text-align: center;
@@ -196,8 +202,6 @@ a.button.show-rules:hover {
 
 div.github {
   background-image: url("../images/github.png");
-  /*width: 40px;
-  height: 40px;*/
   width: 80px;
   height: 80px;
   background-size: contain;
@@ -227,7 +231,6 @@ canvas {
   /* DESKTOP*/
   h1 {
     font-size: 2em;
-    /*font-size: 100px;*/
   }
 
   .previous-level, .next-level {
@@ -238,17 +241,20 @@ canvas {
   a.next-level-modal {
     font-size: 20px;
     width: 100px;
+    padding: 8px 12px;
+    border-radius: 10px;
   }
 
-
-
   .modal-content h2 {
-    /*font-size: 50px;*/
     font-size: 1.5em;
   }
 
   .modal-content p {
     font-size: 20px;
+  }
+
+  p.definitions {
+    font-size: 15px;
   }
 
   .win-modal-content p {
@@ -272,5 +278,7 @@ canvas {
   a.play {
     width: 35px;
     font-size: 16px;
+    padding: 6px 12px;
+    border-radius: 5px;
   }
 }

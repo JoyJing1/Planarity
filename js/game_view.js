@@ -69,6 +69,10 @@ GameView.prototype.renderRules = function() {
     const $rulesContent = $("<div>").addClass("modal-content");
     const $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
 
+    const $definitions = $("<p class='definitions'>A <a href='https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)'>graph</a> is a collection of nodes and edges.</br>A graph is <a href='https://en.wikipedia.org/wiki/Planar_graph'>planar</a> when it has no intersecting edges.</p>");
+
+    // .addClass("definitions").text("A <a>graph</a> is a collection of nodes and vertices. A graph is <a>planar</a> when it has no intersecting lines.");
+
     $rulesContent.append($rules);
     $rulesModal.append($rulesContent);
 
@@ -77,13 +81,13 @@ GameView.prototype.renderRules = function() {
                         .addClass("play");
 
     $rulesContent.append($playButton);
+    $rulesContent.append($definitions);
 
     $playButton.on("touchstart click", event => {
       $rulesModal.css( {display: "none"} );
     });
 
     $rulesModal.on("touchstart click", event => {
-      debugger;
       $rulesModal.css( {display: "none"} );
     });
 
@@ -126,6 +130,16 @@ GameView.prototype.renderModal = function() {
     $modalContent.append($nextButton);
 
     $nextButton.on("touchstart click", event => {
+      event.stopPropagation();
+      event.preventDefault();
+
+      this.levelUp();
+      $modal.css({display: "none"});
+      cancelAnimationFrame(this.refreshIntervalId);
+      this.playLevel();
+    });
+
+    $modal.on("touchstart click", event => {
       event.stopPropagation();
       event.preventDefault();
 

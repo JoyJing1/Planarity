@@ -695,19 +695,23 @@
 	      var $rulesContent = $("<div>").addClass("modal-content");
 	      var $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
 	
+	      var $definitions = $("<p class='definitions'>A <a href='https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)'>graph</a> is a collection of nodes and edges.</br>A graph is <a href='https://en.wikipedia.org/wiki/Planar_graph'>planar</a> when it has no intersecting edges.</p>");
+	
+	      // .addClass("definitions").text("A <a>graph</a> is a collection of nodes and vertices. A graph is <a>planar</a> when it has no intersecting lines.");
+	
 	      $rulesContent.append($rules);
 	      $rulesModal.append($rulesContent);
 	
 	      var $playButton = $("<a>").text("Play").addClass("button").addClass("play");
 	
 	      $rulesContent.append($playButton);
+	      $rulesContent.append($definitions);
 	
 	      $playButton.on("touchstart click", function (event) {
 	        $rulesModal.css({ display: "none" });
 	      });
 	
 	      $rulesModal.on("touchstart click", function (event) {
-	        debugger;
 	        $rulesModal.css({ display: "none" });
 	      });
 	
@@ -748,6 +752,16 @@
 	      $modalContent.append($nextButton);
 	
 	      $nextButton.on("touchstart click", function (event) {
+	        event.stopPropagation();
+	        event.preventDefault();
+	
+	        _this2.levelUp();
+	        $modal.css({ display: "none" });
+	        cancelAnimationFrame(_this2.refreshIntervalId);
+	        _this2.playLevel();
+	      });
+	
+	      $modal.on("touchstart click", function (event) {
 	        event.stopPropagation();
 	        event.preventDefault();
 	
