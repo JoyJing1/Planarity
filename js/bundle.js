@@ -766,7 +766,7 @@
 	
 	  var $button2 = $("<div>").addClass("button").addClass("nav").addClass("previous-level");
 	  var $button3 = $("<div>").addClass("button").addClass("nav").addClass("next-level");
-	  var $github = $("<a href=\"https://github.com/joyjing1\"><div class=\"button github\"/></a>");
+	  var $github = $("<a href=\"https://github.com/JoyJing1/Planarity\"><div class=\"button github\"/></a>");
 	
 	  var $buttonRules = $("<a>").addClass("button").addClass("show-rules").text("Rules");
 	  var $canvasDiv = $(".canvas-div");
