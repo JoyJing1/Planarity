@@ -82,6 +82,11 @@ GameView.prototype.renderRules = function() {
       $rulesModal.css( {display: "none"} );
     });
 
+    $rulesModal.on("touchstart click", event => {
+      debugger;
+      $rulesModal.css( {display: "none"} );
+    });
+
     this.root.append($rulesModal);
   }
 
@@ -231,7 +236,7 @@ GameView.prototype.bindGraphEvents = function() {
     if (event.originalEvent.targetTouches) {
       let touch = event.originalEvent.targetTouches[0];
       if (touch) {
-        const yAdjust = -167g;
+        const yAdjust = -167;
         const xAdjust = 0;
 
         this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
