@@ -6,6 +6,10 @@ html, body {
   background-color: black;
 }
 
+h1 {
+  font-size: 66px;
+}
+
 /*    BUTTONS   ****************************/
 .button, button, input[type="submit"], .clickable {
   cursor: pointer;
@@ -20,8 +24,8 @@ html, body {
   background-image: url("../images/arrow.png");
   bottom: 0;
   left: 20px;
-  height: 50px;
-  width: 50px;
+  height: 100px;
+  width: 100px;
   background-size: contain;
   position: absolute;
   -webkit-transform: scaleX(-1);
@@ -36,8 +40,8 @@ html, body {
   background-image: url("../images/arrow.png");
   bottom: 0;
   right: 20px;
-  height: 50px;
-  width: 50px;
+  height: 100px;
+  width: 100px;
   background-size: contain;
   position: absolute;
   z-index: 2;
@@ -50,15 +54,14 @@ html, body {
 a.next-level-modal {
   position: relative;
   display: block;
-  padding: 8px 12px;
   margin: 20px auto 8px auto;
-  width: 100px;
+  width: 310px;
   text-align: center;
   background: #56600FF;
-  border-radius: 10px;
-  font-size: 20px;
+  font-size: 60px;
   background: #4531B1;
-  border: 1px solid #4d37c5;
+  padding: 15px 31px;
+  border-radius: 23px;
 }
 
 /* Clearfix */
@@ -92,7 +95,7 @@ a.next-level-modal {
   border-radius: 17px;
   background-color: black;
   color: white;
-  border: 3px solid #FFFF00;
+  border: 3px solid #6699ff;
 }
 
 .modal-content h2 {
@@ -101,25 +104,40 @@ a.next-level-modal {
   width: 90%;
   margin: 0 auto;
   margin-bottom: 15px;
+  font-size: 50px;
 }
 
 .modal-content p {
   margin: 0 0 15px 0;
   line-height: 1.47em;
-  font-size: 20px;
+  font-size: 50px;
+}
+
+p.definitions {
+  margin-bottom: 0;
+  margin-top: 15px;
+  font-size: 35px;
+}
+
+p.definitions a {
+  text-decoration: initial;
+  color: #47D6B6;
+}
+
+p.definitions a:hover {
+  color: #6699ff;
 }
 
 .win-modal-content p {
   margin: 8px auto 0 auto;
-  font-size: 24px;
+  font-size: 50px;
   text-align: center;
   color: #2794EB;
 }
 
 .results {
-  color: #2794EB;
+  color: #47D6B6;
 }
-
 
 div span {
   color: white;
@@ -135,7 +153,7 @@ h1 {
 .rules .modal-content {
   margin: 15% auto;
   padding: 15px 20px 20px 20px;
-  width: 35%;
+  width: 60%;
   text-align: center;
   padding-bottom: 20px;
 }
@@ -144,11 +162,11 @@ a.play {
   display: block;
   position: relative;
   background-color: #4531B1;
-  border: 1px solid #4d37c5;
-  padding: 6px 12px;
-  border-radius: 5px;
-  width: 35px;
+  padding: 16px 24px;
+  border-radius: 23px;
+  width: 120px;
   margin: 0 auto;
+  font-size: 50px;
 }
 
 body {
@@ -161,11 +179,11 @@ a.show-rules {
   position: relative;
   padding: 6px 12px;
   border-radius: 9px;
-  width: 42px;
+  width: 147px;
   margin: 0 auto;
   margin: 15px auto;
-  font-size: 15px;
-  border: 2px solid white;
+  font-size: 40px;
+  border: 4px solid white;
   text-align: center;
 }
 
@@ -176,13 +194,14 @@ a.button.show-rules:hover {
 
 div.github {
   background-image: url("../images/github.png");
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   background-size: contain;
   position: absolute;
   bottom: 0;
   left: calc(50% - 20px);
 }
+
 
 div.github:hover {
   background-image: url("../images/github-hover.png");
@@ -200,27 +219,59 @@ canvas {
   margin: 0 auto;
 }
 
-div.vertex {
-  position: absolute;
-  display: inline-block;
-  height: 25px;
-  width: 25px;
-  background: lightblue;
-  border-radius: 100px;
-  margin: 0;
-  text-align: center;
-}
+@media only screen and (min-device-width: 700px) {
+  /* DESKTOP*/
+  h1 {
+    font-size: 2em;
+  }
 
-div.edge {
-  background: green;
-  height: 2px;
-  position: absolute;
-}
+  .previous-level, .next-level {
+    height: 50px;
+    width: 50px;
+  }
 
-#e7 {
-  background: red;
-}
+  a.next-level-modal {
+    font-size: 20px;
+    width: 100px;
+    padding: 8px 12px;
+    border-radius: 10px;
+  }
 
-#v3, #v5 {
-  background: orange;
+  .modal-content h2 {
+    font-size: 1.5em;
+  }
+
+  .modal-content p {
+    font-size: 20px;
+  }
+
+  p.definitions {
+    font-size: 15px;
+  }
+
+  .win-modal-content p {
+    font-size: 24px;
+  }
+
+  .rules .modal-content {
+    width: 35%;
+  }
+
+  a.show-rules {
+    font-size: 15px;
+    width: 42px;
+    border: 2px solid white;
+  }
+
+  div.github {
+    height: 40px;
+    width: 40px;
+  }
+
+  a.play {
+    width: 35px;
+    font-size: 16px;
+    padding: 6px 12px;
+    border-radius: 5px;
+  }
 }

@@ -13,7 +13,8 @@ Edge.prototype.draw = function(ctx, edges) {
   if (this.currentlyIntersecting(edges)) {
     ctx.strokeStyle = Constants.LINE_INTERSECTING;
     ctx.shadowColor = Constants.LINE_INTERSECTING;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 10;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
     ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -21,7 +22,9 @@ Edge.prototype.draw = function(ctx, edges) {
 
   } else {
     ctx.strokeStyle = Constants.BLACK;
-    ctx.lineWidth = 3;
+    ctx.shadowColor = Constants.LINE_FREE;
+    ctx.lineWidth = 5;
+    ctx.shadowBlur = 15;
     ctx.beginPath();
     ctx.moveTo(this.vertex1.x, this.vertex1.y);
     ctx.lineTo(this.vertex2.x, this.vertex2.y);
@@ -107,9 +110,11 @@ Edge.prototype.maxY = function() {
 };
 
 Edge.prototype.intersectsWith = function(edge) {
+  // If edges are the same
   if (this === edge) {
     return false;
 
+  // If edges share a vertex
   } else if (this.vertex1 === edge.vertex1) {
     let response = false;
 
@@ -154,6 +159,7 @@ Edge.prototype.intersectsWith = function(edge) {
     }
     return response;
 
+  // If one of the edges is horizontal
   } else if (this.isHorizontal()) {
     let response = false;
 
@@ -183,6 +189,7 @@ Edge.prototype.intersectsWith = function(edge) {
     }
     return response;
 
+  // If one of the edges is vertical
   } else if (this.isVertical()) {
     let response = false;
     if (edge.minX()+1 < this.vertex1.x && this.vertex1.x < edge.maxX()-1) {
@@ -212,9 +219,11 @@ Edge.prototype.intersectsWith = function(edge) {
     }
     return response;
 
+  // If edges are parallel
   } else if (this.slope() === edge.slope()) {
     return false;
 
+  // If edges are both diagonal and do not share a vertex
   } else {
     const x = this.intersectsAtX(edge);
     const y = this.yValue(x);

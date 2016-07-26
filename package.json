@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/JoyJing1/Planary/issues"
   },
-  "homepage": "https://github.com/JoyJing1/Planary#readme"
+  "homepage": "https://github.com/JoyJing1/Planary#readme",
+  "dependencies": {
+    "react": "^15.2.1"
+  },
+  "devDependencies": {
+    "babel-preset-react": "^6.11.1"
+  }
 }

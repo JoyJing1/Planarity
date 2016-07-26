@@ -24,7 +24,6 @@ Game.prototype.setPlaySize = function() {
   $board.css( {left: Game.leftOffset} );
 };
 
-
 Game.prototype.setVertexSize = function() {
   Vertex.RADIUS = (Game.DIM_X / this.vertices.length / 10) + 5;
 };

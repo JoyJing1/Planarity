@@ -69,6 +69,10 @@ GameView.prototype.renderRules = function() {
     const $rulesContent = $("<div>").addClass("modal-content");
     const $rules = $("<p>").text("Can you detangle the web? Move the nodes around until none of the lines intersect.");
 
+    const $definitions = $("<p class='definitions'>A <a href='https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)'>graph</a> is a collection of nodes and edges.</br>A graph is <a href='https://en.wikipedia.org/wiki/Planar_graph'>planar</a> when it has no intersecting edges.</p>");
+
+    // .addClass("definitions").text("A <a>graph</a> is a collection of nodes and vertices. A graph is <a>planar</a> when it has no intersecting lines.");
+
     $rulesContent.append($rules);
     $rulesModal.append($rulesContent);
 
@@ -77,9 +81,13 @@ GameView.prototype.renderRules = function() {
                         .addClass("play");
 
     $rulesContent.append($playButton);
+    $rulesContent.append($definitions);
 
     $playButton.on("touchstart click", event => {
-      console.log("touchstart/clicked on $playButton");
+      $rulesModal.css( {display: "none"} );
+    });
+
+    $rulesModal.on("touchstart click", event => {
       $rulesModal.css( {display: "none"} );
     });
 
@@ -124,7 +132,16 @@ GameView.prototype.renderModal = function() {
     $nextButton.on("touchstart click", event => {
       event.stopPropagation();
       event.preventDefault();
-      console.log("touchstart/clicked on $nextButton");
+
+      this.levelUp();
+      $modal.css({display: "none"});
+      cancelAnimationFrame(this.refreshIntervalId);
+      this.playLevel();
+    });
+
+    $modal.on("touchstart click", event => {
+      event.stopPropagation();
+      event.preventDefault();
 
       this.levelUp();
       $modal.css({display: "none"});
@@ -141,7 +158,7 @@ GameView.prototype.renderButtons = function() {
 
   const $button2 = $("<div>").addClass("button").addClass("nav").addClass("previous-level");
   const $button3 = $("<div>").addClass("button").addClass("nav").addClass("next-level");
-  const $github = $(`<a href="https://github.com/joyjing1"><div class="button github"/></a>`);
+  const $github = $(`<a href="https://github.com/JoyJing1/Planarity"><div class="button github"/></a>`);
 
   const $buttonRules = $("<a>").addClass("button")
                         .addClass("show-rules")
@@ -169,9 +186,8 @@ GameView.prototype.checkPlanarity = function() {
 
 GameView.prototype.bindButtonEvents = function() {
 
-  $("previous-level").off("touchstart");
-  $("previous-level").off("click");
-  console.log("binding previous-level-button action");
+  $(".previous-level").off("touchstart");
+  $(".previous-level").off("click");
   $(".previous-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
@@ -182,23 +198,21 @@ GameView.prototype.bindButtonEvents = function() {
     }
   });
 
-  $("next-level").off("touchstart");
-  $("next-level").off("click");
+  $(".next-level").off("touchstart");
+  $(".next-level").off("click");
   $(".next-level").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("touchstart/clicked on next-level button");
 
     this.levelUp();
     this.playLevel(this.level);
   });
 
-  $("show-rules").off("touchstart");
-  $("show-rules").off("click");
+  $(".show-rules").off("touchstart");
+  $(".show-rules").off("click");
   $(".show-rules").on("click touchstart", event => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("touchstart/clicked on show-rules button");
 
     $(".rules").css( {display: "block"} );
   });
@@ -236,7 +250,7 @@ GameView.prototype.bindGraphEvents = function() {
     if (event.originalEvent.targetTouches) {
       let touch = event.originalEvent.targetTouches[0];
       if (touch) {
-        const yAdjust = -40;
+        const yAdjust = -203;
         const xAdjust = 0;
 
         this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
@@ -267,7 +281,6 @@ GameView.prototype.bindGraphEvents = function() {
   $(document).on("mouseup touchend", event => {
     event.stopPropagation();
     event.preventDefault();
-    console.log("touchend/mouseup on document button");
 
     this.game.dropVertices();
     this.checkPlanarity();
@@ -278,7 +291,7 @@ GameView.prototype.bindGraphEvents = function() {
     event.stopPropagation();
     event.preventDefault();
 
-    const yAdjust = -40;
+    const yAdjust = -70;
     const xAdjust = 0;
 
     this.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
@@ -292,12 +305,11 @@ GameView.prototype.bindGraphEvents = function() {
     let touch = event.originalEvent.targetTouches[0];
 
     if (touch) {
-      const yAdjust = -40;
+      const yAdjust = -167;
       const xAdjust = 0;
 
       this.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
       this.currentMousePos.y = touch.pageY + yAdjust;
-      console.log(this.currentMousePos);
     }
   });
 
