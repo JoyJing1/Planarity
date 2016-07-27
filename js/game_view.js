@@ -158,7 +158,7 @@ GameView.prototype.renderButtons = function() {
 
   const $button2 = $("<div>").addClass("button").addClass("nav").addClass("previous-level");
   const $button3 = $("<div>").addClass("button").addClass("nav").addClass("next-level");
-  const $github = $(`<a href="https://github.com/JoyJing1/Planarity"><div class="button github"/></a>`);
+  const $github = $(`<a href="https://github.com/JoyJing1/Planarity" target="_blank"><div class="button github"/></a>`);
 
   const $buttonRules = $("<a>").addClass("button")
                         .addClass("show-rules")
