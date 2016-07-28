@@ -697,8 +697,6 @@
 	
 	      var $definitions = $("<p class='definitions'>A <a href='https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)'>graph</a> is a collection of nodes and edges.</br>A graph is <a href='https://en.wikipedia.org/wiki/Planar_graph'>planar</a> when it has no intersecting edges.</p>");
 	
-	      // .addClass("definitions").text("A <a>graph</a> is a collection of nodes and vertices. A graph is <a>planar</a> when it has no intersecting lines.");
-	
 	      $rulesContent.append($rules);
 	      $rulesModal.append($rulesContent);
 	
@@ -872,16 +870,19 @@
 	    if (event.originalEvent.targetTouches) {
 	      var touch = event.originalEvent.targetTouches[0];
 	      if (touch) {
-	        var yAdjust = -203;
+	        var yAdjust = -106;
 	        var xAdjust = 0;
 	
 	        _this5.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
 	        _this5.currentMousePos.y = touch.pageY + yAdjust;
+	        console.log("NEW TOUCH DOWN");
+	        console.log(_this5.currentMousePos.x + ", " + _this5.currentMousePos.y);
 	      }
 	    }
 	
 	    _this5.game.vertices.forEach(function (vertex) {
 	      var dist = Util.distFromMouse(vertex, _this5.currentMousePos);
+	      console.log(vertex.x + ", " + vertex.y);
 	
 	      if (dist < withinVertex && !vertexSelected) {
 	        _this5.game.moves += 1;
@@ -912,7 +913,7 @@
 	    event.stopPropagation();
 	    event.preventDefault();
 	
-	    var yAdjust = -70;
+	    var yAdjust = -106;
 	    var xAdjust = 0;
 	
 	    _this5.currentMousePos.x = event.pageX + xAdjust - Game.leftOffset;
@@ -926,7 +927,7 @@
 	    var touch = event.originalEvent.targetTouches[0];
 	
 	    if (touch) {
-	      var yAdjust = -167;
+	      var yAdjust = -106;
 	      var xAdjust = 0;
 	
 	      _this5.currentMousePos.x = touch.pageX + xAdjust - Game.leftOffset;
